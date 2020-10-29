@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
-import { useToast } from '@chakra-ui/core';
+import React, { useEffect } from "react";
+import { useToast } from "@chakra-ui/core";
 
-import { getProfile } from '3box/lib/api';
+import { getProfile } from "3box/lib/api";
 
-import { createWeb3User, w3connect } from '../utils/Auth';
-import { USER_TYPE } from '../utils/Auth';
-import {
-  useUserWallet,
-  useUser,
-  useWeb3Connect,
-} from './DappContext';
+import { addresses } from "@project/contracts";
+
+import { createWeb3User, w3connect } from "../utils/Auth";
+import { USER_TYPE } from "../utils/Auth";
+import { useUserWallet, useUser, useWeb3Connect } from "./DappContext";
+import { TokenService } from "../utils/TokenService";
 
 const UserInit = () => {
   const toast = useToast();
@@ -31,8 +30,8 @@ const UserInit = () => {
   }, [user]);
 
   const initCurrentUser = async () => {
-    console.log('************initCurrentUser();');
-    let loginType = localStorage.getItem('loginType') || USER_TYPE.READ_ONLY;
+    console.log("************initCurrentUser();");
+    let loginType = localStorage.getItem("loginType") || USER_TYPE.READ_ONLY;
     if (user && user.type === loginType) {
       return;
     }
@@ -43,7 +42,7 @@ const UserInit = () => {
 
     let providerConnect;
     try {
-      console.log(`Initializing user type: ${loginType || 'read-only'}`);
+      console.log(`Initializing user type: ${loginType || "read-only"}`);
 
       switch (loginType) {
         case USER_TYPE.WEB3: {
@@ -55,10 +54,10 @@ const UserInit = () => {
               console.log(err);
 
               toast({
-                title: 'Wrong Network',
-                position: 'top-right',
+                title: "Wrong Network",
+                position: "top-right",
                 description: err.msg,
-                status: 'warning',
+                status: "warning",
                 duration: 9000,
                 isClosable: true,
               });
@@ -80,23 +79,29 @@ const UserInit = () => {
           break;
       }
 
-      localStorage.setItem('loginType', loginType);
+      localStorage.setItem("loginType", loginType);
     } catch (e) {
       console.error(
-        `Could not log in with loginType ${loginType}: ${e.toString()}`,
+        `Could not log in with loginType ${loginType}: ${e.toString()}`
       );
-      localStorage.setItem('loginType', '');
+      localStorage.setItem("loginType", "");
     }
   };
 
   const initUserWallet = async () => {
     // TODO: get wallet/token info for signed in user
-    console.log('^^^^^^^^^^^^^^initUserWallet');
-    let eth = 0;
-    const wallet = {
-      eth
-    };
+    console.log("^^^^^^^^^^^^^^initUserWallet");
 
+    const web3 = web3Connect.web3;
+    const balance = await web3.eth.getBalance(user.username);
+    const eth = web3.utils.fromWei(balance);
+    const tokenService = new TokenService(web3, addresses.cheiv, user.username);
+    const cheiv = await tokenService.balanceOfToken(addresses.cheiv);
+    const wallet = {
+      eth,
+      cheiv,
+    };
+    console.log('wallet', wallet);
     updateUserWallet(wallet);
   };
 

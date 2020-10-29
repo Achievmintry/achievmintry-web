@@ -144,7 +144,7 @@ export function useTxProcessor() {
 
 export function useUserWallet() {
   const [state, { updateUserWallet }] = useDappContext();
-  return [state.txProcessor, updateUserWallet];
+  return [state.userWallet, updateUserWallet];
 }
 
 export function useLoading() {
