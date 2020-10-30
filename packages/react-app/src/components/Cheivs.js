@@ -22,39 +22,42 @@ import {
   Input,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
-import { useKudos, useUser } from "../contexts/DappContext";
+import { useKudos, useTxProcessor, useUser } from "../contexts/DappContext";
 
 const Cheivs = ({ featured }) => {
   const [selected, setSelected] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [txHash, setTxHash] = useState(false);
   const [kudos] = useKudos();
   const [user] = useUser();
+  const [txProcessor, updateTxProcessor] = useTxProcessor();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
-  useEffect(() => {
-    const getKudo = async () => {
-      console.log("🚨🚨🚨🚨🚨", metaList, kudos);
-
-      const kudo = await kudos.getKudosById(1);
-
-      console.log("🚨🚨🚨🚨🚨", kudo);
-    };
-    if (kudos) {
-      getKudo();
+  const txCallBack = (txHash, name) => {
+    if (txProcessor) {
+      txProcessor.setTx(txHash, user.username, name, true, false);
+      txProcessor.forceUpdate = true;
+      updateTxProcessor(txProcessor);
     }
-  }, [kudos]);
+    setTxHash(txHash);
+  };
 
   const onSubmit = async (data) => {
-
+    setLoading(true);
     try {
       await kudos.clone(
         data.address,
         user.username,
         selected.id,
         1,
-        selected.price
+        selected.price,
+        txCallBack
       );
+      // instead of close we should have a confetti moment
     } catch (err) {
+      setLoading(false);
       console.log("error: ", err);
     }
   };
@@ -67,11 +70,9 @@ const Cheivs = ({ featured }) => {
   };
 
   const renderList = () => {
-    console.log("metaList", metaList, featured);
     return metaList
       .filter((item) => item.featured === featured)
       .map((item, i) => {
-        console.log(item);
         return (
           <Box
             w="100%"
@@ -110,7 +111,14 @@ const Cheivs = ({ featured }) => {
       <Grid templateColumns="repeat(5, 1fr)" gap={6}>
         {renderList()}
       </Grid>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setTxHash(null);
+          setLoading(false);
+          onClose();
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -118,30 +126,34 @@ const Cheivs = ({ featured }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <FormLabel htmlFor="address">Eth address</FormLabel>
-                <Input
-                  ref={register}
-                  name="address"
-                  type="text"
-                  id="address"
-                  aria-describedby="address-helper-text"
-                />
-                <FormHelperText id="email-helper-text">
-                  Use eth address (or ENS eventually)
-                </FormHelperText>
-              </FormControl>
-              <Button
-                isLoading={false}
-                loadingText="Gifting"
-                bg="transparent"
-                border="1px"
-                type="submit"
-              >
-                Mint and Send
-              </Button>
-            </form>
+            {txHash && <Text>{txHash}</Text>}
+            {loading && !txHash && <Text>Check MetaMask</Text>}
+            {!loading && (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl>
+                  <FormLabel htmlFor="address">Eth address</FormLabel>
+                  <Input
+                    ref={register}
+                    name="address"
+                    type="text"
+                    id="address"
+                    aria-describedby="address-helper-text"
+                  />
+                  <FormHelperText id="email-helper-text">
+                    Use eth address (or ENS eventually)
+                  </FormHelperText>
+                </FormControl>
+                <Button
+                  isLoading={false}
+                  loadingText="Gifting"
+                  bg="transparent"
+                  border="1px"
+                  type="submit"
+                >
+                  Mint and Send
+                </Button>
+              </form>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

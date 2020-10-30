@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Flex, Text } from "@chakra-ui/core";
+import { Flex, Text } from "@chakra-ui/core";
 import { useUserWallet } from "../contexts/DappContext";
 
 const Balance = () => {

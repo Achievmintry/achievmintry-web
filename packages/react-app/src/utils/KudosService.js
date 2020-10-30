@@ -16,6 +16,15 @@ export class KudosService {
     this.contract = new web3.eth.Contract(abis.kudos, tokenAddr);
   }
 
+  sendTx(name, tx, callback, from, value) {
+    return tx
+      .send({ from: from, value: value })
+      .on('transactionHash', (txHash) => {
+        console.log('txHash', txHash);
+        callback(txHash, name);
+      });
+  }
+
   async tokenOfOwnerByIndex(owner, index) {
     let tokenId;
     try {
@@ -67,27 +76,23 @@ export class KudosService {
 export class Web3KudosService extends KudosService {
   // admin
   async mint(to, from, priceFinney, numClonesAllowed, tokenURI) {
-    const txReceipt = await this.contract.methods
-      .mint(to, priceFinney, numClonesAllowed, tokenURI)
-      .send({ from: from });
-
-    return txReceipt.transactionHash;
+    const newTx = await this.contract.methods
+      .mint(to, priceFinney, numClonesAllowed, tokenURI);
   }
 
   // admin
   async burn(from, owner, tokenId) {
-    const txReceipt = await this.contract.methods
+    const newTx = await this.contract.methods
       .burn(owner, tokenId)
-      .send({ from: from });
-    return txReceipt.transactionHash;
+
   }
 
   // public
-  async clone(to, from, tokenId, numClonesRequested, value) {
+  async clone(to, from, tokenId, numClonesRequested, value, callback) {
     console.log("clone", from);
-    const txReceipt = this.contract.methods
-      .clone(to, tokenId, numClonesRequested)
-      .send({ from: from, value: value });
+    const newTx = this.contract.methods
+      .clone(to, tokenId, numClonesRequested);
+    const txReceipt = this.sendTx('clone', newTx, callback, from, value, callback);
     return txReceipt.transactionHash;
   }
 }

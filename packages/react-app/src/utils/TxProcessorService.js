@@ -68,7 +68,6 @@ export class TxProcessorService {
   
     getTxPendingList(account) {
       const _txList = JSON.parse(localStorage.getItem('txList')) || [];
-  
       return _txList.filter((item) => item.account === account && item.open);
     }
   
