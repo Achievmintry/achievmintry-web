@@ -4,9 +4,10 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
-import { Header, Balance, Awards } from "./components";
+import { Header, Balance, Cheivs } from "./components";
 import UserInit from "./contexts/UserInit";
 import TxProcessorInit from "./contexts/TxProcessorInit";
+import KudosInit from "./contexts/KudosInit";
 // import supportedChains from "./utils/Chains";
 
 const breakpoints = ["360px", "768px", "1024px", "1440px"];
@@ -44,6 +45,7 @@ function App() {
       <>
         <UserInit />
         <TxProcessorInit />
+        <KudosInit />
       </>
     );
   }
@@ -55,7 +57,7 @@ function App() {
         <Init />
         <Header />
         <Balance />
-        <Awards />
+        <Cheivs featured={true} />
       </ThemeProvider>
     </ApolloProvider>
   );

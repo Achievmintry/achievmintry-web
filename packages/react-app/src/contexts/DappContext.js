@@ -25,7 +25,7 @@ const initialState = {
       cacheProvider: true,
     }),
   },
-  proposals: [],
+  kudos: null,
 };
 
 const reducer = (state, action) => {
@@ -47,6 +47,9 @@ const reducer = (state, action) => {
     }
     case 'setUserWallet': {
       return { ...state, userWallet: action.payload };
+    }
+    case 'setKudos': {
+      return { ...state, kudos: action.payload };
     }
     default: {
       return initialState;
@@ -85,6 +88,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setUserWallet', payload: wallet });
   }, []);
 
+  const updateKudos = useCallback((_kudos) => {
+    dispatch({ type: 'setKudos', payload: _kudos });
+  }, []);
+
   return (
     <DappContext.Provider
       value={useMemo(
@@ -98,6 +105,7 @@ function DappContextProvider(props) {
             updateNetwork,
             updateTxProcessor,
             updateUserWallet,
+            updateKudos,
           },
         ],
         [
@@ -109,6 +117,7 @@ function DappContextProvider(props) {
           updateNetwork,
           updateTxProcessor,
           updateUserWallet,
+          updateKudos,
         ],
       )}
     >
@@ -151,6 +160,12 @@ export function useLoading() {
   const [state, { updateLoading }] = useDappContext();
   return [state.loading, updateLoading];
 }
+
+export function useKudos() {
+  const [state, { updateKudos }] = useDappContext();
+  return [state.kudos, updateKudos];
+}
+
 
 const DappContextConsumer = DappContext.Consumer;
 

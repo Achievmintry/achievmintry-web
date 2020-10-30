@@ -1,18 +1,25 @@
 import React from "react";
 
-import { Box, Text } from "@chakra-ui/core";
+import { Box, Flex, Text } from "@chakra-ui/core";
 import { useUserWallet } from "../contexts/DappContext";
 
 const Balance = () => {
   const [userWallet] = useUserWallet();
-  return (
-    <Box bg="black" w="100%" p={4} color="white">
-      <Text fontSize="xl">
-        xDai Balance: {userWallet?.eth} Balance: $CHEIV Balance:{" "}
-        {userWallet?.cheiv}
+  return userWallet ? (
+    <Flex
+      align="center"
+      justify="space-between"
+      wrap="wrap"
+      padding="1.5rem"
+      bg="black"
+      color="white"
+    >
+      <Text>xDai: {userWallet?.eth}</Text>
+      <Text>
+        $CHEIV: {userWallet?.cheiv}
       </Text>
-    </Box>
-  );
+    </Flex>
+  ) : null;
 };
 
 export default Balance;
