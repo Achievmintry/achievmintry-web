@@ -25,7 +25,7 @@ const initialState = {
       cacheProvider: true,
     }),
   },
-  gen0s: [],
+  kudos: null,
 };
 
 const reducer = (state, action) => {
@@ -48,8 +48,8 @@ const reducer = (state, action) => {
     case 'setUserWallet': {
       return { ...state, userWallet: action.payload };
     }
-    case 'setGen0s': {
-      return { ...state, gen0s: action.payload };
+    case 'setKudos': {
+      return { ...state, kudos: action.payload };
     }
     default: {
       return initialState;
@@ -88,8 +88,8 @@ function DappContextProvider(props) {
     dispatch({ type: 'setUserWallet', payload: wallet });
   }, []);
 
-  const updateGen0s = useCallback((_gen0) => {
-    dispatch({ type: 'setGen0', payload: _gen0 });
+  const updateKudos = useCallback((_kudos) => {
+    dispatch({ type: 'setKudos', payload: _kudos });
   }, []);
 
   return (
@@ -105,7 +105,7 @@ function DappContextProvider(props) {
             updateNetwork,
             updateTxProcessor,
             updateUserWallet,
-            updateGen0s,
+            updateKudos,
           },
         ],
         [
@@ -117,7 +117,7 @@ function DappContextProvider(props) {
           updateNetwork,
           updateTxProcessor,
           updateUserWallet,
-          updateGen0s,
+          updateKudos,
         ],
       )}
     >
@@ -161,9 +161,9 @@ export function useLoading() {
   return [state.loading, updateLoading];
 }
 
-export function useGen0s() {
-  const [state, { updateGen0s }] = useDappContext();
-  return [state.gen0s, updateGen0s];
+export function useKudos() {
+  const [state, { updateKudos }] = useDappContext();
+  return [state.kudos, updateKudos];
 }
 
 

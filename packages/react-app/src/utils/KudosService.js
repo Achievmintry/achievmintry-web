@@ -5,12 +5,12 @@ export class KudosService {
   web3;
   contract;
 
-  constructor(tokenAddr, web3=null) {
-    if(!web3){
-        console.log('new web3');
-        web3 = new Web3(
-            new Web3.providers.HttpProvider(process.env.REACT_APP_INFURA_URI),
-          );
+  constructor(tokenAddr, web3 = null) {
+    if (!web3) {
+      console.log("new web3");
+      web3 = new Web3(
+        new Web3.providers.HttpProvider(process.env.REACT_APP_INFURA_URI)
+      );
     }
     this.web3 = web3;
     this.contract = new web3.eth.Contract(abis.kudos, tokenAddr);
@@ -58,31 +58,36 @@ export class KudosService {
       return undefined;
     }
   }
+
+  displayPrice(price) {
+    return this.web3.utils.fromWei(price);
+  }
 }
 
 export class Web3KudosService extends KudosService {
   // admin
-  async mint(to, priceFinney, numClonesAllowed, tokenURI) {
+  async mint(to, from, priceFinney, numClonesAllowed, tokenURI) {
     const txReceipt = await this.contract.methods
       .mint(to, priceFinney, numClonesAllowed, tokenURI)
-      .send({ from: this.accountAddress });
+      .send({ from: from });
 
     return txReceipt.transactionHash;
   }
 
   // admin
-  async burn(owner, tokenId) {
+  async burn(from, owner, tokenId) {
     const txReceipt = await this.contract.methods
       .burn(owner, tokenId)
-      .send({ from: this.accountAddress });
+      .send({ from: from });
     return txReceipt.transactionHash;
   }
 
   // public
-  async clone(to, tokenId, numClonesRequested) {
+  async clone(to, from, tokenId, numClonesRequested, value) {
+    console.log("clone", from);
     const txReceipt = this.contract.methods
       .clone(to, tokenId, numClonesRequested)
-      .send({ from: this.accountAddress });
+      .send({ from: from, value: value });
     return txReceipt.transactionHash;
   }
 }

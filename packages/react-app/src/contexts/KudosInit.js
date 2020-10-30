@@ -3,32 +3,31 @@ import React, { useEffect } from "react";
 import { addresses } from "@project/contracts";
 
 import { USER_TYPE } from "../utils/Auth";
-import { useGen0s, useWeb3Connect } from "./DappContext";
-import { KudosService } from "../utils/KudosService";
+import { useKudos, useWeb3Connect } from "./DappContext";
+import { KudosService, Web3KudosService } from "../utils/KudosService";
 
-const Gen0sInit = () => {
-    const [, updateGen0s] = useGen0s();
+const KudosInit = () => {
+    const [, updateKudos] = useKudos();
     const [web3Connect] = useWeb3Connect();
 
   useEffect(() => {
-    initGen0s();
-  }, []);
+    initKudos();
+  }, [web3Connect]);
 
-  const initGen0s = async () => {
+  const initKudos = async () => {
     let loginType = localStorage.getItem("loginType") || USER_TYPE.READ_ONLY;
     let kudosService;
     if(loginType===USER_TYPE.READ_ONLY){
         kudosService = new KudosService(addresses.kudos );
     } else {
-        kudosService = new KudosService(addresses.kudos, web3Connect.web3 );
+        kudosService = new Web3KudosService(addresses.kudos, web3Connect.web3 );
     }
 
-    const gen0s = kudosService;
     try {
-        updateGen0s(gen0s);
+        updateKudos(kudosService);
     } catch (e) {
       console.error(
-        `Could not get gen0s`, e
+        `Could not get kudos`, e
       );
     }
   };
@@ -37,4 +36,4 @@ const Gen0sInit = () => {
   return <></>;
 };
 
-export default Gen0sInit;
+export default KudosInit;
