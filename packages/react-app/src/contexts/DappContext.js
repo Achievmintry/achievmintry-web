@@ -25,7 +25,7 @@ const initialState = {
       cacheProvider: true,
     }),
   },
-  proposals: [],
+  gen0s: [],
 };
 
 const reducer = (state, action) => {
@@ -47,6 +47,9 @@ const reducer = (state, action) => {
     }
     case 'setUserWallet': {
       return { ...state, userWallet: action.payload };
+    }
+    case 'setGen0s': {
+      return { ...state, gen0s: action.payload };
     }
     default: {
       return initialState;
@@ -85,6 +88,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setUserWallet', payload: wallet });
   }, []);
 
+  const updateGen0s = useCallback((_gen0) => {
+    dispatch({ type: 'setGen0', payload: _gen0 });
+  }, []);
+
   return (
     <DappContext.Provider
       value={useMemo(
@@ -98,6 +105,7 @@ function DappContextProvider(props) {
             updateNetwork,
             updateTxProcessor,
             updateUserWallet,
+            updateGen0s,
           },
         ],
         [
@@ -109,6 +117,7 @@ function DappContextProvider(props) {
           updateNetwork,
           updateTxProcessor,
           updateUserWallet,
+          updateGen0s,
         ],
       )}
     >
@@ -151,6 +160,12 @@ export function useLoading() {
   const [state, { updateLoading }] = useDappContext();
   return [state.loading, updateLoading];
 }
+
+export function useGen0s() {
+  const [state, { updateGen0s }] = useDappContext();
+  return [state.gen0s, updateGen0s];
+}
+
 
 const DappContextConsumer = DappContext.Consumer;
 

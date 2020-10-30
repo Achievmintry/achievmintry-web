@@ -48,3 +48,4 @@ export const createWeb3User = (accountAddress) => {
     username: accountAddress,
   };
 };
+

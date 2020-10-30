@@ -97,9 +97,11 @@ const UserInit = () => {
     const eth = web3.utils.fromWei(balance);
     const tokenService = new TokenService(web3, addresses.cheiv, user.username);
     const cheiv = await tokenService.balanceOfToken(addresses.cheiv);
+    const clones = []
     const wallet = {
       eth,
       cheiv,
+      clones,
     };
     console.log('wallet', wallet);
     updateUserWallet(wallet);
