@@ -1,0 +1,16 @@
+{
+    "name": "Unbechievable",
+    "description": "Initial NFT",
+    "image": "https://gateway.pinata.cloud/ipfs/QmeasRyTT7DA6YK39Ucs94Wf6kaBB3UtBCcsNSzp589VeB",
+    "external_url": "https://chiev.network",
+    "attributes": [
+      {
+        "trait_type": "Base",
+        "value": "Certificate"
+      },
+      {
+        "trait_type": "Level",
+        "value": 1
+      }
+    ]
+  }
