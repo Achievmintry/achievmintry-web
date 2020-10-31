@@ -16,7 +16,7 @@ const initialState = {
   user: null,
   theme: customTheme(),
   network: supportedChains[100],
-  txProcessor: null,
+  txProcessor: {},
   userWallet: null,
   web3Connect: {
     w3c: new Web3Modal({

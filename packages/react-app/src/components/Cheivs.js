@@ -27,7 +27,6 @@ import { useKudos, useTxProcessor, useUser } from "../contexts/DappContext";
 const Cheivs = ({ featured }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [txHash, setTxHash] = useState(false);
   const [kudos] = useKudos();
   const [user] = useUser();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
@@ -35,19 +34,26 @@ const Cheivs = ({ featured }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
-  const txCallBack = (txHash, name) => {
-    if (txProcessor) {
-      txProcessor.setTx(txHash, user.username, name, true, false);
+  const txCallBack = (txHash, details) => {
+    if (txProcessor && txHash) {
+      console.log('txProce', txProcessor);
+      txProcessor.setTx(txHash, user.username, details, true, false);
       txProcessor.forceUpdate = true;
+      console.log('txProce2', txProcessor);
+
       updateTxProcessor(txProcessor);
+      onClose();
+    } 
+    if(!txHash) {
+      console.log('error: ', details);
+      setLoading(false);
     }
-    setTxHash(txHash);
   };
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await kudos.clone(
+      kudos.clone(
         data.address,
         user.username,
         selected.id,
@@ -55,7 +61,6 @@ const Cheivs = ({ featured }) => {
         selected.price,
         txCallBack
       );
-      // instead of close we should have a confetti moment
     } catch (err) {
       setLoading(false);
       console.log("error: ", err);
@@ -114,7 +119,6 @@ const Cheivs = ({ featured }) => {
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          setTxHash(null);
           setLoading(false);
           onClose();
         }}
@@ -126,34 +130,34 @@ const Cheivs = ({ featured }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {txHash && <Text>{txHash}</Text>}
-            {loading && !txHash && <Text>Check MetaMask</Text>}
-            {!loading && (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl>
-                  <FormLabel htmlFor="address">Eth address</FormLabel>
-                  <Input
-                    ref={register}
-                    name="address"
-                    type="text"
-                    id="address"
-                    aria-describedby="address-helper-text"
-                  />
-                  <FormHelperText id="email-helper-text">
-                    Use eth address (or ENS eventually)
-                  </FormHelperText>
-                </FormControl>
-                <Button
-                  isLoading={false}
-                  loadingText="Gifting"
-                  bg="transparent"
-                  border="1px"
-                  type="submit"
-                >
-                  Mint and Send
-                </Button>
-              </form>
-            )}
+            {loading && <Text>Check MetaMask</Text>}
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl>
+                <FormLabel htmlFor="address">Eth address</FormLabel>
+                <Input
+                  ref={register}
+                  name="address"
+                  type="text"
+                  id="address"
+                  aria-describedby="address-helper-text"
+                  readOnly={loading}
+                />
+                <FormHelperText id="email-helper-text">
+                  Use eth address (or ENS eventually)
+                </FormHelperText>
+              </FormControl>
+              <Button
+                isLoading={loading}
+                loadingText="Gifting"
+                bg="transparent"
+                border="1px"
+                type="submit"
+                disabled={loading}
+              >
+                Mint and Send
+              </Button>
+            </form>
           </ModalBody>
         </ModalContent>
       </Modal>
