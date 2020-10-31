@@ -7,7 +7,7 @@
     "attributes": [
       {
         "trait_type": "Base",
-        "value": "Certificate"
+        "value": "Chiev"
       },
       {
         "trait_type": "Level",
@@ -15,3 +15,7 @@
       }
     ]
   }
+
+
+  CONCATENATE(
+  "{ 'name':'", Name, "', 'status':'"," '", Status,"'}")

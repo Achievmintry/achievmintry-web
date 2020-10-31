@@ -35,7 +35,7 @@ const Header = (props) => {
     >
       <Flex align="center" mr={5}>
         <Heading as="h1" size="lg">
-          Achieveminrty
+        <Link to="/home">Achieveminrty</Link>
         </Heading>
       </Flex>
 
@@ -57,12 +57,16 @@ const Header = (props) => {
         alignItems="center"
         flexGrow={1}
       >
-        <MenuItems>Docs</MenuItems>
-        <MenuItems>SnapShot</MenuItems>
-        <MenuItems>Forum</MenuItems>
         <MenuItems>
-          <Link to="/account">Info</Link>
+          <Link to="/account">My Awards</Link>
         </MenuItems>
+        <MenuItems>
+          <Link to="/submissions">Submit Art</Link>
+        </MenuItems>
+        <MenuItems>
+          <Link to="/snapshot">SnapShot</Link>
+        </MenuItems>
+        <MenuItems><a href="https://chive.network" >About</a></MenuItems>
       </Box>
 
       <Box
