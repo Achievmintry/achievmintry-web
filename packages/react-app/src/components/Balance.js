@@ -16,7 +16,7 @@ const Balance = () => {
     >
       <Text>xDai: {userWallet?.eth}</Text>
       <Text>
-        $CHEIV: {userWallet?.cheiv}
+        $CHIEV: {userWallet?.chiev}
       </Text>
     </Flex>
   ) : null;

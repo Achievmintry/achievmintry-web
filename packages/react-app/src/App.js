@@ -1,13 +1,15 @@
 import React from "react";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
-import { Header, Balance, Cheivs } from "./components";
+import { Header } from "./components";
 import UserInit from "./contexts/UserInit";
 import TxProcessorInit from "./contexts/TxProcessorInit";
 import KudosInit from "./contexts/KudosInit";
+import Routes from "./Routes";
 // import supportedChains from "./utils/Chains";
 
 const breakpoints = ["360px", "768px", "1024px", "1440px"];
@@ -54,10 +56,11 @@ function App() {
     <ApolloProvider client={client}>
       <ThemeProvider theme={customTheme}>
         <CSSReset />
-        <Init />
-        <Header />
-        <Balance />
-        <Cheivs featured={true} />
+        <Router>
+          <Init />
+          <Header />
+          <Routes />
+        </Router>
       </ThemeProvider>
     </ApolloProvider>
   );

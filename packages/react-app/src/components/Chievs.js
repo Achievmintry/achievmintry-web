@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import metaList from "../data/metaList.json";
 
 import {
@@ -24,7 +26,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useKudos, useTxProcessor, useUser } from "../contexts/DappContext";
 
-const Cheivs = ({ featured }) => {
+const Chievs = ({ featured, account }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [kudos] = useKudos();
@@ -34,18 +36,22 @@ const Cheivs = ({ featured }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
+  const filterForAccount = () => {
+    // stub
+  }
+
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
-      console.log('txProce', txProcessor);
+      console.log("txProce", txProcessor);
       txProcessor.setTx(txHash, user.username, details, true, false);
       txProcessor.forceUpdate = true;
-      console.log('txProce2', txProcessor);
+      console.log("txProce2", txProcessor);
 
       updateTxProcessor(txProcessor);
       onClose();
-    } 
-    if(!txHash) {
-      console.log('error: ', details);
+    }
+    if (!txHash) {
+      console.log("error: ", details);
       setLoading(false);
     }
   };
@@ -75,47 +81,58 @@ const Cheivs = ({ featured }) => {
   };
 
   const renderList = () => {
-    return metaList
-      .filter((item) => item.featured === featured)
-      .map((item, i) => {
-        return (
-          <Box
-            w="100%"
-            h="10"
-            bg="brandPink.900"
-            rounded="lg"
-            key={item.id}
-            index={i}
-          >
-            <Image
-              src={item.meta.image}
-              alt={item.meta.name}
-              fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-            />
-            {user && user.username ? (
-              <Button
-                bg="transparent"
-                border="1px"
-                onClick={() => {
-                  setSelected(item);
-                  onOpen();
-                }}
-              >
-                Give
-              </Button>
-            ) : (
-              <Text>sign in to give</Text>
-            )}
-          </Box>
-        );
-      });
+    let filteredList = [];
+    if (featured) {
+      filteredList = metaList.filter((item) => item.featured);
+    } else {
+      filteredList = metaList;
+    }
+    // TODO: filter for account
+    return filteredList.map((item, i) => {
+      return (
+        <Box
+          w="80%"
+          h="10"
+          bg="brandPink.900"
+          rounded="lg"
+          key={item.id}
+          index={i}
+        >
+          <Image
+            src={item.meta.image}
+            alt={item.meta.name}
+            fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+          />
+          {user && user.username ? (
+            <Button
+              bg="transparent"
+              border="1px"
+              onClick={() => {
+                setSelected(item);
+                onOpen();
+              }}
+            >
+              Give
+            </Button>
+          ) : (
+            <Text>sign in to give</Text>
+          )}
+        </Box>
+      );
+    });
   };
 
   return (
     <div>
       <Grid templateColumns="repeat(5, 1fr)" gap={6}>
         {renderList()}
+        {featured && (
+          <Box w="80%" h="10" bg="brandPink.900" rounded="lg">
+            <Link to="/chievs">More</Link>
+          </Box>
+        )}
       </Grid>
+
       <Modal
         isOpen={isOpen}
         onClose={() => {
@@ -165,4 +182,4 @@ const Cheivs = ({ featured }) => {
   );
 };
 
-export default Cheivs;
+export default Chievs;

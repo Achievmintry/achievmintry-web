@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { Box, Heading, Flex, Text } from "@chakra-ui/core";
 import { useUser, useNetwork, useLoading } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
@@ -17,9 +19,8 @@ const Header = (props) => {
   const [network] = useNetwork();
   const [loading] = useLoading();
 
-  console.log('network', network);
-  console.log('loading', loading);
-
+  console.log("network", network);
+  console.log("loading", loading);
 
   return (
     <Flex
@@ -34,7 +35,7 @@ const Header = (props) => {
     >
       <Flex align="center" mr={5}>
         <Heading as="h1" size="lg">
-          Acheiveminrty
+          Achieveminrty
         </Heading>
       </Flex>
 
@@ -59,6 +60,9 @@ const Header = (props) => {
         <MenuItems>Docs</MenuItems>
         <MenuItems>SnapShot</MenuItems>
         <MenuItems>Forum</MenuItems>
+        <MenuItems>
+          <Link to="/account">Info</Link>
+        </MenuItems>
       </Box>
 
       <Box
