@@ -22,7 +22,8 @@ export class KudosService {
       .on('transactionHash', (txHash) => {
         console.log('txHash', txHash);
         callback(txHash, name);
-      });
+      })
+      .on('error', (error) => callback(null, error));
   }
 
   async tokenOfOwnerByIndex(owner, index) {

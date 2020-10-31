@@ -93,9 +93,3 @@ export class TxProcessorService {
     }
   }
   
-  export class ReadOnlyTxProcessorService extends TxProcessorService {
-    getTxList() {
-      return [];
-    }
-  }
-  
