@@ -95,12 +95,12 @@ const UserInit = () => {
     const web3 = web3Connect.web3;
     const balance = await web3.eth.getBalance(user.username);
     const eth = web3.utils.fromWei(balance);
-    const tokenService = new TokenService(web3, addresses.cheiv, user.username);
-    const cheiv = await tokenService.balanceOfToken(addresses.cheiv);
+    const tokenService = new TokenService(web3, addresses.chiev, user.username);
+    const chiev = await tokenService.balanceOfToken(addresses.chiev);
     const clones = []
     const wallet = {
       eth,
-      cheiv,
+      chiev,
       clones,
     };
     console.log('wallet', wallet);
