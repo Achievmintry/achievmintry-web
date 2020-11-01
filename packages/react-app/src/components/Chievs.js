@@ -94,6 +94,7 @@ const Chievs = ({ featured, account }) => {
     return kudos.displayPrice(price);
   };
 
+  // this flickers
   const KudoImage = ({ item }) => {
     return (
       item && (
@@ -175,11 +176,14 @@ const Chievs = ({ featured, account }) => {
             }}
           />
           <Box p="6">
-            <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
-            <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
+            <Heading as="h3" size="lg">{item["NFT Name (from Artist Submissions)"][0]}</Heading>
             <Text>
               {" "}
-              quntity:{" "}
+              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
+            </Text>
+            <Text>
+              {" "}
+              Quantity:{" "}
               {item["Max Quantity (from Artist Submissions)"][0] || "?"}
             </Text>
           </Box>
@@ -203,7 +207,10 @@ const Chievs = ({ featured, account }) => {
             borderColor="brandPink.900"
             p="6"
           >
-            <Text>More</Text>
+            <Box>
+            <Heading as="h3" size="lg">More to Come</Heading>
+            <Text>Click here to see the full list</Text>
+            </Box>
           </Box>
         )}
       </Grid>
