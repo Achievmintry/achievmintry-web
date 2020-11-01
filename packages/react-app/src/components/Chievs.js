@@ -61,14 +61,22 @@ const Chievs = ({ featured, account }) => {
   };
 
   const onSubmit = async (data) => {
+    console.log(
+      "clone",
+      data.address,
+      user.username,
+      selected["Gen0 Id"],
+      1,
+      selected["Price In Wei"]
+    );
     setLoading(true);
     try {
       kudos.clone(
         data.address,
         user.username,
-        selected.id,
+        selected["Gen0 Id"],
         1,
-        selected.price,
+        selected["Price In Wei"],
         txCallBack
       );
     } catch (err) {
@@ -113,7 +121,10 @@ const Chievs = ({ featured, account }) => {
           />
           <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
           <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
-          <Text> quntity: {item["Max Quantity (from Artist Submissions)"][0] || "?"}</Text>
+          <Text>
+            {" "}
+            quntity: {item["Max Quantity (from Artist Submissions)"][0] || "?"}
+          </Text>
 
           {user && user.username ? (
             <Button
