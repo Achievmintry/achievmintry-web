@@ -114,10 +114,27 @@ const Chievs = ({ featured, account }) => {
         >
           <Image
             src={
-              item["Image (from Artist Submissions)"][0].thumbnails.large.url
+              item["Display Thumb"]
+                ? item["Display Thumb"][0].thumbnails.large.url
+                : item["Image (from Artist Submissions)"][0].thumbnails.large
+                    .url
             }
             alt={item["NFT Name (from Artist Submissions)"][0]}
             fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+            onMouseOver={(e) => {
+              if (!item["Display Thumb"]) {
+                return;
+              }
+              e.currentTarget.src =
+                item["Image (from Artist Submissions)"][0].thumbnails.large.url;
+            }}
+            onMouseOut={(e) => {
+              if (!item["Display Thumb"]) {
+                return;
+              }
+              e.currentTarget.src =
+                item["Display Thumb"][0].thumbnails.large.url;
+            }}
           />
           <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
           <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
