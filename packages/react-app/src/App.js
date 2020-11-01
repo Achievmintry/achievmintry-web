@@ -10,6 +10,7 @@ import UserInit from "./contexts/UserInit";
 import TxProcessorInit from "./contexts/TxProcessorInit";
 import KudosInit from "./contexts/KudosInit";
 import Routes from "./Routes";
+import NFTApiInit from "./contexts/NFTApiInit";
 // import supportedChains from "./utils/Chains";
 
 const breakpoints = ["360px", "768px", "1024px", "1440px"];
@@ -48,6 +49,7 @@ function App() {
         <UserInit />
         <TxProcessorInit />
         <KudosInit />
+        <NFTApiInit />
       </>
     );
   }

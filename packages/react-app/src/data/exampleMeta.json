@@ -15,7 +15,3 @@
       }
     ]
   }
-
-
-  CONCATENATE(
-  "{ 'name':'", Name, "', 'status':'"," '", Status,"'}")

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import metaList from "../data/metaList.json";
+//import metaList from "../data/metaList.json";
 
 import {
   Grid,
@@ -24,13 +24,19 @@ import {
   Input,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
-import { useKudos, useTxProcessor, useUser } from "../contexts/DappContext";
+import {
+  useKudos,
+  useTxProcessor,
+  useUser,
+  useNFTApi,
+} from "../contexts/DappContext";
 
 const Chievs = ({ featured, account }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [kudos] = useKudos();
   const [user] = useUser();
+  const [nfts] = useNFTApi();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,14 +44,12 @@ const Chievs = ({ featured, account }) => {
 
   const filterForAccount = () => {
     // stub
-  }
+  };
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
-      console.log("txProce", txProcessor);
       txProcessor.setTx(txHash, user.username, details, true, false);
       txProcessor.forceUpdate = true;
-      console.log("txProce2", txProcessor);
 
       updateTxProcessor(txProcessor);
       onClose();
@@ -82,8 +86,10 @@ const Chievs = ({ featured, account }) => {
 
   const renderList = () => {
     let filteredList = [];
+    // TODO: data from airtable is gnarly
+    const metaList = nfts.map((item) => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item.featured);
+      filteredList = metaList.filter((item) => item["Featured"]);
     } else {
       filteredList = metaList;
     }
@@ -99,10 +105,16 @@ const Chievs = ({ featured, account }) => {
           index={i}
         >
           <Image
-            src={item.meta.image}
-            alt={item.meta.name}
+            src={
+              item["Image (from Artist Submissions)"][0].thumbnails.large.url
+            }
+            alt={item["NFT Name (from Artist Submissions)"][0]}
             fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
           />
+          <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
+          <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
+          <Text> quntity: {item["Max Quantity (from Artist Submissions)"][0] || "?"}</Text>
+
           {user && user.username ? (
             <Button
               bg="transparent"
@@ -143,7 +155,14 @@ const Chievs = ({ featured, account }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {selected.name} price: {displayPrice(selected.price || "0")} xDai
+            {selected["NFT Name (from Artist Submissions)"] ? (
+              <Text>
+                {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
+              </Text>
+            ) : (
+              <Text>Nothing Selected</Text>
+            )}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

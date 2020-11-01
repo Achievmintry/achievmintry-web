@@ -26,6 +26,7 @@ const initialState = {
     }),
   },
   kudos: null,
+  nftApi: [],
 };
 
 const reducer = (state, action) => {
@@ -50,6 +51,9 @@ const reducer = (state, action) => {
     }
     case 'setKudos': {
       return { ...state, kudos: action.payload };
+    }
+    case 'setNFTApi': {
+      return { ...state, nftApi: action.payload };
     }
     default: {
       return initialState;
@@ -92,6 +96,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setKudos', payload: _kudos });
   }, []);
 
+  const updateNFTApi = useCallback((_nfts) => {
+    dispatch({ type: 'setNFTApi', payload: _nfts });
+  }, []);
+
   return (
     <DappContext.Provider
       value={useMemo(
@@ -106,6 +114,7 @@ function DappContextProvider(props) {
             updateTxProcessor,
             updateUserWallet,
             updateKudos,
+            updateNFTApi,
           },
         ],
         [
@@ -118,6 +127,7 @@ function DappContextProvider(props) {
           updateTxProcessor,
           updateUserWallet,
           updateKudos,
+          updateNFTApi,
         ],
       )}
     >
@@ -164,6 +174,11 @@ export function useLoading() {
 export function useKudos() {
   const [state, { updateKudos }] = useDappContext();
   return [state.kudos, updateKudos];
+}
+
+export function useNFTApi() {
+  const [state, { updateNFTApi }] = useDappContext();
+  return [state.nftApi, updateNFTApi];
 }
 
 

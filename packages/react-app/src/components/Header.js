@@ -19,8 +19,7 @@ const Header = (props) => {
   const [network] = useNetwork();
   const [loading] = useLoading();
 
-  console.log("network", network);
-  console.log("loading", loading);
+  console.log("heaher render loading", loading);
 
   return (
     <Flex
@@ -35,7 +34,7 @@ const Header = (props) => {
     >
       <Flex align="center" mr={5}>
         <Heading as="h1" size="lg">
-        <Link to="/home">Achieveminrty</Link>
+          <Link to="/home">Achieveminrty</Link>
         </Heading>
       </Flex>
 
@@ -66,7 +65,9 @@ const Header = (props) => {
         <MenuItems>
           <Link to="/snapshot">SnapShot</Link>
         </MenuItems>
-        <MenuItems><a href="https://chive.network" >About</a></MenuItems>
+        <MenuItems>
+          <a href="https://chive.network">About</a>
+        </MenuItems>
       </Box>
 
       <Box

@@ -30,7 +30,7 @@ const UserInit = () => {
   }, [user]);
 
   const initCurrentUser = async () => {
-    console.log("************initCurrentUser();");
+    // console.log("************initCurrentUser();");
     let loginType = localStorage.getItem("loginType") || USER_TYPE.READ_ONLY;
     if (user && user.type === loginType) {
       return;
@@ -90,20 +90,20 @@ const UserInit = () => {
 
   const initUserWallet = async () => {
     // TODO: get wallet/token info for signed in user
-    console.log("^^^^^^^^^^^^^^initUserWallet");
+    // console.log("^^^^^^^^^^^^^^initUserWallet");
 
     const web3 = web3Connect.web3;
     const balance = await web3.eth.getBalance(user.username);
     const eth = web3.utils.fromWei(balance);
     const tokenService = new TokenService(web3, addresses.chiev, user.username);
     const chiev = await tokenService.balanceOfToken(addresses.chiev);
-    const clones = []
+    const clones = [];
     const wallet = {
       eth,
       chiev,
       clones,
     };
-    console.log('wallet', wallet);
+    // console.log("wallet", wallet);
     updateUserWallet(wallet);
   };
 

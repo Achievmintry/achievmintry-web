@@ -54,7 +54,6 @@ const TxProcessorInit = () => {
 
   useEffect(() => {
     if (user && web3Connect.web3) {
-      console.log("init tx proc");
       initTxProcessor();
     }
   }, [user, web3Connect]);
@@ -64,7 +63,6 @@ const TxProcessorInit = () => {
     txProcessorService.update(user.username);
     txProcessorService.forceUpdate =
       txProcessorService.getTxPendingList(user.username).length > 0;
-    console.log("txProcessorService", txProcessorService);
     updateTxProcessor(txProcessorService);
 
     web3Connect.web3.eth.subscribe("newBlockHeaders", async (error, result) => {
@@ -103,7 +101,7 @@ const TxProcessorInit = () => {
                 linkText={`${truncateAddr(latestTx.tx)} view`}
               />
             )}
-            {!loading && (<Text>🎉 Success 🎉</Text>)}
+            {!loading && <Text>🎉 Success 🎉</Text>}
           </ModalBody>
         </ModalContent>
       </Modal>
