@@ -1,0 +1,25 @@
+import axios from 'axios';
+import supportedChains from './Chains';
+
+const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
+
+export const BaseUrl = () => {
+  return chainData.api_url;
+};
+
+export const getNFTs = async () => {
+  const baseURL = BaseUrl();
+  const endpoint = "NFTs?maxRecords=99&view=Grid%20view"
+
+  const instance = axios.create({
+    baseURL,
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${chainData.read_only_key}` },
+  });
+  try {
+    return await instance.get(`/${endpoint}`);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+

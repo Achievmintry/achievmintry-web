@@ -70,6 +70,7 @@ export class KudosService {
   }
 
   displayPrice(price) {
+    price = price.toString();
     return this.web3.utils.fromWei(price);
   }
 }

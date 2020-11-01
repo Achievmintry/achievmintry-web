@@ -36,7 +36,7 @@ const Web3SignIn = () => {
 
             // window.location.reload();
           } catch (err) {
-            console.log('web3Connect error', err);
+            console.log('Error web3Connect ', err);
 
             toast({
               title: 'Wrong Network',

@@ -37,7 +37,9 @@ export const supportedChains = {
       chain_id: 100,
       network_id: 1,
       rpc_url: 'https://dai.poa.network',
-      grpah_url: ""
+      grpah_url: "",
+      api_url: "https://api.airtable.com/v0/appCMXlJb1YXufI5h",
+      read_only_key: "keyNBF8pFE8fxR3I3"
       },
   };
   
