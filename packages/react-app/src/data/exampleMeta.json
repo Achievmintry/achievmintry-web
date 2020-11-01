@@ -1,8 +1,7 @@
-
-{
-    "name": "Chiev On",
-    "description": "Initial NFT",
-    "image": "https://gateway.pinata.cloud/ipfs/QmaWfJcpjamVkQSDU7tXmgucPvwZPsTZ5e5LjSAYnrMnNc",
+  {
+    "name": "1up",
+    "description": "1up glitch",
+    "image": "https://gateway.pinata.cloud/ipfs/QmZ48u11yZy9jerrtW8fvhU3RjNpMX4iUTsLsaVEFFrg9A",
     "external_url": "https://chiev.network",
     "attributes": [
       {
