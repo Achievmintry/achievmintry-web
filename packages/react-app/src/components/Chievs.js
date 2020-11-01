@@ -22,6 +22,7 @@ import {
   FormHelperText,
   useDisclosure,
   Input,
+  Heading,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -30,6 +31,7 @@ import {
   useUser,
   useNFTApi,
 } from "../contexts/DappContext";
+import Web3SignIn from "./Web3SignIn";
 
 const Chievs = ({ featured, account }) => {
   const [selected, setSelected] = useState(1);
@@ -92,6 +94,35 @@ const Chievs = ({ featured, account }) => {
     return kudos.displayPrice(price);
   };
 
+  const KudoImage = ({ item }) => {
+    return (
+      item && (
+        <Image
+          src={
+            item["Display Thumb"]
+              ? item["Display Thumb"][0].thumbnails.large.url
+              : item["Image (from Artist Submissions)"][0].thumbnails.large.url
+          }
+          alt={item["NFT Name (from Artist Submissions)"][0]}
+          fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+          onMouseOver={(e) => {
+            if (!item["Display Thumb"]) {
+              return;
+            }
+            e.currentTarget.src =
+              item["Image (from Artist Submissions)"][0].thumbnails.large.url;
+          }}
+          onMouseOut={(e) => {
+            if (!item["Display Thumb"]) {
+              return;
+            }
+            e.currentTarget.src = item["Display Thumb"][0].thumbnails.large.url;
+          }}
+        />
+      )
+    );
+  };
+
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
@@ -105,12 +136,19 @@ const Chievs = ({ featured, account }) => {
     return filteredList.map((item, i) => {
       return (
         <Box
-          w="80%"
-          h="10"
-          bg="brandPink.900"
+          maxW="18rem"
+          borderWidth="1px"
           rounded="lg"
+          overflow="hidden"
+          borderColor="brandPink.900"
           key={item.id}
           index={i}
+          as={Link}
+          to={"#"}
+          onClick={() => {
+            setSelected(item);
+            onOpen();
+          }}
         >
           <Image
             src={
@@ -136,27 +174,15 @@ const Chievs = ({ featured, account }) => {
                 item["Display Thumb"][0].thumbnails.large.url;
             }}
           />
-          <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
-          <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
-          <Text>
-            {" "}
-            quntity: {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-          </Text>
-
-          {user && user.username ? (
-            <Button
-              bg="transparent"
-              border="1px"
-              onClick={() => {
-                setSelected(item);
-                onOpen();
-              }}
-            >
-              Give
-            </Button>
-          ) : (
-            <Text>sign in to give</Text>
-          )}
+          <Box p="6">
+            <Text>{item["NFT Name (from Artist Submissions)"][0]}</Text>
+            <Text> price: {displayPrice(item["Price In Wei"] || "0")}</Text>
+            <Text>
+              {" "}
+              quntity:{" "}
+              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
+            </Text>
+          </Box>
         </Box>
       );
     });
@@ -164,14 +190,32 @@ const Chievs = ({ featured, account }) => {
 
   return (
     <div>
-      <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+      <Grid templateColumns="repeat(4, 1fr)" gap={6} p="6">
         {renderList()}
         {featured && (
-          <Box w="80%" h="10" bg="brandPink.900" rounded="lg">
-            <Link to="/chievs">More</Link>
+          <Box
+            as={Link}
+            to="/chievs"
+            maxW="18rem"
+            borderWidth="1px"
+            rounded="lg"
+            overflow="hidden"
+            borderColor="brandPink.900"
+            p="6"
+          >
+            <Text>More</Text>
           </Box>
         )}
       </Grid>
+      <Box p="6">
+        <Heading>NFT Artists</Heading>
+        <Text>
+          Submit your work To own a Gen0 NFT and get a % of all sales.
+        </Text>
+        <Button bg="transparent" border="1px" as={Link} to="/submissions">
+          Submissions
+        </Button>
+      </Box>
 
       <Modal
         isOpen={isOpen}
@@ -194,6 +238,7 @@ const Chievs = ({ featured, account }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <KudoImage item={selected} />
             {loading && <Text>Check MetaMask</Text>}
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -211,16 +256,20 @@ const Chievs = ({ featured, account }) => {
                   Use eth address (or ENS eventually)
                 </FormHelperText>
               </FormControl>
-              <Button
-                isLoading={loading}
-                loadingText="Gifting"
-                bg="transparent"
-                border="1px"
-                type="submit"
-                disabled={loading}
-              >
-                Mint and Send
-              </Button>
+              {user?.username ? (
+                <Button
+                  isLoading={loading}
+                  loadingText="Gifting"
+                  bg="transparent"
+                  border="1px"
+                  type="submit"
+                  disabled={loading}
+                >
+                  Mint and Send
+                </Button>
+              ) : (
+                <Web3SignIn />
+              )}
             </form>
           </ModalBody>
         </ModalContent>
