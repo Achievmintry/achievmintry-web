@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -15,9 +15,16 @@ const Account = () => {
   const { register, handleSubmit } = useForm();
   const [user] = useUser();
   const [loading, setLoading] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState();
 
+  useEffect(()=>{
+    if(!user?.username){
+      return
+    }
+    setCurrentAccount(user.username);
+  },[user])
   const onSubmit = async (data) => {
-    console.log(data);
+    setCurrentAccount(data.address);
   };
 
   return (
@@ -48,7 +55,7 @@ const Account = () => {
           </Button>
         </form>
       </Box>
-      {user?.username && <Chievs account={user.username} />}
+      {currentAccount && <Chievs account={currentAccount} />}
     </>
   );
 };

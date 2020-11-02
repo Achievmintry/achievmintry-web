@@ -22,7 +22,7 @@ const KudosInit = () => {
     } else {
         kudosService = new Web3KudosService(addresses.kudos, web3Connect.web3 );
     }
-
+    kudosService.tokenData = await kudosService.getLogs();
     try {
         updateKudos(kudosService);
     } catch (e) {

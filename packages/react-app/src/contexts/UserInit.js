@@ -97,11 +97,11 @@ const UserInit = () => {
     const eth = web3.utils.fromWei(balance);
     const tokenService = new TokenService(web3, addresses.chiev, user.username);
     const chiev = await tokenService.balanceOfToken(addresses.chiev);
-    const clones = [];
+    const nfts = [];
     const wallet = {
       eth,
       chiev,
-      clones,
+      nfts,
     };
     // console.log("wallet", wallet);
     updateUserWallet(wallet);
