@@ -163,7 +163,9 @@ const Chievs = ({ featured, account }) => {
         (item) => nftCounts[item["Gen0 Id"]] > 0
       );
     }
-    // TODO: filter for account
+    if (!filteredList.length) {
+      return (<Text>Nothing here</Text>)
+    }
     return filteredList.map((item, i) => {
       return (
         <Box
