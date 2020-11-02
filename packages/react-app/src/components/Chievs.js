@@ -94,36 +94,6 @@ const Chievs = ({ featured, account }) => {
     return kudos.displayPrice(price);
   };
 
-  // this flickers
-  const KudoImage = ({ item }) => {
-    return (
-      item && (
-        <Image
-          src={
-            item["Display Thumb"]
-              ? item["Display Thumb"][0].thumbnails.large.url
-              : item["Image (from Artist Submissions)"][0].thumbnails.large.url
-          }
-          alt={item["NFT Name (from Artist Submissions)"][0]}
-          fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-          onMouseOver={(e) => {
-            if (!item["Display Thumb"]) {
-              return;
-            }
-            e.currentTarget.src =
-              item["Image (from Artist Submissions)"][0].thumbnails.large.url;
-          }}
-          onMouseOut={(e) => {
-            if (!item["Display Thumb"]) {
-              return;
-            }
-            e.currentTarget.src = item["Display Thumb"][0].thumbnails.large.url;
-          }}
-        />
-      )
-    );
-  };
-
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
@@ -176,7 +146,9 @@ const Chievs = ({ featured, account }) => {
             }}
           />
           <Box p="6">
-            <Heading as="h3" size="lg">{item["NFT Name (from Artist Submissions)"][0]}</Heading>
+            <Heading as="h3" size="lg">
+              {item["NFT Name (from Artist Submissions)"][0]}
+            </Heading>
             <Text>
               {" "}
               Price: {displayPrice(item["Price In Wei"] || "0")} xDai
@@ -208,8 +180,10 @@ const Chievs = ({ featured, account }) => {
             p="6"
           >
             <Box>
-            <Heading as="h3" size="lg">More to Come</Heading>
-            <Text>Click here to see the full list</Text>
+              <Heading as="h3" size="lg">
+                More to Come
+              </Heading>
+              <Text>Click here to see the full list</Text>
             </Box>
           </Box>
         )}
@@ -245,7 +219,32 @@ const Chievs = ({ featured, account }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <KudoImage item={selected} />
+            {selected["Image (from Artist Submissions)"] && (<Image
+              src={
+                selected["Display Thumb"]
+                  ? selected["Display Thumb"][0].thumbnails.large.url
+                  : selected["Image (from Artist Submissions)"][0].thumbnails
+                      .large.url
+              }
+              alt={selected["NFT Name (from Artist Submissions)"][0]}
+              fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+              onMouseOver={(e) => {
+                if (!selected["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  selected[
+                    "Image (from Artist Submissions)"
+                  ][0].thumbnails.large.url;
+              }}
+              onMouseOut={(e) => {
+                if (!selected["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  selected["Display Thumb"][0].thumbnails.large.url;
+              }}
+            />)}
             {loading && <Text>Check MetaMask</Text>}
 
             <form onSubmit={handleSubmit(onSubmit)}>
