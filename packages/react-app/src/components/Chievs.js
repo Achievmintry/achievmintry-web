@@ -260,14 +260,15 @@ const Chievs = ({ featured, account }) => {
       </Grid>
 
       <Modal
+        
         isOpen={isOpen}
         onClose={() => {
           setLoading(false);
           onClose();
         }}
       >
-        <ModalOverlay />
-        <ModalContent>
+        <ModalOverlay zIndex={0} />
+        <ModalContent zIndex={1}>
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
               <Text>
