@@ -89,7 +89,7 @@ export class KudosService {
       return a.blockNumber - b.blockNumber;
     });
     const origOwners = {};
-    sortedLogs.map((item) => {
+    sortedLogs.forEach((item) => {
       if(item.returnValues._from === "0x0000000000000000000000000000000000000000"){
         origOwners[item.returnValues._to] = origOwners[item.returnValues._to] || []
         origOwners[item.returnValues._to].push(item.returnValues._tokenId)
@@ -97,7 +97,7 @@ export class KudosService {
     })
 
     const currentOwners = {};
-    sortedLogs.map((item) => {
+    sortedLogs.forEach((item) => {
       currentOwners[item.returnValues._to] = currentOwners[item.returnValues._to] || []
       currentOwners[item.returnValues._to].push(item.returnValues._tokenId)
     })
@@ -114,7 +114,7 @@ export class KudosService {
 export class Web3KudosService extends KudosService {
   // admin
   async mint(to, from, priceFinney, numClonesAllowed, tokenURI) {
-    const newTx = await this.contract.methods.mint(
+    await this.contract.methods.mint(
       to,
       priceFinney,
       numClonesAllowed,
@@ -124,7 +124,7 @@ export class Web3KudosService extends KudosService {
 
   // admin
   async burn(from, owner, tokenId) {
-    const newTx = await this.contract.methods.burn(owner, tokenId);
+    await this.contract.methods.burn(owner, tokenId);
   }
 
   // public

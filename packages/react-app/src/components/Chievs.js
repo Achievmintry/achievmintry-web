@@ -28,7 +28,6 @@ import {
   useTxProcessor,
   useUser,
   useNFTApi,
-  useUserWallet,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
@@ -39,7 +38,6 @@ const Chievs = ({ featured, account }) => {
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [kudos] = useKudos();
   const [user] = useUser();
-  const [userWallet] = useUserWallet();
   const [nfts] = useNFTApi();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
 
@@ -53,17 +51,17 @@ const Chievs = ({ featured, account }) => {
 
       // get only nfts where *account* is owner
       // get onchain data
-      if(!kudos.tokenData.currentOwners[acct]){
+      if (!kudos.tokenData.currentOwners[acct]) {
         setNftCounts({});
-        setGen0Ownership({})
-        return
+        setGen0Ownership({});
+        return;
       }
-      kudos.tokenData.currentOwners[acct].map((item) => {
+      kudos.tokenData.currentOwners[acct].forEach((item) => {
         promises.push(kudos.getKudosById(item));
       });
       const nftData = await Promise.all(promises);
       // get details of all *acct* owned tokens and flag if gen0
-      kudos.tokenData.currentOwners[acct].map((item, idx) => {
+      kudos.tokenData.currentOwners[acct].forEach((item, idx) => {
         const kudo = {
           tokenId: item,
           gen0: nftData[idx].clonedFromId === item,
@@ -77,7 +75,7 @@ const Chievs = ({ featured, account }) => {
       nfts.forEach((item, idx) => {
         counts[item.clonedFromId] = 1 + (counts[nfts[idx].clonedFromId] || 0);
       });
-      setNftCounts({...counts});
+      setNftCounts({ ...counts });
       // for each count find index and add count to owned nfts
       // counts could be gen0
       Object.keys(counts).forEach((countItem) => {
@@ -91,17 +89,13 @@ const Chievs = ({ featured, account }) => {
           gen0Ownership[countItem] = false;
         }
       });
-      setGen0Ownership({...gen0Ownership});
-
+      setGen0Ownership({ ...gen0Ownership });
     };
     if (account && kudos?.tokenData) {
       getKudsDetails(account);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kudos?.tokenData, account]);
-
-  const filterForAccount = () => {
-    // stub
-  };
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -164,7 +158,7 @@ const Chievs = ({ featured, account }) => {
       );
     }
     if (!filteredList.length) {
-      return (<Text>Nothing here</Text>)
+      return <Text>Nothing here</Text>;
     }
     return filteredList.map((item, i) => {
       return (
@@ -260,7 +254,6 @@ const Chievs = ({ featured, account }) => {
       </Grid>
 
       <Modal
-        
         isOpen={isOpen}
         onClose={() => {
           setLoading(false);

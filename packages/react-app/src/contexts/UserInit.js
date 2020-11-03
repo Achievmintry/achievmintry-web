@@ -18,6 +18,7 @@ const UserInit = () => {
 
   useEffect(() => {
     initCurrentUser();
+    // eslint-disable-next-line
   }, [web3Connect]);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const UserInit = () => {
     }
 
     initUserWallet();
+    // eslint-disable-next-line
   }, [user]);
 
   const initCurrentUser = async () => {

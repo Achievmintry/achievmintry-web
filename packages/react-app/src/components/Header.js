@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Box, Heading, Flex, Text } from "@chakra-ui/core";
-import { useUser, useNetwork, useLoading } from "../contexts/DappContext";
+import { useUser, useLoading } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import UserAvatar from "./UserAvatar";
 
@@ -16,7 +16,6 @@ const Header = (props) => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();
-  const [network] = useNetwork();
   const [loading] = useLoading();
 
   console.log("heaher render loading", loading);
