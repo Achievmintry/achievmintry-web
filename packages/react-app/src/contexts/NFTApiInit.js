@@ -8,6 +8,7 @@ const NFTApiInit = () => {
 
   useEffect(() => {
     initNFTApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initNFTApi = async () => {

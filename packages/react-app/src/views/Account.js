@@ -16,7 +16,7 @@ import { truncateAddr } from "../utils/Helpers";
 const Account = () => {
   const { register, handleSubmit } = useForm();
   const [user] = useUser();
-  const [loading, setLoading] = useState(false);
+  const [loading, ] = useState(false);
   const [currentAccount, setCurrentAccount] = useState();
 
   useEffect(() => {
