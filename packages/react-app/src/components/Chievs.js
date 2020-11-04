@@ -229,8 +229,11 @@ const Chievs = ({ featured, account }) => {
   };
 
   return (
-    <div>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6} p="6">
+    <>
+    <Box p="6">
+      <Heading>Talisman</Heading>
+      <Text>Give a talisman of your appreciation</Text>
+      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         {renderList()}
         {featured && (
           <Box
@@ -252,6 +255,7 @@ const Chievs = ({ featured, account }) => {
           </Box>
         )}
       </Grid>
+      </Box>
 
       <Modal
         isOpen={isOpen}
@@ -337,7 +341,7 @@ const Chievs = ({ featured, account }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 
