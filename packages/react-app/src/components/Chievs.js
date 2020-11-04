@@ -35,6 +35,7 @@ const Chievs = ({ featured, account }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
+  const [mintCounts, setMintCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [kudos] = useKudos();
   const [user] = useUser();
@@ -43,13 +44,35 @@ const Chievs = ({ featured, account }) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
+
+  useEffect(() => {
+    // get clones in wild
+    if (!kudos) {
+      return;
+    }
+    const getMintCount = async () => {
+      var cloneInWild = {};
+      const cloneInWildCounts = await Promise.all(
+        nfts.map((item, idx) =>
+          kudos.getNumClonesInWild(item.fields["Gen0 Id"])
+        )
+      );
+      cloneInWildCounts.forEach((item, idx) => {
+        cloneInWild[nfts[idx].fields["Gen0 Id"]] = item;
+      });
+      setMintCounts(cloneInWild || {});
+    };
+
+    getMintCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nfts, kudos]);
   useEffect(() => {
     //TODO: eesh, make a subgraph and add more events
     const getKudsDetails = async (acct) => {
       const promises = [];
-      const nfts = [];
+      const nftsOc = [];
 
-      // get only nfts where *account* is owner
+      // get only nftsOc where *account* is owner
       // get onchain data
       if (!kudos.tokenData.currentOwners[acct]) {
         setNftCounts({});
@@ -68,15 +91,15 @@ const Chievs = ({ featured, account }) => {
           clonedFromId: nftData[idx].clonedFromId,
           count: 0,
         };
-        nfts.push(kudo);
+        nftsOc.push(kudo);
       });
       // for each unique owned nft get count
       var counts = {};
-      nfts.forEach((item, idx) => {
-        counts[item.clonedFromId] = 1 + (counts[nfts[idx].clonedFromId] || 0);
+      nftsOc.forEach((item, idx) => {
+        counts[item.clonedFromId] = 1 + (counts[nftsOc[idx].clonedFromId] || 0);
       });
       setNftCounts({ ...counts });
-      // for each count find index and add count to owned nfts
+      // for each count find index and add count to owned nftsOc
       // counts could be gen0
       Object.keys(counts).forEach((countItem) => {
         const index = kudos.tokenData.currentOwners[acct].findIndex((item) => {
@@ -214,6 +237,14 @@ const Chievs = ({ featured, account }) => {
               Quantity:{" "}
               {item["Max Quantity (from Artist Submissions)"][0] || "?"}
             </Text>
+            {+item["Gen0 Id"] && (
+              <Text>
+                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
+                {+mintCounts[item["Gen0 Id"]] ===
+                  item["Max Quantity (from Artist Submissions)"][0] &&
+                  "SOLD OUT"}
+              </Text>
+            )}
           </Box>
           {account && (
             <Box p="6">
@@ -230,31 +261,31 @@ const Chievs = ({ featured, account }) => {
 
   return (
     <>
-    <Box p="6">
-      <Heading>Talisman</Heading>
-      <Text>Give a talisman of your appreciation</Text>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        {renderList()}
-        {featured && (
-          <Box
-            as={Link}
-            to="/chievs"
-            maxW="18rem"
-            borderWidth="1px"
-            rounded="lg"
-            overflow="hidden"
-            borderColor="brandPink.900"
-            p="6"
-          >
-            <Box>
-              <Heading as="h3" size="lg">
-                More to Come
-              </Heading>
-              <Text>Click here to see the full list</Text>
+      <Box p="6">
+        <Heading>Talisman</Heading>
+        <Text>Give a talisman of your appreciation</Text>
+        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+          {renderList()}
+          {featured && (
+            <Box
+              as={Link}
+              to="/chievs"
+              maxW="18rem"
+              borderWidth="1px"
+              rounded="lg"
+              overflow="hidden"
+              borderColor="brandPink.900"
+              p="6"
+            >
+              <Box>
+                <Heading as="h3" size="lg">
+                  More to Come
+                </Heading>
+                <Text>Click here to see the full list</Text>
+              </Box>
             </Box>
-          </Box>
-        )}
-      </Grid>
+          )}
+        </Grid>
       </Box>
 
       <Modal
