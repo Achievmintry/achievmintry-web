@@ -6,12 +6,10 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Text,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
-import { Chievs } from "../components";
-import { truncateAddr } from "../utils/Helpers";
+import { Chievs, EthAddressDisplay } from "../components";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
@@ -41,7 +39,6 @@ const Account = () => {
       setEnsAddr(null);
     }
   };
-
   return (
     <>
       <Box bg="black" w="100%" p={4} color="white">
@@ -56,6 +53,7 @@ const Account = () => {
               aria-describedby="address-helper-text"
               color="black"
               onChange={handleChange}
+              required
             />
             <FormHelperText p="1" id="email-helper-text">
               {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
@@ -73,11 +71,7 @@ const Account = () => {
         </form>
       </Box>
       <Box bg="black" w="100%" p={4} color="white">
-        <Text>
-          {currentAccount
-            ? truncateAddr(currentAccount)
-            : "No account selected"}
-        </Text>
+        <EthAddressDisplay address={currentAccount} />
       </Box>
       {currentAccount && <Chievs account={currentAccount} />}
     </>
