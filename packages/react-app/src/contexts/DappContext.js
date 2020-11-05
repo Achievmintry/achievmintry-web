@@ -17,6 +17,7 @@ const initialState = {
   theme: customTheme(),
   network: supportedChains[100],
   txProcessor: {},
+  ens: {},
   userWallet: null,
   web3Connect: {
     w3c: new Web3Modal({
@@ -51,6 +52,9 @@ const reducer = (state, action) => {
     }
     case 'setKudos': {
       return { ...state, kudos: action.payload };
+    }
+    case 'setEns': {
+      return { ...state, ens: action.payload };
     }
     case 'setNFTApi': {
       return { ...state, nftApi: action.payload };
@@ -96,6 +100,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setKudos', payload: _kudos });
   }, []);
 
+  const updateEns = useCallback((_ens) => {
+    dispatch({ type: 'setEns', payload: _ens });
+  }, []);
+
   const updateNFTApi = useCallback((_nfts) => {
     dispatch({ type: 'setNFTApi', payload: _nfts });
   }, []);
@@ -114,6 +122,7 @@ function DappContextProvider(props) {
             updateTxProcessor,
             updateUserWallet,
             updateKudos,
+            updateEns,
             updateNFTApi,
           },
         ],
@@ -127,6 +136,7 @@ function DappContextProvider(props) {
           updateTxProcessor,
           updateUserWallet,
           updateKudos,
+          updateEns,
           updateNFTApi,
         ],
       )}
@@ -175,6 +185,12 @@ export function useKudos() {
   const [state, { updateKudos }] = useDappContext();
   return [state.kudos, updateKudos];
 }
+
+export function useEns() {
+  const [state, { updateEns }] = useDappContext();
+  return [state.ens, updateEns];
+}
+
 
 export function useNFTApi() {
   const [state, { updateNFTApi }] = useDappContext();

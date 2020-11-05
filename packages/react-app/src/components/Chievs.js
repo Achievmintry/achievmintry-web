@@ -28,6 +28,7 @@ import {
   useTxProcessor,
   useUser,
   useNFTApi,
+  useEns,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
@@ -37,9 +38,11 @@ const Chievs = ({ featured, account }) => {
   const [nftCounts, setNftCounts] = useState({});
   const [mintCounts, setMintCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
+  const [ensAddr, setEnsAddr] = useState("");
   const [kudos] = useKudos();
   const [user] = useUser();
   const [nfts] = useNFTApi();
+  const [ens] = useEns();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -131,6 +134,7 @@ const Chievs = ({ featured, account }) => {
     if (!txHash) {
       console.log("error: ", details);
       setLoading(false);
+      setEnsAddr(null);
     }
   };
 
@@ -144,9 +148,11 @@ const Chievs = ({ featured, account }) => {
       selected["Price In Wei"]
     );
     setLoading(true);
+
+    const addr = ensAddr ? ensAddr : data.address;
     try {
       kudos.clone(
-        data.address,
+        addr,
         user.username,
         selected["Gen0 Id"],
         1,
@@ -155,7 +161,18 @@ const Chievs = ({ featured, account }) => {
       );
     } catch (err) {
       setLoading(false);
+      setEnsAddr(null);
       console.log("error: ", err);
+    }
+  };
+
+  const handleChange = async (e) => {
+    if (e.target.value.indexOf(".eth") >= 0) {
+      const address = await ens.provider.resolveName(e.target.value);
+      console.log(address);
+      setEnsAddr(address);
+    } else {
+      setEnsAddr(null);
     }
   };
 
@@ -292,6 +309,7 @@ const Chievs = ({ featured, account }) => {
         isOpen={isOpen}
         onClose={() => {
           setLoading(false);
+          setEnsAddr(null);
           onClose();
         }}
       >
@@ -349,9 +367,10 @@ const Chievs = ({ featured, account }) => {
                   id="address"
                   aria-describedby="address-helper-text"
                   readOnly={loading}
+                  onChange={handleChange}
                 />
-                <FormHelperText id="email-helper-text">
-                  Use eth address (or ENS eventually)
+                <FormHelperText p="1" id="address-helper-text">
+                  {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                 </FormHelperText>
               </FormControl>
               {user?.username ? (

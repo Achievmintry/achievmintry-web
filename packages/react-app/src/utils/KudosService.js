@@ -10,7 +10,7 @@ export class KudosService {
     if (!web3) {
       console.log("new web3");
       web3 = new Web3(
-        new Web3.providers.HttpProvider(process.env.REACT_APP_INFURA_URI)
+        new Web3.providers.HttpProvider(process.env.REACT_APP_RPC)
       );
     }
     this.web3 = web3;
