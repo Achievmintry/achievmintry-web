@@ -6,17 +6,17 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Text
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
-import { useUser } from "../contexts/DappContext";
-import { Chievs } from "../components";
-import { truncateAddr } from "../utils/Helpers";
+import { useEns, useUser } from "../contexts/DappContext";
+import { Chievs, EthAddressDisplay } from "../components";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
   const [user] = useUser();
-  const [loading, ] = useState(false);
+  const [ens] = useEns();
+  const [loading] = useState(false);
+  const [ensAddr, setEnsAddr] = useState();
   const [currentAccount, setCurrentAccount] = useState();
 
   useEffect(() => {
@@ -25,10 +25,20 @@ const Account = () => {
     }
     setCurrentAccount(user.username);
   }, [user]);
+
   const onSubmit = async (data) => {
-    setCurrentAccount(data.address);
+    const addr = ensAddr ? ensAddr : data.address;
+    setCurrentAccount(addr);
   };
 
+  const handleChange = async (e) => {
+    if (e.target.value.indexOf(".eth") >= 0) {
+      const address = await ens.provider.resolveName(e.target.value);
+      setEnsAddr(address);
+    } else {
+      setEnsAddr(null);
+    }
+  };
   return (
     <>
       <Box bg="black" w="100%" p={4} color="white">
@@ -42,9 +52,11 @@ const Account = () => {
               id="address"
               aria-describedby="address-helper-text"
               color="black"
+              onChange={handleChange}
+              required
             />
-            <FormHelperText id="email-helper-text">
-              Use eth address (or ENS eventually)
+            <FormHelperText p="1" id="email-helper-text">
+              {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
             </FormHelperText>
           </FormControl>
           <Button
@@ -59,11 +71,7 @@ const Account = () => {
         </form>
       </Box>
       <Box bg="black" w="100%" p={4} color="white">
-        <Text>
-          {currentAccount
-            ? truncateAddr(currentAccount)
-            : "No account selected"}
-        </Text>
+        <EthAddressDisplay address={currentAccount} />
       </Box>
       {currentAccount && <Chievs account={currentAccount} />}
     </>
