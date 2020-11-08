@@ -7,9 +7,9 @@ export const BaseUrl = () => {
   return chainData.api_url;
 };
 
-export const getNFTs = async () => {
+export const getAirTable = async (table) => {
   const baseURL = BaseUrl();
-  const endpoint = "NFTs?maxRecords=99&view=Grid%20view"
+  const endpoint = `${table}?maxRecords=99&view=Grid%20view`
 
   const instance = axios.create({
     baseURL,
@@ -21,5 +21,6 @@ export const getNFTs = async () => {
     throw new Error(err);
   }
 };
+
 
 

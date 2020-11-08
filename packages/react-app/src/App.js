@@ -1,17 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { Header } from "./components";
-import UserInit from "./contexts/UserInit";
-import TxProcessorInit from "./contexts/TxProcessorInit";
-import KudosInit from "./contexts/KudosInit";
 import Routes from "./Routes";
-import NFTApiInit from "./contexts/NFTApiInit";
-import EnsInit from "./contexts/EnsInit";
+import {
+  CommunityApiInit,
+  EnsInit,
+  NFTApiInit,
+  KudosInit,
+  TxProcessorInit,
+  UserInit,
+} from "./contexts";
 // import supportedChains from "./utils/Chains";
 
 const breakpoints = ["360px", "768px", "1024px", "1440px"];
@@ -52,6 +55,7 @@ function App() {
         <KudosInit />
         <EnsInit />
         <NFTApiInit />
+        <CommunityApiInit />
       </>
     );
   }

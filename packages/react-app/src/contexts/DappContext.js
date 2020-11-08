@@ -28,6 +28,7 @@ const initialState = {
   },
   kudos: null,
   nftApi: [],
+  communityApi: [],
 };
 
 const reducer = (state, action) => {
@@ -58,6 +59,9 @@ const reducer = (state, action) => {
     }
     case 'setNFTApi': {
       return { ...state, nftApi: action.payload };
+    }
+    case 'setCommunityApi': {
+      return { ...state, communityApi: action.payload };
     }
     default: {
       return initialState;
@@ -108,6 +112,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setNFTApi', payload: _nfts });
   }, []);
 
+  const updateCommunityApi = useCallback((_communities) => {
+    dispatch({ type: 'setCommunityApi', payload: _communities });
+  }, []);
+
   return (
     <DappContext.Provider
       value={useMemo(
@@ -124,6 +132,7 @@ function DappContextProvider(props) {
             updateKudos,
             updateEns,
             updateNFTApi,
+            updateCommunityApi,
           },
         ],
         [
@@ -138,6 +147,7 @@ function DappContextProvider(props) {
           updateKudos,
           updateEns,
           updateNFTApi,
+          updateCommunityApi
         ],
       )}
     >
@@ -191,12 +201,15 @@ export function useEns() {
   return [state.ens, updateEns];
 }
 
-
 export function useNFTApi() {
   const [state, { updateNFTApi }] = useDappContext();
   return [state.nftApi, updateNFTApi];
 }
 
+export function useCommunityApi() {
+  const [state, { updateCommunityApi }] = useDappContext();
+  return [state.communityApi, updateCommunityApi];
+}
 
 const DappContextConsumer = DappContext.Consumer;
 
