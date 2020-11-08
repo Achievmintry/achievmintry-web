@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { getNFTs } from "../utils/Requests";
+import { getAirTable } from "../utils/Requests";
 
 import { useNFTApi } from "./DappContext";
 
@@ -13,7 +13,7 @@ const NFTApiInit = () => {
 
   const initNFTApi = async () => {
     try {
-      const nfts = await getNFTs();
+      const nfts = await getAirTable('NFTs');
       updateNFTApi(nfts.data.records);
     } catch (err) {
       console.log("Error fetching from airtable", err);
