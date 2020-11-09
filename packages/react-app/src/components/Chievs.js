@@ -71,11 +71,12 @@ const Chievs = ({ featured, account }) => {
   }, [nfts, kudos]);
   useEffect(() => {
     //TODO: eesh, make a subgraph and add more events
-    const getKudsDetails = async (acct) => {
+    const getKudsDetails = async (acctAddr) => {
       const promises = [];
       const nftsOc = [];
+      const acct = acctAddr.toLowerCase()
 
-      // get only nftsOc where *account* is owner
+      // get only nfts where *account* is owner
       // get onchain data
       if (!kudos.tokenData.currentOwners[acct]) {
         setNftCounts({});
