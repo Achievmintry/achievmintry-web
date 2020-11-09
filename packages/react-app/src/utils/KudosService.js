@@ -88,18 +88,21 @@ export class KudosService {
     const sortedLogs = logs.sort(function(a, b) {
       return a.blockNumber - b.blockNumber;
     });
+    // console.log('sortedLogs', sortedLogs);
     const origOwners = {};
     sortedLogs.forEach((item) => {
+      const account = item.returnValues._to.toLowerCase();
       if(item.returnValues._from === "0x0000000000000000000000000000000000000000"){
-        origOwners[item.returnValues._to] = origOwners[item.returnValues._to] || []
-        origOwners[item.returnValues._to].push(item.returnValues._tokenId)
+        origOwners[account] = origOwners[account] || []
+        origOwners[account].push(item.returnValues._tokenId)
       }
     })
 
     const currentOwners = {};
     sortedLogs.forEach((item) => {
-      currentOwners[item.returnValues._to] = currentOwners[item.returnValues._to] || []
-      currentOwners[item.returnValues._to].push(item.returnValues._tokenId)
+      const account = item.returnValues._to.toLowerCase();
+      currentOwners[account] = currentOwners[account] || []
+      currentOwners[account].push(item.returnValues._tokenId)
     })
 
     return {

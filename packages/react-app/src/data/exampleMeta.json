@@ -1,7 +1,7 @@
   {
-    "name": "RaidbowBoss",
-    "description": "Master of the ship",
-    "image": "https://gateway.pinata.cloud/ipfs/QmeVhrxRaCauY5b4VarAcxvmesyxasaDMtpDiNBZpy5AL5",
+    "name": "One Up Pink Strip",
+    "description": "Bot gift",
+    "image": "https://gateway.pinata.cloud/ipfs/QmZV9MR7epESWX6nuu2ES43E9ugxB6GsJbBaetv3uueauS",
     "external_url": "https://chiev.network",
     "attributes": [
       {
@@ -11,6 +11,10 @@
       {
         "trait_type": "Level",
         "value": 1
+      },
+      {
+        "trait_type": "Artist",
+        "value": "Chiever"
       }
     ]
   }
