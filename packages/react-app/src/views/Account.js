@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import {
   Box,
   Button,
@@ -18,8 +18,9 @@ import { FaTwitter } from "react-icons/fa";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
-  let { addr } = useParams();
+  const { addr } = useParams();
   const history = useHistory();
+  const location = useLocation();
   const [user] = useUser();
   const [ens] = useEns();
   const [loading] = useState(false);
@@ -115,7 +116,7 @@ const Account = () => {
           {currentAccount && (
             <Link
               colorScheme="twitter"
-              href={`https://twitter.com/intent/tweet?text=We%20Be%20Chievn%20${window.location.href}`}
+              href={`https://twitter.com/intent/tweet?text=We%20Be%20Chievn%20https://chiev.netlify.app${location.pathname}`}
               isExternal={true}
               ml={2}
             >
