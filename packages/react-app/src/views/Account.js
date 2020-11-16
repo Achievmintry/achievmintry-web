@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Input,
+  Link,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
 import { Chievs, EthAddressDisplay } from "../components";
 
+import { FaTwitter } from "react-icons/fa";
+
 const Account = () => {
   const { register, handleSubmit } = useForm();
+  let { addr } = useParams();
+  const history = useHistory();
   const [user] = useUser();
   const [ens] = useEns();
   const [loading] = useState(false);
@@ -21,14 +28,32 @@ const Account = () => {
 
   useEffect(() => {
     if (!user?.username) {
+      if (addr) {
+        history.push(`/account/${addr}`);
+        setCurrentAccount(addr);
+      }
       return;
     }
-    setCurrentAccount(user.username);
-  }, [user]);
+    if (!addr) {
+      history.push(`/account/${user.username}`);
+      setCurrentAccount(user.username);
+    } else {
+      history.push(`/account/${addr}`);
+      setCurrentAccount(addr);
+    }
+    // eslint-disable-next-line
+  }, [user, addr]);
 
   const onSubmit = async (data) => {
-    const addr = ensAddr ? ensAddr : data.address;
-    setCurrentAccount(addr);
+    const _addr = ensAddr ? ensAddr : data.address;
+    history.push(`/account/${_addr}`);
+    setCurrentAccount(_addr);
+  };
+
+  const loadMyAccount = async () => {
+    const _addr = user.username;
+    history.push(`/account/${_addr}`);
+    setCurrentAccount(_addr);
   };
 
   const handleChange = async (e) => {
@@ -59,19 +84,45 @@ const Account = () => {
               {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
             </FormHelperText>
           </FormControl>
-          <Button
-            isLoading={loading}
-            loadingText="Gifting"
-            bg="transparent"
-            border="1px"
-            type="submit"
-          >
-            Look Up Account
-          </Button>
+          <Flex>
+            <Button
+              isLoading={loading}
+              loadingText="Gifting"
+              bg="transparent"
+              border="1px"
+              type="submit"
+            >
+              Look Up Account
+            </Button>
+            {user?.username && currentAccount !== user.username ? (
+              <Button
+                isLoading={loading}
+                loadingText="Gifting"
+                bg="transparent"
+                border="1px"
+                onClick={loadMyAccount}
+              >
+                Load My Account
+              </Button>
+            ) : null}
+          </Flex>
         </form>
       </Box>
       <Box bg="black" w="100%" p={4} color="white">
-        <EthAddressDisplay address={currentAccount} />
+        <Flex>
+          <EthAddressDisplay address={currentAccount} />
+
+          {currentAccount && (
+            <Link
+              colorScheme="twitter"
+              href={`https://twitter.com/intent/tweet?text=We%20Be%20Chievn%20${window.location.href}`}
+              isExternal={true}
+              ml={2}
+            >
+              <FaTwitter />
+            </Link>
+          )}
+        </Flex>
       </Box>
       {currentAccount && <Chievs account={currentAccount} />}
     </>

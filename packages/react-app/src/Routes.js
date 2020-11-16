@@ -8,6 +8,7 @@ const Routes = () => {
         <Switch>
         <Route path="/submissions" component={Submissions} />
         <Route path="/snapshot" component={SnapShot} />
+        <Route path="/account/:addr" component={Account} />
         <Route path="/account" component={Account} />
         <Route path="/chievs" component={AllChievs} />
         <Route path="/communities" component={AllCommunities} />
