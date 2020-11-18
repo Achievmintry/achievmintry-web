@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import {Account, AllChievs, AllCommunities, Home, SnapShot, Submissions }from "./views"
+import {Account, AllChievs, AllCommunities, Community, Home, SnapShot, Submissions }from "./views"
 const Routes = () => {
     return (
       <>
@@ -12,6 +12,7 @@ const Routes = () => {
         <Route path="/account" component={Account} />
         <Route path="/chievs" component={AllChievs} />
         <Route path="/communities" component={AllCommunities} />
+        <Route path="/community/:addr" component={Community} />
         <Route path="/" component={Home} />
         <Route path="*" component={Home} />
       </Switch>

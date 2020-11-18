@@ -32,7 +32,7 @@ import {
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
-const Chievs = ({ featured, account }) => {
+const Chievs = ({ featured, account, dao }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
@@ -74,7 +74,7 @@ const Chievs = ({ featured, account }) => {
     const getKudsDetails = async (acctAddr) => {
       const promises = [];
       const nftsOc = [];
-      const acct = acctAddr.toLowerCase()
+      const acct = acctAddr.toLowerCase();
 
       // get only nfts where *account* is owner
       // get onchain data
@@ -198,6 +198,9 @@ const Chievs = ({ featured, account }) => {
         (item) => nftCounts[item["Gen0 Id"]] > 0
       );
     }
+    if (dao) {
+      filteredList = filteredList.filter((item) => item["Community (from Artist Submissions)"][0] === dao);
+    }
     if (!filteredList.length) {
       return <Text>Nothing here</Text>;
     }
@@ -297,7 +300,7 @@ const Chievs = ({ featured, account }) => {
             >
               <Box>
                 <Heading as="h3" size="lg">
-                  More to Come
+                  Browse More
                 </Heading>
                 <Text>Click here to see the full list</Text>
               </Box>
