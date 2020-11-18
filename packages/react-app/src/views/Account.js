@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams, useLocation } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -8,22 +8,19 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Link,
+  Text,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
-import { Chievs, EthAddressDisplay } from "../components";
-
-import { FaTwitter } from "react-icons/fa";
+import { Chievs, AccountAvatar } from "../components";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
   const { addr } = useParams();
   const history = useHistory();
-  const location = useLocation();
   const [user] = useUser();
   const [ens] = useEns();
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [ensAddr, setEnsAddr] = useState();
   const [currentAccount, setCurrentAccount] = useState();
 
@@ -42,16 +39,19 @@ const Account = () => {
       history.push(`/account/${addr}`);
       setCurrentAccount(addr);
     }
+    setLoading(false);
     // eslint-disable-next-line
   }, [user, addr]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const _addr = ensAddr ? ensAddr : data.address;
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
   };
 
   const loadMyAccount = async () => {
+    setLoading(true);
     const _addr = user.username;
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
@@ -109,19 +109,12 @@ const Account = () => {
           </Flex>
         </form>
       </Box>
-      <Box bg="black" w="100%" p={4} color="white">
+      <Box bg="brandPurple.900" w="100%" p={4} color="white">
         <Flex>
-          <EthAddressDisplay address={currentAccount} />
-
-          {currentAccount && (
-            <Link
-              colorScheme="twitter"
-              href={`https://twitter.com/intent/tweet?text=We%20Be%20Chievn%20https://chiev.netlify.app${location.pathname}`}
-              isExternal={true}
-              ml={2}
-            >
-              <FaTwitter />
-            </Link>
+          {!loading && currentAccount ? (
+            <AccountAvatar addr={currentAccount} />
+          ) : (
+            <Text>Loading...</Text>
           )}
         </Flex>
       </Box>

@@ -1,67 +1,52 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Box, Heading, Text, Grid, Image } from "@chakra-ui/core";
+import { useCommunityApi } from "../contexts/DappContext";
 
 const Communities = ({ featured }) => {
+  const [communities] = useCommunityApi();
+
+  const renderList = () => {
+    let filteredList = [];
+    // TODO: data from airtable is gnarly
+    const metaList = communities.map((item) => item.fields);
+    if (featured) {
+      filteredList = metaList.filter((item) => item["Featured"]);
+    } else {
+      filteredList = metaList;
+    }
+    if (!filteredList.length) {
+      return <Text>Nothing here</Text>;
+    }
+    return filteredList.map((item, i) => {
+      return (
+        <Box
+          key={i}
+          as={Link}
+          to={`/community/${item['Dao Address']}`}
+          maxW="18rem"
+          borderWidth="1px"
+          rounded="lg"
+          overflow="hidden"
+          borderColor="brandPink.900"
+          p="6"
+        >
+          <Image src={item.Logo[0].url} />
+          <Box p="6">
+            <Heading as="h3" size="lg">
+              {item.Name}
+            </Heading>
+            <Text>{item.Blurb}</Text>
+          </Box>
+        </Box>
+      );
+    });
+  };
+
   return (
     <>
-      <Heading as={"h1"}>Communities </Heading>
-      {/* <Heading as={"h3"}>Dummy Data --  get from airtable</Heading> */}
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        <Box
-          as={Link}
-          to="/chievs"
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
-          overflow="hidden"
-          borderColor="brandPink.900"
-          p="6"
-        >
-          <Image src={"https://i.imgur.com/FjgyKjk.png"} />
-          <Box p="6">
-            <Heading as="h3" size="lg">
-              RaidGuild
-            </Heading>
-            <Text>Chopping up web3 quests</Text>
-          </Box>
-        </Box>
-        <Box
-          as={Link}
-          to="/chievs"
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
-          overflow="hidden"
-          borderColor="brandPink.900"
-          p="6"
-        >
-          <Image src={"https://i.imgur.com/QdkdxN7.png"} />
-          <Box p="6">
-            <Heading as="h3" size="lg">
-              MetaGame
-            </Heading>
-            <Text>A real life RPG</Text>
-          </Box>
-        </Box>
-        <Box
-          as={Link}
-          to="/chievs"
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
-          overflow="hidden"
-          borderColor="brandPink.900"
-          p="6"
-        >
-          <Image src={"https://i.imgur.com/vli8Kvp.png"} />
-          <Box p="6">
-            <Heading as="h3" size="lg">
-              MetaCartel
-            </Heading>
-            <Text>Spicy</Text>
-          </Box>
-        </Box>
+        {renderList()}
         {featured && (
           <Box
             as={Link}
@@ -76,7 +61,7 @@ const Communities = ({ featured }) => {
             <Heading as="h3" size="lg">
               Communities
             </Heading>
-            <Text>More communities to come</Text>
+            <Text>Browse the full list</Text>
           </Box>
         )}
       </Grid>
