@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Box, Heading, Text, Grid, Image } from "@chakra-ui/core";
+import { useCommunityApi } from "../contexts/DappContext";
 
 const Communities = ({ featured }) => {
+  const [communities] = useCommunityApi();
+
+  console.log('communities', communities);
   return (
     <>
       <Heading as={"h1"}>Communities </Heading>
