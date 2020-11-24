@@ -28,7 +28,13 @@ const Account = () => {
     if (!user?.username) {
       if (addr) {
         history.push(`/account/${addr}`);
+        setLoading(false);
         setCurrentAccount(addr);
+      }
+      if (!addr) {
+        console.log("not logged in");
+        setLoading(false);
+        setCurrentAccount(null);
       }
       return;
     }
@@ -44,14 +50,12 @@ const Account = () => {
   }, [user, addr]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
     const _addr = ensAddr ? ensAddr : data.address;
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
   };
 
   const loadMyAccount = async () => {
-    setLoading(true);
     const _addr = user.username;
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
@@ -114,7 +118,7 @@ const Account = () => {
           {!loading && currentAccount ? (
             <AccountAvatar addr={currentAccount} />
           ) : (
-            <Text>Loading...</Text>
+            user?.username && <Text>Loading...</Text>
           )}
         </Flex>
       </Box>
