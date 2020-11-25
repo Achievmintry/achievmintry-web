@@ -13,9 +13,10 @@ import {
   NFTApiInit,
   KudosInit,
   TxProcessorInit,
-  UserInit,
+  UserInit
 } from "./contexts";
 // import supportedChains from "./utils/Chains";
+import "./themes/css/fonts.css";
 
 const breakpoints = ["360px", "768px", "1024px", "1440px"];
 breakpoints.sm = breakpoints[0];
@@ -28,13 +29,21 @@ const customTheme = {
   colors: {
     ...theme.colors,
     brandPurple: {
-      900: "#6e1fb1",
+      900: "#6e1fb1"
     },
     brandPink: {
-      900: "#cc3385",
+      900: "#cc3385"
     },
-    breakpoints,
+    brandYellow: {
+      900: "#ffcc00",
+      200: "#fff0be"
+    },
+    breakpoints
   },
+  fonts: {
+    heading: "Arvo, serif",
+    body: "Ubuntu, sans-serif"
+  }
 };
 
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];

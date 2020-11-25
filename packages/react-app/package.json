@@ -39,6 +39,7 @@
     "eslint-plugin-flowtype": "^4.6.0",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.0.19",
+    "framer-motion": "^2.9.4",
     "graphql": "^14.6.0",
     "ipfs-http-client": "^45.0.0",
     "react": "16.12.0",

@@ -1,6 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Heading, Text, Grid, Image } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Text,
+  Grid,
+  Image,
+  AspectRatioBox
+} from "@chakra-ui/core";
 import { useCommunityApi } from "../contexts/DappContext";
 
 const Communities = ({ featured }) => {
@@ -9,9 +16,9 @@ const Communities = ({ featured }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = communities.map((item) => item.fields);
+    const metaList = communities.map(item => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(item => item["Featured"]);
     } else {
       filteredList = metaList;
     }
@@ -23,7 +30,7 @@ const Communities = ({ featured }) => {
         <Box
           key={i}
           as={Link}
-          to={`/community/${item['Dao Address']}`}
+          to={`/community/${item["Dao Address"]}`}
           maxW="18rem"
           borderWidth="1px"
           rounded="lg"
@@ -31,7 +38,9 @@ const Communities = ({ featured }) => {
           borderColor="brandPink.900"
           p="6"
         >
-          <Image src={item.Logo[0].url} />
+          <AspectRatioBox maxW="300px" ratio={1}>
+            <Image src={item.Logo[0].url} />
+          </AspectRatioBox>
           <Box p="6">
             <Heading as="h3" size="lg">
               {item.Name}

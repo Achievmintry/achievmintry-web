@@ -12,7 +12,7 @@ const MenuItems = ({ children }) => (
   </Text>
 );
 
-const Header = (props) => {
+const Header = props => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();
@@ -27,17 +27,32 @@ const Header = (props) => {
       justify="space-between"
       wrap="wrap"
       padding="1.5rem"
-      bg="brandPurple.900"
-      color="white"
+      bg="white"
+      color="black"
+      pos="sticky"
+      top={0}
+      zIndex={200}
       {...props}
     >
-      <Flex align="center" mr={5}>
-        <Heading as="h1" size="lg">
-          <Link to="/home">Achieveminrty</Link>
+      <Flex align="center" mr={5} order="2" justifyItems="center">
+        <Heading
+          as="h1"
+          size="lg"
+          textTransform="uppercase"
+          w={1 / 3}
+          mx="auto"
+          textAlign="center"
+        >
+          <Link to="/home">ChievMintry</Link>
         </Heading>
       </Flex>
 
-      <Box display={{ sm: "block", md: "none" }} onClick={handleToggle}>
+      <Box
+        display={{ sm: "block", md: "none" }}
+        order="3"
+        onClick={handleToggle}
+        w={1 / 3}
+      >
         <svg
           fill="white"
           width="12px"
@@ -53,7 +68,8 @@ const Header = (props) => {
         display={{ sm: show ? "block" : "none", md: "flex" }}
         width={{ sm: "full", md: "auto" }}
         alignItems="center"
-        flexGrow={1}
+        w={1 / 3}
+        order="1"
       >
         <MenuItems>
           <Link to="/account">My Awards</Link>
@@ -72,6 +88,8 @@ const Header = (props) => {
       <Box
         display={{ sm: show ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
+        order="3"
+        w="1/3"
       >
         {user ? <UserAvatar user={user} /> : <Web3SignIn />}
       </Box>
