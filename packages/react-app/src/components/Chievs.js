@@ -23,7 +23,8 @@ import {
   useDisclosure,
   Input,
   Heading,
-  AspectRatioBox
+  AspectRatioBox,
+  Flex
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -34,6 +35,8 @@ import {
   useEns
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
+
+import LogoIcon from "../static/assets/img/chievmint-icon.svg";
 
 const infoMotion = {
   rest: {
@@ -74,7 +77,29 @@ const HoverBox = styled(Box)`
   transition: box-shadow 0.3s ease-in-out;
 
   &:hover {
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  }
+  &.hoverbox__featured {
+    &::after {
+      position: absolute;
+      opacity: 1;
+      content: "";
+      display: block;
+      /* background: black; */
+      border-right: 10px solid;
+      background-color: #ffcc00;
+      width: 200%;
+      height: 200%;
+      top: 80%;
+      right: 30px;
+      z-index: 1;
+      transform: rotate(45deg);
+    }
+
+    .info-box {
+      position: relative;
+      z-index: 20;
+    }
   }
 `;
 const InfoBox = styled(Box)``;
@@ -256,97 +281,106 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
     return filteredList.map((item, i) => {
       return (
-        <HoverBox
-          borderWidth="10px"
-          overflow="hidden"
-          borderColor="black"
-          boxShadow="0 0 15px rgba(0,0,0,0.6)"
-          _hover={{ boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}
-          key={item.id}
-          index={i}
-          as={Link}
-          to={"#"}
-          onClick={() => {
-            setSelected(item);
-            onOpen();
-          }}
-          // initial="rest"
-          // whileHover="hover"
-          // animate="rest"
-        >
-          <AspectRatioBox maxW="400px" ratio={1} overflow="hidden">
-            <Image
-              src={
-                item["Display Thumb"]
-                  ? item["Display Thumb"][0].thumbnails.large.url
-                  : item["Image (from Artist Submissions)"][0].thumbnails.large
-                      .url
-              }
-              alt={item["NFT Name (from Artist Submissions)"][0]}
-              fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-              onMouseOver={e => {
-                if (!item["Display Thumb"]) {
-                  return;
+        <>
+          <HoverBox
+            borderWidth="10px"
+            overflow="hidden"
+            bg="black"
+            borderColor="black"
+            boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+            key={item.id}
+            index={i}
+            as={Link}
+            to={"#"}
+            onClick={() => {
+              setSelected(item);
+              onOpen();
+            }}
+          >
+            <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
+              <Image
+                src={
+                  item["Display Thumb"]
+                    ? item["Display Thumb"][0].thumbnails.large.url
+                    : item["Image (from Artist Submissions)"][0].thumbnails
+                        .large.url
                 }
-                e.currentTarget.src =
-                  item[
-                    "Image (from Artist Submissions)"
-                  ][0].thumbnails.large.url;
-              }}
-              onMouseOut={e => {
-                if (!item["Display Thumb"]) {
-                  return;
-                }
-                e.currentTarget.src =
-                  item["Display Thumb"][0].thumbnails.large.url;
-              }}
-            />
-          </AspectRatioBox>
-          <InfoBox p="6" w="100%" bg="brandYellow.900">
-            <Heading as="h3" size="lg" textTransform="uppercase" color="black">
-              {item["NFT Name (from Artist Submissions)"][0]}
-            </Heading>
-            <Text>
-              {" "}
-              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
-            </Text>
-            <Text>
-              {" "}
-              Quantity:{" "}
-              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-            </Text>
-            {+item["Gen0 Id"] && (
+                alt={item["NFT Name (from Artist Submissions)"][0]}
+                fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+                onMouseOver={e => {
+                  if (!item["Display Thumb"]) {
+                    return;
+                  }
+                  e.currentTarget.src =
+                    item[
+                      "Image (from Artist Submissions)"
+                    ][0].thumbnails.large.url;
+                }}
+                onMouseOut={e => {
+                  if (!item["Display Thumb"]) {
+                    return;
+                  }
+                  e.currentTarget.src =
+                    item["Display Thumb"][0].thumbnails.large.url;
+                }}
+              />
+            </AspectRatioBox>
+            <InfoBox p="6" w="100%" bg="brandYellow.900">
+              <Heading
+                as="h3"
+                size={["md", "lg"]}
+                textTransform="uppercase"
+                color="black"
+              >
+                {item["NFT Name (from Artist Submissions)"][0]}
+              </Heading>
               <Text>
-                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
-                {+mintCounts[item["Gen0 Id"]] ===
-                  item["Max Quantity (from Artist Submissions)"][0] &&
-                  "SOLD OUT"}
+                {" "}
+                Price: {displayPrice(item["Price In Wei"] || "0")} xDai
               </Text>
+              <Text>
+                {" "}
+                Quantity:{" "}
+                {item["Max Quantity (from Artist Submissions)"][0] || "?"}
+              </Text>
+              {+item["Gen0 Id"] && (
+                <Text>
+                  Minted: {mintCounts[item["Gen0 Id"]]}{" "}
+                  {+mintCounts[item["Gen0 Id"]] ===
+                    item["Max Quantity (from Artist Submissions)"][0] &&
+                    "SOLD OUT"}
+                </Text>
+              )}
+            </InfoBox>
+            {account && (
+              <Box p="6">
+                <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
+                <Text>
+                  own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
+                </Text>
+              </Box>
             )}
-          </InfoBox>
-          {account && (
-            <Box p="6">
-              <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
-              <Text>
-                own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-              </Text>
-            </Box>
-          )}
-        </HoverBox>
+          </HoverBox>
+        </>
       );
     });
   };
 
   return (
     <>
-      <Box p="6">
-        <Heading as="h2" mb="1" textTransform="uppercase">
+      <Box p={6}>
+        <Heading
+          as="h2"
+          size={["lg", "xl", "2xl"]}
+          mb="1"
+          textTransform="uppercase"
+        >
           {dao && dao} Talisman
         </Heading>
-        <Text fontSize="2xl" mb="5">
+        <Text fontSize={["md", "lg"]} mb="5">
           Give a talisman of your appreciation
         </Text>
-        <SimpleGrid minChildWidth="300px" columns={cols && cols} spacing="50px">
+        <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing={[5, 5, 10, 20]}>
           {renderList()}
           {featured && (
             <HoverBox
@@ -357,16 +391,16 @@ const Chievs = ({ featured, account, dao, cols }) => {
               bg="black"
               color="brandYellow.900"
               borderColor="black"
-              boxShadow="0 0 10px rgba(0,0,0,0.5)"
-              _hover={{ boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}
-              p="6"
+              boxShadow="0 0 15 px rgba(0,0,0,0.5)"
+              className="hoverbox__featured"
+              p={6}
             >
-              <Box>
+              <InfoBox className="info-box">
                 <Heading as="h3" size="lg">
                   Browse More
                 </Heading>
                 <Text>Click here to see the full list</Text>
-              </Box>
+              </InfoBox>
             </HoverBox>
           )}
         </SimpleGrid>

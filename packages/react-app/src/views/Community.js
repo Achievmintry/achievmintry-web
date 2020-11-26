@@ -36,7 +36,13 @@ const Community = ({ dao }) => {
     // eslint-disable-next-line
   }, [addr]);
   return (
-    <Box bg="brandYellow.200" w="100%" minH="100vh" textAlign="center" pt="10">
+    <Box
+      bg="brandYellow.200"
+      w="100%"
+      minH="100vh"
+      textAlign="center"
+      pt="90px"
+    >
       <Box mx="auto" maxW="90vw" textAlign="left">
         {daoData && (
           <Flex
