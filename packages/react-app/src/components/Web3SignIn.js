@@ -1,10 +1,11 @@
-import React from 'react';
-import Web3Modal from 'web3modal';
-import { Button, useToast } from '@chakra-ui/core';
+import React from "react";
+import Web3Modal from "web3modal";
+import { Button, useToast } from "@chakra-ui/core";
 
-import { getChainData } from '../utils/Chains';
-import { w3connect, providerOptions } from '../utils/Auth';
-import { useWeb3Connect } from '../contexts/DappContext';
+import { getChainData } from "../utils/Chains";
+import { w3connect, providerOptions } from "../utils/Auth";
+import { useWeb3Connect } from "../contexts/DappContext";
+import { FaBlackTie } from "react-icons/fa";
 
 // export const logoutOfWeb3Modal = async function() {
 //   const [Web3Connect, updateWeb3Connect] = useWeb3Connect();
@@ -21,13 +22,17 @@ const Web3SignIn = () => {
       <Button
         bg="transparent"
         border="1px"
+        _hover={{
+          background: "black",
+          color: "brandYellow.900"
+        }}
         onClick={async () => {
           const _web3Connect = {
             w3c: new Web3Modal({
               network: getChainData(+process.env.REACT_APP_NETWORK_ID).network,
               providerOptions,
-              cacheProvider: true,
-            }),
+              cacheProvider: true
+            })
           };
 
           try {
@@ -36,20 +41,20 @@ const Web3SignIn = () => {
 
             // window.location.reload();
           } catch (err) {
-            console.log('Error web3Connect ', err);
+            console.log("Error web3Connect ", err);
 
             toast({
-              title: 'Wrong Network',
-              position: 'top-right',
+              title: "Wrong Network",
+              position: "top-right",
               description: err.msg,
-              status: 'warning',
+              status: "warning",
               duration: 9000,
-              isClosable: true,
+              isClosable: true
             });
           }
         }}
       >
-        {' '}
+        {" "}
         Connect
       </Button>
     </>

@@ -1,15 +1,30 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Box, Heading, Flex, Text } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Flex,
+  Text,
+  PseudoBox,
+  Image,
+  Fade
+} from "@chakra-ui/core";
 import { useUser, useLoading } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import UserAvatar from "./UserAvatar";
 
+import Logo from "../static/assets/img/chievmint-logo.png";
+
 const MenuItems = ({ children }) => (
-  <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
-    {children}
-  </Text>
+  <PseudoBox
+    _hover={{ color: "brandYellow.900" }}
+    transition="color 0.1s ease-in"
+  >
+    <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
+      {children}
+    </Text>
+  </PseudoBox>
 );
 
 const Header = props => {
@@ -24,6 +39,8 @@ const Header = props => {
     <Flex
       as="nav"
       align="center"
+      alignItems="center"
+      alignContent="center"
       justify="space-between"
       wrap="wrap"
       padding="1.5rem"
@@ -31,19 +48,29 @@ const Header = props => {
       color="black"
       pos="sticky"
       top={0}
+      maxH="90px"
       zIndex={200}
+      boxShadow="lg"
       {...props}
     >
-      <Flex align="center" mr={5} order="2" justifyItems="center">
+      <Flex
+        align="center"
+        mr={5}
+        order="2"
+        w="33%"
+        justifyItems="center"
+        mr="0"
+      >
         <Heading
           as="h1"
           size="lg"
           textTransform="uppercase"
-          w={1 / 3}
           mx="auto"
           textAlign="center"
         >
-          <Link to="/home">ChievMintry</Link>
+          <Link to="/home">
+            <Image src={Logo} m={0} p={0} />
+          </Link>
         </Heading>
       </Flex>
 
@@ -51,7 +78,8 @@ const Header = props => {
         display={{ sm: "block", md: "none" }}
         order="3"
         onClick={handleToggle}
-        w={1 / 3}
+        w="33%"
+        justifySelf="flex-end"
       >
         <svg
           fill="white"
@@ -66,12 +94,15 @@ const Header = props => {
 
       <Box
         display={{ sm: show ? "block" : "none", md: "flex" }}
-        width={{ sm: "full", md: "auto" }}
+        width={{ sm: "full", md: "33%" }}
         alignItems="center"
-        w={1 / 3}
         order="1"
       >
-        <MenuItems>
+        <MenuItems
+          _hover={{
+            color: "white"
+          }}
+        >
           <Link to="/account">My Awards</Link>
         </MenuItems>
         <MenuItems>
@@ -89,7 +120,9 @@ const Header = props => {
         display={{ sm: show ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
         order="3"
-        w="1/3"
+        w="33%"
+        justifySelf="flex-end"
+        textAlign="right"
       >
         {user ? <UserAvatar user={user} /> : <Web3SignIn />}
       </Box>
