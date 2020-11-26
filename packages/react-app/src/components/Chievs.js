@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 //import metaList from "../data/metaList.json";
 
 import {
-  Grid,
+  SimpleGrid,
   Box,
   Image,
   Button,
@@ -37,53 +37,49 @@ import Web3SignIn from "./Web3SignIn";
 
 const infoMotion = {
   rest: {
-    color: "grey",
-    backgroundColor: "#ffffff50",
+    color: "#e4e4e4",
+    backgroundColor: "rgba(0,0,0,0.2)",
     x: 0,
-    y: "50%",
+    y: "49%",
     opacity: 0,
     transition: {
       duration: 0.6,
-      type: "spring",
-      damping: 50,
-      mass: 1.2,
-      stiffness: 100,
+      type: "tween",
+      damping: 10,
+      mass: 0.5,
+      stiffness: 50,
       ease: "easeIn"
     }
   },
   hover: {
-    backgroundColor: "#ffffff70",
+    backgroundColor: "rgba(0,0,0,0.9)",
     x: 0,
-    y: "-100%",
+    y: "-99%",
     opacity: 1,
     transition: {
       duration: 0.4,
-      type: "spring",
-      damping: 50,
-      mass: 2,
-      stiffness: 100,
+      type: "tween",
+      damping: 10,
+      mass: 0.8,
+      stiffness: 50,
       ease: "easeOut"
     }
   }
 };
 
-const HoverBox = styled(motion.div)`
+const HoverBox = styled(Box)`
   position: relative;
   cursor: pointer;
-  overflow: hidden;
-`;
+  z-index: 0;
+  transition: box-shadow 0.3s ease-in-out;
 
-const InfoBox = styled(motion.div)`
-  position: absolute;
-  min-width: 300px;
-  width: 100%:
-  height: 100%;
-  padding: 25px;
-  backdrop-filter: blur(5px);
-  z-index: 10;
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  }
 `;
+const InfoBox = styled(Box)``;
 
-const Chievs = ({ featured, account, dao }) => {
+const Chievs = ({ featured, account, dao, cols }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
@@ -99,6 +95,7 @@ const Chievs = ({ featured, account, dao }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
+  console.log(cols);
   useEffect(() => {
     // get clones in wild
     if (!kudos) {
@@ -260,11 +257,11 @@ const Chievs = ({ featured, account, dao }) => {
     return filteredList.map((item, i) => {
       return (
         <HoverBox
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
+          borderWidth="10px"
           overflow="hidden"
-          borderColor="brandPink.900"
+          borderColor="black"
+          boxShadow="0 0 15px rgba(0,0,0,0.6)"
+          _hover={{ boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}
           key={item.id}
           index={i}
           as={Link}
@@ -273,11 +270,11 @@ const Chievs = ({ featured, account, dao }) => {
             setSelected(item);
             onOpen();
           }}
-          initial="rest"
-          whileHover="hover"
-          animate="rest"
+          // initial="rest"
+          // whileHover="hover"
+          // animate="rest"
         >
-          <AspectRatioBox maxW="300px" ratio={1}>
+          <AspectRatioBox maxW="400px" ratio={1} overflow="hidden">
             <Image
               src={
                 item["Display Thumb"]
@@ -305,8 +302,8 @@ const Chievs = ({ featured, account, dao }) => {
               }}
             />
           </AspectRatioBox>
-          <InfoBox p="6" variants={infoMotion}>
-            <Heading as="h3" size="lg" textTransform="uppercase">
+          <InfoBox p="6" w="100%" bg="brandYellow.900">
+            <Heading as="h3" size="lg" textTransform="uppercase" color="black">
               {item["NFT Name (from Artist Submissions)"][0]}
             </Heading>
             <Text>
@@ -344,20 +341,24 @@ const Chievs = ({ featured, account, dao }) => {
     <>
       <Box p="6">
         <Heading as="h2" mb="1" textTransform="uppercase">
-          Talisman
+          {dao && dao} Talisman
         </Heading>
-        <Text mb="3">Give a talisman of your appreciation</Text>
-        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+        <Text fontSize="2xl" mb="5">
+          Give a talisman of your appreciation
+        </Text>
+        <SimpleGrid minChildWidth="300px" columns={cols && cols} spacing="50px">
           {renderList()}
           {featured && (
-            <Box
+            <HoverBox
               as={Link}
               to="/chievs"
-              maxW="18rem"
-              borderWidth="1px"
-              rounded="lg"
+              borderWidth="10px"
               overflow="hidden"
-              borderColor="brandPink.900"
+              bg="black"
+              color="brandYellow.900"
+              borderColor="black"
+              boxShadow="0 0 10px rgba(0,0,0,0.5)"
+              _hover={{ boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}
               p="6"
             >
               <Box>
@@ -366,9 +367,9 @@ const Chievs = ({ featured, account, dao }) => {
                 </Heading>
                 <Text>Click here to see the full list</Text>
               </Box>
-            </Box>
+            </HoverBox>
           )}
-        </Grid>
+        </SimpleGrid>
       </Box>
 
       <Modal
