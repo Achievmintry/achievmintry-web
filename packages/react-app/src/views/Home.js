@@ -6,7 +6,7 @@ import { Chievs, Communities } from "../components";
 const Home = () => {
   return (
     <Box bg="brandYellow.200" w="100%" textAlign="center">
-      <Box mx="auto" maxW={{ sm: "90vw", md: "90vw" }} textAlign="left">
+      <Box mx="auto" maxW="90vw" textAlign="left">
         <Chievs featured={true} />
         <Box p={6} mt={6}>
           <Heading
