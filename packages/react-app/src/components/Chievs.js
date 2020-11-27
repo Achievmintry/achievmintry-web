@@ -420,13 +420,23 @@ const Chievs = ({ featured, account, dao, cols }) => {
         }}
       >
         <ModalOverlay zIndex={400} />
-        <ModalContent zIndex={500}>
+        <ModalContent
+          zIndex={500}
+          p={{ base: 10, xl: 25 }}
+          bg="brandYellow.900"
+          border="10px solid black"
+        >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
-              <Text>
-                {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
-                {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
-              </Text>
+              <>
+                <Heading>
+                  {selected["NFT Name (from Artist Submissions)"][0]}
+                </Heading>
+                <Text>
+                  {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                  {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
+                </Text>
+              </>
             ) : (
               <Text>Nothing Selected</Text>
             )}
@@ -459,41 +469,46 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   e.currentTarget.src =
                     selected["Display Thumb"][0].thumbnails.large.url;
                 }}
+                width="100%"
+                height="auto"
               />
             )}
             {loading && <Text>Check MetaMask</Text>}
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <FormLabel htmlFor="address">Eth address</FormLabel>
-                <Input
-                  ref={register}
-                  name="address"
-                  type="text"
-                  id="address"
-                  aria-describedby="address-helper-text"
-                  readOnly={loading}
-                  onChange={handleChange}
-                />
-                <FormHelperText p="1" id="address-helper-text">
-                  {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
-                </FormHelperText>
-              </FormControl>
-              {user?.username ? (
-                <Button
-                  isLoading={loading}
-                  loadingText="Gifting"
-                  bg="transparent"
-                  border="1px"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Mint and Send
-                </Button>
-              ) : (
-                <Web3SignIn />
-              )}
-            </form>
+            <Box pt="20px">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl>
+                  <FormLabel htmlFor="address">Eth address</FormLabel>
+                  <Input
+                    ref={register}
+                    name="address"
+                    type="text"
+                    id="address"
+                    aria-describedby="address-helper-text"
+                    readOnly={loading}
+                    onChange={handleChange}
+                  />
+                  <FormHelperText p="1" id="address-helper-text">
+                    {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                  </FormHelperText>
+                </FormControl>
+                {user?.username ? (
+                  <Button
+                    isLoading={loading}
+                    loadingText="Gifting"
+                    bg="black"
+                    color="brandYellow.900"
+                    border="1px"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Mint and Send
+                  </Button>
+                ) : (
+                  <Web3SignIn />
+                )}
+              </form>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
