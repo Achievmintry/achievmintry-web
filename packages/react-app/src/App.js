@@ -5,7 +5,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
-import { Header } from "./components";
+import { Header, Footer } from "./components";
 import Routes from "./Routes";
 import {
   CommunityApiInit,
@@ -80,6 +80,7 @@ function App() {
           <Init />
           <Header />
           <Routes />
+          <Footer />
         </Router>
       </ThemeProvider>
     </ApolloProvider>
