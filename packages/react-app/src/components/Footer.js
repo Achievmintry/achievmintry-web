@@ -8,7 +8,6 @@ const DaoLink = styled.a``;
 const Footer = () => {
   const [communities] = useCommunityApi();
   const metaList = communities.map(item => item.fields);
-  console.log(metaList);
 
   return (
     <>
@@ -20,7 +19,7 @@ const Footer = () => {
             fontSize={{ base: "xl", xl: "4xl" }}
             fontWeight="400"
           >
-            Acheivmintry is brought to you by...
+            Achievmintry is brought to you by...
           </Heading>
           <Flex
             className="daos"
