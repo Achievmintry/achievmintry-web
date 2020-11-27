@@ -3,20 +3,39 @@ import React from "react";
 import { Flex, Text } from "@chakra-ui/core";
 import { useUserWallet } from "../contexts/DappContext";
 
-const Balance = () => {
+const Balance = props => {
   const [userWallet] = useUserWallet();
+  console.log(userWallet);
+  const roundUp = balance => {
+    if (typeof balance !== "string") {
+      return Math.round((balance + Number.EPSILON) * 100) / 100;
+    }
+    return parseFloat(balance).toFixed(2);
+  };
+
   return userWallet ? (
     <Flex
-      align="center"
-      justify="space-between"
+      // align="center"
+      justifyContent="right"
+      direction={{ base: "column", lg: "row" }}
       wrap="wrap"
-      padding="1.5rem"
-      bg="black"
-      color="white"
+      padding="3px"
+      color="black"
+      {...props}
     >
-      <Text>xDai: {userWallet?.eth}</Text>
-      <Text>
-        $CHIEV: {userWallet?.chiev}
+      <Text
+        fontFamily="heading"
+        fontSize={{ base: "11px", lg: "xs" }}
+        isTruncated
+      >
+        xDai: {roundUp(userWallet?.eth)}
+      </Text>
+      <Text
+        fontFamily="heading"
+        fontSize={{ base: "11px", lg: "xs" }}
+        isTruncated
+      >
+        $CHIEV: {roundUp(userWallet?.chiev)}
       </Text>
     </Flex>
   ) : null;

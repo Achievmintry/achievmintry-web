@@ -1,26 +1,37 @@
-import { theme } from '@chakra-ui/core';
+import { theme } from "@chakra-ui/core";
 
 // export * from './components';
 
 const defaultTheme = {
-  brand50: '#1c2363',
-  brand100: '#1c2363',
-  brand200: '#1c2363',
-  brand300: '#1c2363',
-  brand400: '#10153d',
-  brand500: '#03061B',
-  brand600: '#03061B',
-  brand700: '#03061B',
-  brand800: '#03061B',
-  brand900: '#03061B',
+  brand50: "#1c2363",
+  brand100: "#1c2363",
+  brand200: "#1c2363",
+  brand300: "#1c2363",
+  brand400: "#10153d",
+  brand500: "#03061B",
+  brand600: "#03061B",
+  brand700: "#03061B",
+  brand800: "#03061B",
+  brand900: "#03061B",
   // brandImg: Brand,
-  bg400: '#03061B',
+  bg400: "#03061B"
 };
 
-export const customTheme = (dappTheme) => {
+export const customTheme = dappTheme => {
   const themeOverrides = dappTheme || defaultTheme;
   return {
     ...theme,
+    styles: {
+      global: {
+        "html, body": {
+          fontSize: "sm",
+          color: "gray.600",
+          lineHeight: "tall",
+          width: "100%",
+          minHeight: "100%"
+        }
+      }
+    },
     colors: {
       ...theme.colors,
       brand: {
@@ -34,7 +45,7 @@ export const customTheme = (dappTheme) => {
         600: themeOverrides.brand600,
         700: themeOverrides.brand700,
         800: themeOverrides.brand800,
-        900: themeOverrides.brand900,
+        900: themeOverrides.brand900
       },
       background: {
         ...theme.colors.background,
@@ -47,9 +58,9 @@ export const customTheme = (dappTheme) => {
         600: themeOverrides.bg600,
         700: themeOverrides.bg700,
         800: themeOverrides.bg800,
-        900: themeOverrides.bg900,
-      },
-    },
+        900: themeOverrides.bg900
+      }
+    }
     // images: {
     //   ...theme.images,
     //   brandImg: themeOverrides.brandImg,

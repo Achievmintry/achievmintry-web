@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
+// import { motion } from "framer-motion";
 
 //import metaList from "../data/metaList.json";
 
 import {
-  Grid,
+  SimpleGrid,
   Box,
   Image,
   Button,
@@ -21,6 +23,8 @@ import {
   useDisclosure,
   Input,
   Heading,
+  AspectRatioBox,
+  Flex
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -28,11 +32,79 @@ import {
   useTxProcessor,
   useUser,
   useNFTApi,
-  useEns,
+  useEns
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
-const Chievs = ({ featured, account, dao }) => {
+import LogoIcon from "../static/assets/img/chievmint-icon.svg";
+
+const infoMotion = {
+  rest: {
+    color: "#e4e4e4",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    x: 0,
+    y: "49%",
+    opacity: 0,
+    transition: {
+      duration: 0.6,
+      type: "tween",
+      damping: 10,
+      mass: 0.5,
+      stiffness: 50,
+      ease: "easeIn"
+    }
+  },
+  hover: {
+    backgroundColor: "rgba(0,0,0,0.9)",
+    x: 0,
+    y: "-99%",
+    opacity: 1,
+    transition: {
+      duration: 0.4,
+      type: "tween",
+      damping: 10,
+      mass: 0.8,
+      stiffness: 50,
+      ease: "easeOut"
+    }
+  }
+};
+
+const HoverBox = styled(Box)`
+  position: relative;
+  cursor: pointer;
+  z-index: 0;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  }
+  &.hoverbox__featured {
+    &::after {
+      position: absolute;
+      opacity: 1;
+      content: "";
+      display: block;
+      /* background: black; */
+      border-right: 10px solid;
+      background-color: #ffcc00;
+      width: 200%;
+      height: 200%;
+      top: 80%;
+      right: 30px;
+      z-index: 1;
+      transform: rotate(45deg);
+    }
+
+    .info-box {
+      position: relative;
+      z-index: 20;
+    }
+  }
+`;
+const InfoBox = styled(Box)``;
+
+const Chievs = ({ featured, account, dao, cols }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
@@ -48,6 +120,7 @@ const Chievs = ({ featured, account, dao }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
+  console.log(cols);
   useEffect(() => {
     // get clones in wild
     if (!kudos) {
@@ -71,7 +144,7 @@ const Chievs = ({ featured, account, dao }) => {
   }, [nfts, kudos]);
   useEffect(() => {
     //TODO: eesh, make a subgraph and add more events
-    const getKudsDetails = async (acctAddr) => {
+    const getKudsDetails = async acctAddr => {
       const promises = [];
       const nftsOc = [];
       const acct = acctAddr.toLowerCase();
@@ -83,7 +156,7 @@ const Chievs = ({ featured, account, dao }) => {
         setGen0Ownership({});
         return;
       }
-      kudos.tokenData.currentOwners[acct].forEach((item) => {
+      kudos.tokenData.currentOwners[acct].forEach(item => {
         promises.push(kudos.getKudosById(item));
       });
       const nftData = await Promise.all(promises);
@@ -93,7 +166,7 @@ const Chievs = ({ featured, account, dao }) => {
           tokenId: item,
           gen0: nftData[idx].clonedFromId === item,
           clonedFromId: nftData[idx].clonedFromId,
-          count: 0,
+          count: 0
         };
         nftsOc.push(kudo);
       });
@@ -105,8 +178,8 @@ const Chievs = ({ featured, account, dao }) => {
       setNftCounts({ ...counts });
       // for each count find index and add count to owned nftsOc
       // counts could be gen0
-      Object.keys(counts).forEach((countItem) => {
-        const index = kudos.tokenData.currentOwners[acct].findIndex((item) => {
+      Object.keys(counts).forEach(countItem => {
+        const index = kudos.tokenData.currentOwners[acct].findIndex(item => {
           return item === countItem;
         });
 
@@ -139,7 +212,7 @@ const Chievs = ({ featured, account, dao }) => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     console.log(
       "clone",
       data.address,
@@ -167,7 +240,7 @@ const Chievs = ({ featured, account, dao }) => {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async e => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -177,7 +250,7 @@ const Chievs = ({ featured, account, dao }) => {
     }
   };
 
-  const displayPrice = (price) => {
+  const displayPrice = price => {
     if (!kudos) {
       return "?";
     }
@@ -187,126 +260,157 @@ const Chievs = ({ featured, account, dao }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = nfts.map((item) => item.fields);
+    const metaList = nfts.map(item => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(item => item["Featured"]);
     } else {
       filteredList = metaList;
     }
     if (account) {
       filteredList = filteredList.filter(
-        (item) => nftCounts[item["Gen0 Id"]] > 0
+        item => nftCounts[item["Gen0 Id"]] > 0
       );
     }
     if (dao) {
-      filteredList = filteredList.filter((item) => item["Community (from Artist Submissions)"][0] === dao);
+      filteredList = filteredList.filter(
+        item => item["Community (from Artist Submissions)"][0] === dao
+      );
     }
     if (!filteredList.length) {
       return <Text>Nothing here</Text>;
     }
     return filteredList.map((item, i) => {
       return (
-        <Box
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
-          overflow="hidden"
-          borderColor="brandPink.900"
-          key={item.id}
-          index={i}
-          as={Link}
-          to={"#"}
-          onClick={() => {
-            setSelected(item);
-            onOpen();
-          }}
-        >
-          <Image
-            src={
-              item["Display Thumb"]
-                ? item["Display Thumb"][0].thumbnails.large.url
-                : item["Image (from Artist Submissions)"][0].thumbnails.large
-                    .url
-            }
-            alt={item["NFT Name (from Artist Submissions)"][0]}
-            fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-            onMouseOver={(e) => {
-              if (!item["Display Thumb"]) {
-                return;
-              }
-              e.currentTarget.src =
-                item["Image (from Artist Submissions)"][0].thumbnails.large.url;
+        <>
+          <HoverBox
+            borderWidth="10px"
+            overflow="hidden"
+            bg="black"
+            borderColor="black"
+            boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+            key={item.id}
+            index={i}
+            as={Link}
+            to={"#"}
+            onClick={() => {
+              setSelected(item);
+              onOpen();
             }}
-            onMouseOut={(e) => {
-              if (!item["Display Thumb"]) {
-                return;
-              }
-              e.currentTarget.src =
-                item["Display Thumb"][0].thumbnails.large.url;
-            }}
-          />
-          <Box p="6">
-            <Heading as="h3" size="lg">
-              {item["NFT Name (from Artist Submissions)"][0]}
-            </Heading>
-            <Text>
-              {" "}
-              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
-            </Text>
-            <Text>
-              {" "}
-              Quantity:{" "}
-              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-            </Text>
-            {+item["Gen0 Id"] && (
+          >
+            <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
+              <Image
+                src={
+                  item["Display Thumb"]
+                    ? item["Display Thumb"][0].thumbnails.large.url
+                    : item["Image (from Artist Submissions)"][0].thumbnails
+                        .large.url
+                }
+                alt={item["NFT Name (from Artist Submissions)"][0]}
+                fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
+                onMouseOver={e => {
+                  if (!item["Display Thumb"]) {
+                    return;
+                  }
+                  e.currentTarget.src =
+                    item[
+                      "Image (from Artist Submissions)"
+                    ][0].thumbnails.large.url;
+                }}
+                onMouseOut={e => {
+                  if (!item["Display Thumb"]) {
+                    return;
+                  }
+                  e.currentTarget.src =
+                    item["Display Thumb"][0].thumbnails.large.url;
+                }}
+              />
+            </AspectRatioBox>
+            <InfoBox
+              p={{ base: 6, xl: 2, "2xl": 6 }}
+              w="100%"
+              bg="brandYellow.900"
+            >
+              <Heading
+                as="h3"
+                fontSize={{ base: "md", xl: "xl" }}
+                textTransform="uppercase"
+                color="black"
+              >
+                {item["NFT Name (from Artist Submissions)"][0]}
+              </Heading>
               <Text>
-                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
-                {+mintCounts[item["Gen0 Id"]] ===
-                  item["Max Quantity (from Artist Submissions)"][0] &&
-                  "SOLD OUT"}
+                {" "}
+                Price: {displayPrice(item["Price In Wei"] || "0")} xDai
               </Text>
-            )}
-          </Box>
-          {account && (
-            <Box p="6">
-              <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
               <Text>
-                own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
+                {" "}
+                Quantity:{" "}
+                {item["Max Quantity (from Artist Submissions)"][0] || "?"}
               </Text>
-            </Box>
-          )}
-        </Box>
+              {+item["Gen0 Id"] && (
+                <Text>
+                  Minted: {mintCounts[item["Gen0 Id"]]}{" "}
+                  {+mintCounts[item["Gen0 Id"]] ===
+                    item["Max Quantity (from Artist Submissions)"][0] &&
+                    "SOLD OUT"}
+                </Text>
+              )}
+              {account && (
+                <Box>
+                  <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
+                  <Text>
+                    Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
+                  </Text>
+                </Box>
+              )}
+            </InfoBox>
+          </HoverBox>
+        </>
       );
     });
   };
 
   return (
     <>
-      <Box p="6">
-        <Heading>Talisman</Heading>
-        <Text>Give a talisman of your appreciation</Text>
-        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+      <Box p={[2, 4, 6]}>
+        <Heading
+          as="h2"
+          fontSize={{ base: "2xl  ", xl: "4xl" }}
+          mb="1"
+          textTransform="uppercase"
+        >
+          {dao && dao} Talisman
+        </Heading>
+        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
+          Give a talisman of your appreciation
+        </Text>
+        <SimpleGrid
+          columns={{ sm: 1, md: 2, xl: 4 }}
+          spacing={{ base: 5, lg: 10, "2xl": 20 }}
+        >
           {renderList()}
           {featured && (
-            <Box
+            <HoverBox
               as={Link}
               to="/chievs"
-              maxW="18rem"
-              borderWidth="1px"
-              rounded="lg"
+              borderWidth="10px"
               overflow="hidden"
-              borderColor="brandPink.900"
-              p="6"
+              bg="black"
+              color="brandYellow.900"
+              borderColor="black"
+              boxShadow="0 0 15px rgba(0,0,0,0.5)"
+              className="hoverbox__featured"
+              p={{ base: 6, xl: 2, "2xl": 6 }}
             >
-              <Box>
+              <InfoBox className="info-box">
                 <Heading as="h3" size="lg">
                   Browse More
                 </Heading>
                 <Text>Click here to see the full list</Text>
-              </Box>
-            </Box>
+              </InfoBox>
+            </HoverBox>
           )}
-        </Grid>
+        </SimpleGrid>
       </Box>
 
       <Modal
@@ -341,7 +445,7 @@ const Chievs = ({ featured, account, dao }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions)"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={(e) => {
+                onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -350,7 +454,7 @@ const Chievs = ({ featured, account, dao }) => {
                       "Image (from Artist Submissions)"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={(e) => {
+                onMouseOut={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
