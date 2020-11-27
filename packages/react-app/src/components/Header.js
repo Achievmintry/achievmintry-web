@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import styled from "@emotion/styled";
 import {
   Box,
   Heading,
@@ -10,6 +10,8 @@ import {
   Image,
   Fade
 } from "@chakra-ui/core";
+import { IconButton } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { useUser, useLoading } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import UserAvatar from "./UserAvatar";
@@ -18,14 +20,23 @@ import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
   <PseudoBox
-    _hover={{ color: "brandYellow.900" }}
+    _hover={{ backgroundColor: "brandYellow.900", color: "black" }}
     transition="color 0.1s ease-in"
   >
-    <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
+    <Text
+      mt={{ base: 4, md: 0 }}
+      display="block"
+      textAlign="center"
+      p="5px 10px"
+    >
       {children}
     </Text>
   </PseudoBox>
 );
+
+const StyledSVG = styled.svg`
+  width: ;
+`;
 
 const Header = props => {
   const [show, setShow] = useState(false);
@@ -41,7 +52,7 @@ const Header = props => {
       alignItems="center"
       alignContent="center"
       direction="row"
-      justify={{ base: "left", xl: "space-between" }}
+      justify={{ base: "left", lg: "space-between" }}
       direction="row"
       wrap="nowrap"
       padding="1.5rem"
@@ -49,12 +60,12 @@ const Header = props => {
       color="black"
       pos="sticky"
       top={0}
-      height={{ base: 70, xl: 90 }}
+      height={{ base: 70, md: 90 }}
       maxH="90px"
       zIndex={200}
       boxShadow="lg"
       w="100%"
-      p={{ base: "0", lg: "10px" }}
+      p={{ base: "0", lg: "0 25px" }}
       {...props}
     >
       <Flex
@@ -78,7 +89,7 @@ const Header = props => {
               src={Logo}
               mx="auto"
               p={0}
-              w={show ? "100%" : "80%"}
+              w={{ base: show ? "100%" : "80%", lg: "100%" }}
               transition="width 0.2s ease"
             />
           </Link>
@@ -86,45 +97,39 @@ const Header = props => {
       </Flex>
 
       <Box
-        display={{ base: "block", md: "none" }}
+        display={{ base: "block", lg: "none" }}
         order="1"
-        onClick={handleToggle}
         marginLeft="10px"
         w={{ base: "33%" }}
       >
-        <svg
-          fill="black"
-          width="12px"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <title>Menu</title>
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-        </svg>
+        <IconButton
+          aria-label="Menu"
+          icon={<HamburgerIcon />}
+          onClick={handleToggle}
+          w="40px"
+          h="40px"
+        />
       </Box>
 
       <Box
-        display={{ base: show ? "block" : "none", xl: "flex" }}
+        display={{ base: show ? "block" : "none", lg: "flex" }}
         bg="white"
-        width={{ base: "100vw", xl: "33%" }}
-        position={{ base: "absolute", xl: "relative" }}
-        top={{ base: "70px", md: "unset" }}
-        p={{ base: "25px", lg: "0" }}
-        height="100vh"
+        width={{ base: "100vw", lg: "33%" }}
+        position={{ base: "absolute", lg: "relative" }}
+        top={{ base: "70px", lg: "unset" }}
+        p={{ base: "25px", xl: "0 10% 0 0" }}
+        height={{ base: "100vh", lg: "auto" }}
         alignItems="center"
-        order={[3, 3, 3, 1]}
+        order={[3, 3, 1, 1]}
         zIndex="300"
-        opacity={show ? 1 : 0}
+        opacity={{ base: show ? 1 : 0, lg: 1 }}
         flexGrow={{ base: "1", xl: "0" }}
         transition="opacity 0.1s 0.3s ease-in-out"
-        fontSize={{ base: "md", lg: "lg" }}
+        fontSize={{ base: "lg", xl: "xs" }}
         fontFamily={{ base: "heading", lg: "body" }}
+        justifyContent={{ base: "unset", lg: "space-around" }}
       >
-        <MenuItems
-          _hover={{
-            color: "white"
-          }}
-        >
+        <MenuItems>
           <Link to="/account">My Awards</Link>
         </MenuItems>
         <MenuItems>
