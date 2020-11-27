@@ -7,7 +7,7 @@ import { useCommunityApi } from "../contexts/DappContext";
 const DaoLink = styled.a``;
 const Footer = () => {
   const [communities] = useCommunityApi();
-  const metaList = communities.map((item) => item.fields);
+  const metaList = communities.map(item => item.fields);
 
   return (
     <>
@@ -19,7 +19,7 @@ const Footer = () => {
             fontSize={{ base: "xl", xl: "4xl" }}
             fontWeight="400"
           >
-            Acheivmintry is brought to you by...
+            Achievmintry is brought to you by...
           </Heading>
           <Flex
             className="daos"
