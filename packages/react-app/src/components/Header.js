@@ -139,7 +139,7 @@ const Header = props => {
           <Link to="/snapshot">SnapShot</Link>
         </MenuItems>
         <MenuItems>
-          <a href="https://chive.network">About</a>
+          <a href="https://chiev.net">About</a>
         </MenuItems>
       </Box>
 

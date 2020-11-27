@@ -306,7 +306,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                         .large.url
                 }
                 alt={item["NFT Name (from Artist Submissions)"][0]}
-                fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
+                fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
                 onMouseOver={e => {
                   if (!item["Display Thumb"]) {
                     return;
@@ -332,7 +332,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
             >
               <Heading
                 as="h3"
-                size={["md", "lg"]}
+                fontSize={{ base: "md", xl: "xl" }}
                 textTransform="uppercase"
                 color="black"
               >
@@ -355,15 +355,15 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     "SOLD OUT"}
                 </Text>
               )}
+              {account && (
+                <Box>
+                  <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
+                  <Text>
+                    Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
+                  </Text>
+                </Box>
+              )}
             </InfoBox>
-            {account && (
-              <Box p={{ base: 6, xl: 2, "2xl": 6 }}>
-                <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
-                <Text>
-                  own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-                </Text>
-              </Box>
-            )}
           </HoverBox>
         </>
       );
@@ -375,7 +375,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          fontSize={{ base: "2xl", xl: "4xl" }}
+          fontSize={{ base: "2xl  ", xl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >

@@ -113,7 +113,7 @@ const Communities = ({ featured }) => {
             className="hoverbox__featured"
             p={6}
           >
-            <Heading as="h3" size={{ sm: "md", lg: "xl  " }}>
+            <Heading as="h3" size="lg">
               Communities
             </Heading>
             <Text>Browse the full list</Text>
