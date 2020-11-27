@@ -368,7 +368,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
 
   return (
     <>
-      <Box p={6}>
+      <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
           size={["lg", "xl", "2xl"]}

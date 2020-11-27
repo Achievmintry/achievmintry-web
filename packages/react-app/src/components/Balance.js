@@ -15,17 +15,26 @@ const Balance = props => {
 
   return userWallet ? (
     <Flex
-      align="center"
-      justify="right"
+      // align="center"
+      justifyContent="right"
+      direction={{ base: "column", lg: "row" }}
       wrap="wrap"
       padding="3px"
       color="black"
       {...props}
     >
-      <Text fontFamily="heading" fontSize="xs" mr="3" isTruncated>
+      <Text
+        fontFamily="heading"
+        fontSize={{ base: "11px", lg: "xs" }}
+        isTruncated
+      >
         xDai: {roundUp(userWallet?.eth)}
       </Text>
-      <Text fontFamily="heading" fontSize="xs" isTruncated>
+      <Text
+        fontFamily="heading"
+        fontSize={{ base: "11px", lg: "xs" }}
+        isTruncated
+      >
         $CHIEV: {roundUp(userWallet?.chiev)}
       </Text>
     </Flex>

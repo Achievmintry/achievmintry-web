@@ -5,10 +5,15 @@ import { Chievs, Communities } from "../components";
 
 const Home = () => {
   return (
-    <Box bg="brandYellow.200" w="100%" textAlign="center">
+    <Box
+      bg="brandYellow.200"
+      w="100%"
+      textAlign="center"
+      padding={{ base: "50px 0", lg: "90px 0" }}
+    >
       <Box mx="auto" maxW="90vw" textAlign="left">
         <Chievs featured={true} />
-        <Box p={6} mt={6}>
+        <Box p={[2, 4, 6]} mt={6}>
           <Heading
             as="h2"
             size={["lg", "xl", "2xl"]}

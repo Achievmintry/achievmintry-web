@@ -38,26 +38,31 @@ const Header = props => {
   return (
     <Flex
       as="nav"
-      align="center"
       alignItems="center"
       alignContent="center"
-      justify="space-between"
-      wrap="wrap"
+      direction="row"
+      justify={{ base: "left", xl: "space-between" }}
+      direction="row"
+      wrap="nowrap"
       padding="1.5rem"
       bg="white"
       color="black"
       pos="sticky"
       top={0}
+      height={{ base: 70, xl: 90 }}
       maxH="90px"
       zIndex={200}
       boxShadow="lg"
+      w="100%"
+      p={{ base: "0", lg: "10px" }}
       {...props}
     >
       <Flex
         align="center"
-        mr={5}
+        // mr={5}
         order="2"
-        w="33%"
+        w={{ base: "33%" }}
+        flexGrow={0}
         justifyItems="center"
         mr="0"
       >
@@ -69,20 +74,26 @@ const Header = props => {
           textAlign="center"
         >
           <Link to="/home">
-            <Image src={Logo} m={0} p={0} />
+            <Image
+              src={Logo}
+              mx="auto"
+              p={0}
+              w={show ? "100%" : "80%"}
+              transition="width 0.2s ease"
+            />
           </Link>
         </Heading>
       </Flex>
 
       <Box
-        display={{ sm: "block", md: "none" }}
-        order="3"
+        display={{ base: "block", md: "none" }}
+        order="1"
         onClick={handleToggle}
-        w="33%"
-        justifySelf="flex-end"
+        marginLeft="10px"
+        w={{ base: "33%" }}
       >
         <svg
-          fill="white"
+          fill="black"
           width="12px"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -93,10 +104,21 @@ const Header = props => {
       </Box>
 
       <Box
-        display={{ sm: show ? "block" : "none", md: "flex" }}
-        width={{ sm: "full", md: "33%" }}
+        display={{ base: show ? "block" : "none", xl: "flex" }}
+        bg="white"
+        width={{ base: "100vw", xl: "33%" }}
+        position={{ base: "absolute", xl: "relative" }}
+        top={{ base: "70px", md: "unset" }}
+        p={{ base: "25px", lg: "0" }}
+        height="100vh"
         alignItems="center"
-        order="1"
+        order={[3, 3, 3, 1]}
+        zIndex="300"
+        opacity={show ? 1 : 0}
+        flexGrow={{ base: "1", xl: "0" }}
+        transition="opacity 0.1s 0.3s ease-in-out"
+        fontSize={{ base: "md", lg: "lg" }}
+        fontFamily={{ base: "heading", lg: "body" }}
       >
         <MenuItems
           _hover={{
@@ -117,14 +139,18 @@ const Header = props => {
       </Box>
 
       <Box
-        display={{ sm: show ? "block" : "none", md: "block" }}
-        mt={{ base: 4, md: 0 }}
-        order="3"
-        w="33%"
-        justifySelf="flex-end"
+        // display={{ base: show ? "block" : "none", md: "block" }}
+        mt={{ base: 0, md: 0 }}
+        order={[2, 2, 2, 3]}
+        w={["33%"]}
         textAlign="right"
+        zIndex={300}
       >
-        {user ? <UserAvatar user={user} /> : <Web3SignIn />}
+        {user ? (
+          <UserAvatar user={user} open={show} />
+        ) : (
+          <Web3SignIn marginRight={{ base: "10px", lg: "0" }} />
+        )}
       </Box>
     </Flex>
   );

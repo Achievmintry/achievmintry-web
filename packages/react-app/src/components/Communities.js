@@ -96,7 +96,7 @@ const Communities = ({ featured }) => {
   };
 
   return (
-    <Box>
+    <>
       <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing={[5, 5, 10, 20]}>
         {renderList()}
         {featured && (
@@ -119,7 +119,7 @@ const Communities = ({ featured }) => {
           </HoverBox>
         )}
       </SimpleGrid>
-    </Box>
+    </>
   );
 };
 

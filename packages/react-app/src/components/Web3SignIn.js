@@ -13,7 +13,7 @@ import { FaBlackTie } from "react-icons/fa";
 //   window.location.reload();
 // };
 
-const Web3SignIn = () => {
+const Web3SignIn = props => {
   const [, updateWeb3Connect] = useWeb3Connect();
   const toast = useToast();
 
@@ -22,6 +22,9 @@ const Web3SignIn = () => {
       <Button
         bg="transparent"
         border="1px"
+        size={{ base: "sm", lg: "md" }}
+        fontSize={{ base: "12px", lg: "14px" }}
+        padding="8px 10px"
         _hover={{
           background: "black",
           color: "brandYellow.900"
@@ -53,6 +56,7 @@ const Web3SignIn = () => {
             });
           }
         }}
+        {...props}
       >
         {" "}
         Connect
