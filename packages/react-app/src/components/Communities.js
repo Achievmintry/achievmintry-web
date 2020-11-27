@@ -7,12 +7,9 @@ import {
   SimpleGrid,
   Image,
   AspectRatioBox,
-  Flex
 } from "@chakra-ui/core";
 import styled from "@emotion/styled";
 import { useCommunityApi } from "../contexts/DappContext";
-
-import LogoIcon from "../static/assets/img/chievmint-icon.svg";
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -54,9 +51,9 @@ const Communities = ({ featured }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = communities.map(item => item.fields);
+    const metaList = communities.map((item) => item.fields);
     if (featured) {
-      filteredList = metaList.filter(item => item["Featured"]);
+      filteredList = metaList.filter((item) => item["Featured"]);
     } else {
       filteredList = metaList;
     }
