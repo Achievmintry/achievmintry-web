@@ -281,91 +281,89 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
     return filteredList.map((item, i) => {
       return (
-        <>
-          <HoverBox
-            borderWidth="10px"
-            overflow="hidden"
-            bg="black"
-            borderColor="black"
-            boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
-            key={item.id}
-            index={i}
-            as={Link}
-            to={"#"}
-            onClick={() => {
-              setSelected(item);
-              onOpen();
-            }}
-          >
-            <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
-              <Image
-                src={
-                  item["Display Thumb"]
-                    ? item["Display Thumb"][0].thumbnails.large.url
-                    : item["Image (from Artist Submissions)"][0].thumbnails
-                        .large.url
+        <HoverBox
+          borderWidth="10px"
+          overflow="hidden"
+          bg="black"
+          borderColor="black"
+          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+          key={item.id}
+          index={i}
+          as={Link}
+          to={"#"}
+          onClick={() => {
+            setSelected(item);
+            onOpen();
+          }}
+        >
+          <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
+            <Image
+              src={
+                item["Display Thumb"]
+                  ? item["Display Thumb"][0].thumbnails.large.url
+                  : item["Image (from Artist Submissions)"][0].thumbnails.large
+                      .url
+              }
+              alt={item["NFT Name (from Artist Submissions)"][0]}
+              fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
+              onMouseOver={e => {
+                if (!item["Display Thumb"]) {
+                  return;
                 }
-                alt={item["NFT Name (from Artist Submissions)"][0]}
-                fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-                onMouseOver={e => {
-                  if (!item["Display Thumb"]) {
-                    return;
-                  }
-                  e.currentTarget.src =
-                    item[
-                      "Image (from Artist Submissions)"
-                    ][0].thumbnails.large.url;
-                }}
-                onMouseOut={e => {
-                  if (!item["Display Thumb"]) {
-                    return;
-                  }
-                  e.currentTarget.src =
-                    item["Display Thumb"][0].thumbnails.large.url;
-                }}
-              />
-            </AspectRatioBox>
-            <InfoBox
-              p={{ base: 6, xl: 2, "2xl": 6 }}
-              w="100%"
-              bg="brandYellow.900"
+                e.currentTarget.src =
+                  item[
+                    "Image (from Artist Submissions)"
+                  ][0].thumbnails.large.url;
+              }}
+              onMouseOut={e => {
+                if (!item["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  item["Display Thumb"][0].thumbnails.large.url;
+              }}
+            />
+          </AspectRatioBox>
+          <InfoBox
+            p={{ base: 6, xl: 2, "2xl": 6 }}
+            w="100%"
+            bg="brandYellow.900"
+          >
+            <Heading
+              as="h3"
+              fontSize={{ base: "md", xl: "xl" }}
+              textTransform="uppercase"
+              color="black"
             >
-              <Heading
-                as="h3"
-                fontSize={{ base: "md", xl: "xl" }}
-                textTransform="uppercase"
-                color="black"
-              >
-                {item["NFT Name (from Artist Submissions)"][0]}
-              </Heading>
+              {item["NFT Name (from Artist Submissions)"][0]}
+            </Heading>
+            <Text>
+              {" "}
+              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
+            </Text>
+            <Text>
+              {" "}
+              Quantity:{" "}
+              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
+            </Text>
+            {+item["Gen0 Id"] && (
               <Text>
-                {" "}
-                Price: {displayPrice(item["Price In Wei"] || "0")} xDai
+                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
+                {+mintCounts[item["Gen0 Id"]] ===
+                  item["Max Quantity (from Artist Submissions)"][0] &&
+                  "SOLD OUT"}
               </Text>
-              <Text>
-                {" "}
-                Quantity:{" "}
-                {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-              </Text>
-              {+item["Gen0 Id"] && (
+            )}
+            {account && (
+              <Box>
+                <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
                 <Text>
-                  Minted: {mintCounts[item["Gen0 Id"]]}{" "}
-                  {+mintCounts[item["Gen0 Id"]] ===
-                    item["Max Quantity (from Artist Submissions)"][0] &&
-                    "SOLD OUT"}
+                  Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
                 </Text>
-              )}
-              {account && (
-                <Box>
-                  <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
-                  <Text>
-                    Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-                  </Text>
-                </Box>
-              )}
-            </InfoBox>
-          </HoverBox>
-        </>
+              </Box>
+            )}
+          </InfoBox>
+        </HoverBox>
       );
     });
   };
@@ -421,14 +419,24 @@ const Chievs = ({ featured, account, dao, cols }) => {
           onClose();
         }}
       >
-        <ModalOverlay zIndex={0} />
-        <ModalContent zIndex={1}>
+        <ModalOverlay zIndex={400} />
+        <ModalContent
+          zIndex={500}
+          p={{ base: 10, xl: 25 }}
+          bg="brandYellow.900"
+          border="10px solid black"
+        >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
-              <Text>
-                {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
-                {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
-              </Text>
+              <>
+                <Heading>
+                  {selected["NFT Name (from Artist Submissions)"][0]}
+                </Heading>
+                <Text>
+                  {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                  {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
+                </Text>
+              </>
             ) : (
               <Text>Nothing Selected</Text>
             )}
@@ -461,41 +469,46 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   e.currentTarget.src =
                     selected["Display Thumb"][0].thumbnails.large.url;
                 }}
+                width="100%"
+                height="auto"
               />
             )}
             {loading && <Text>Check MetaMask</Text>}
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <FormLabel htmlFor="address">Eth address</FormLabel>
-                <Input
-                  ref={register}
-                  name="address"
-                  type="text"
-                  id="address"
-                  aria-describedby="address-helper-text"
-                  readOnly={loading}
-                  onChange={handleChange}
-                />
-                <FormHelperText p="1" id="address-helper-text">
-                  {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
-                </FormHelperText>
-              </FormControl>
-              {user?.username ? (
-                <Button
-                  isLoading={loading}
-                  loadingText="Gifting"
-                  bg="transparent"
-                  border="1px"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Mint and Send
-                </Button>
-              ) : (
-                <Web3SignIn />
-              )}
-            </form>
+            <Box pt="20px">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl>
+                  <FormLabel htmlFor="address">Eth address</FormLabel>
+                  <Input
+                    ref={register}
+                    name="address"
+                    type="text"
+                    id="address"
+                    aria-describedby="address-helper-text"
+                    readOnly={loading}
+                    onChange={handleChange}
+                  />
+                  <FormHelperText p="1" id="address-helper-text">
+                    {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                  </FormHelperText>
+                </FormControl>
+                {user?.username ? (
+                  <Button
+                    isLoading={loading}
+                    loadingText="Gifting"
+                    bg="black"
+                    color="brandYellow.900"
+                    border="1px"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Mint and Send
+                  </Button>
+                ) : (
+                  <Web3SignIn />
+                )}
+              </form>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>

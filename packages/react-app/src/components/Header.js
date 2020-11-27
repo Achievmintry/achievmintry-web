@@ -36,9 +36,7 @@ const MenuItems = ({ children }) => (
   </PseudoBox>
 );
 
-const StyledSVG = styled.svg`
-  width: ;
-`;
+const StyledSVG = styled.svg``;
 
 const Header = props => {
   const [show, setShow] = useState(false);
@@ -46,7 +44,7 @@ const Header = props => {
   const [user] = useUser();
   const [loading] = useLoading();
 
-  console.log("heaher render loading", loading);
+  console.log("header render loading", loading);
 
   return (
     <Flex

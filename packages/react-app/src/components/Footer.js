@@ -8,7 +8,6 @@ const DaoLink = styled.a``;
 const Footer = () => {
   const [communities] = useCommunityApi();
   const metaList = communities.map(item => item.fields);
-  console.log(metaList);
 
   return (
     <>
@@ -32,25 +31,25 @@ const Footer = () => {
             {metaList &&
               metaList.map((item, i) => {
                 return (
-                  <>
-                    <DaoLink
-                      href={item["Dao Link"]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      display="block"
-                      flex="0 0 50px"
-                      w="50px"
-                      flexGrow="0"
-                      flexShrink="1"
-                      bg="transparent"
-                    >
-                      <Image
-                        src={item.Logo[0].url}
-                        name={item.Name}
-                        width={{ base: "50px", xl: "75px" }}
-                      />
-                    </DaoLink>
-                  </>
+                  <DaoLink
+                    key={`daoLink-${i}`}
+                    href={item["Dao Link"]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    display="block"
+                    flex="0 0 50px"
+                    w="50px"
+                    flexGrow="0"
+                    flexShrink="1"
+                    bg="transparent"
+                  >
+                    <Image
+                      key={`daoImage-${i}`}
+                      src={item.Logo[0].url}
+                      name={item.Name}
+                      width={{ base: "50px", xl: "75px" }}
+                    />
+                  </DaoLink>
                 );
               })}
           </Flex>
