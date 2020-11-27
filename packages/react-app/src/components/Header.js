@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "@emotion/styled";
-import {
-  Box,
-  Heading,
-  Flex,
-  Text,
-  PseudoBox,
-  Image,
-  Fade
-} from "@chakra-ui/core";
+import { Box, Heading, Flex, Text, PseudoBox, Image } from "@chakra-ui/core";
 import { IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useUser, useLoading } from "../contexts/DappContext";
@@ -36,9 +27,7 @@ const MenuItems = ({ children }) => (
   </PseudoBox>
 );
 
-const StyledSVG = styled.svg``;
-
-const Header = props => {
+const Header = (props) => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();
@@ -53,7 +42,6 @@ const Header = props => {
       alignContent="center"
       direction="row"
       justify={{ base: "left", lg: "space-between" }}
-      direction="row"
       wrap="nowrap"
       padding="1.5rem"
       bg="white"

@@ -5,7 +5,6 @@ import { Button, useToast } from "@chakra-ui/core";
 import { getChainData } from "../utils/Chains";
 import { w3connect, providerOptions } from "../utils/Auth";
 import { useWeb3Connect } from "../contexts/DappContext";
-import { FaBlackTie } from "react-icons/fa";
 
 // export const logoutOfWeb3Modal = async function() {
 //   const [Web3Connect, updateWeb3Connect] = useWeb3Connect();
@@ -13,7 +12,7 @@ import { FaBlackTie } from "react-icons/fa";
 //   window.location.reload();
 // };
 
-const Web3SignIn = props => {
+const Web3SignIn = (props) => {
   const [, updateWeb3Connect] = useWeb3Connect();
   const toast = useToast();
 
@@ -27,15 +26,15 @@ const Web3SignIn = props => {
         padding="8px 10px"
         _hover={{
           background: "black",
-          color: "brandYellow.900"
+          color: "brandYellow.900",
         }}
         onClick={async () => {
           const _web3Connect = {
             w3c: new Web3Modal({
               network: getChainData(+process.env.REACT_APP_NETWORK_ID).network,
               providerOptions,
-              cacheProvider: true
-            })
+              cacheProvider: true,
+            }),
           };
 
           try {
@@ -52,7 +51,7 @@ const Web3SignIn = props => {
               description: err.msg,
               status: "warning",
               duration: 9000,
-              isClosable: true
+              isClosable: true,
             });
           }
         }}

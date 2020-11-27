@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Image, Heading, Flex, Avatar } from "@chakra-ui/core";
+import { Box, Image, Heading, Flex } from "@chakra-ui/core";
 import styled from "@emotion/styled";
 
 import { useCommunityApi } from "../contexts/DappContext";
@@ -7,7 +7,7 @@ import { useCommunityApi } from "../contexts/DappContext";
 const DaoLink = styled.a``;
 const Footer = () => {
   const [communities] = useCommunityApi();
-  const metaList = communities.map(item => item.fields);
+  const metaList = communities.map((item) => item.fields);
 
   return (
     <>

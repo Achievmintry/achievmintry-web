@@ -1,6 +1,6 @@
 import React from "react";
 import makeBlockie from "ethereum-blockies-base64";
-import { Box, Flex, Avatar, Heading, Text, Spinner } from "@chakra-ui/core";
+import { Box, Flex, Avatar, Text } from "@chakra-ui/core";
 import Balance from "./Balance";
 import { truncateAddr } from "../utils/Helpers";
 

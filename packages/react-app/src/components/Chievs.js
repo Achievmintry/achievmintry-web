@@ -24,7 +24,6 @@ import {
   Input,
   Heading,
   AspectRatioBox,
-  Flex
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -32,43 +31,9 @@ import {
   useTxProcessor,
   useUser,
   useNFTApi,
-  useEns
+  useEns,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
-
-import LogoIcon from "../static/assets/img/chievmint-icon.svg";
-
-const infoMotion = {
-  rest: {
-    color: "#e4e4e4",
-    backgroundColor: "rgba(0,0,0,0.2)",
-    x: 0,
-    y: "49%",
-    opacity: 0,
-    transition: {
-      duration: 0.6,
-      type: "tween",
-      damping: 10,
-      mass: 0.5,
-      stiffness: 50,
-      ease: "easeIn"
-    }
-  },
-  hover: {
-    backgroundColor: "rgba(0,0,0,0.9)",
-    x: 0,
-    y: "-99%",
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      type: "tween",
-      damping: 10,
-      mass: 0.8,
-      stiffness: 50,
-      ease: "easeOut"
-    }
-  }
-};
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -144,7 +109,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   }, [nfts, kudos]);
   useEffect(() => {
     //TODO: eesh, make a subgraph and add more events
-    const getKudsDetails = async acctAddr => {
+    const getKudsDetails = async (acctAddr) => {
       const promises = [];
       const nftsOc = [];
       const acct = acctAddr.toLowerCase();
@@ -156,7 +121,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
         setGen0Ownership({});
         return;
       }
-      kudos.tokenData.currentOwners[acct].forEach(item => {
+      kudos.tokenData.currentOwners[acct].forEach((item) => {
         promises.push(kudos.getKudosById(item));
       });
       const nftData = await Promise.all(promises);
@@ -166,7 +131,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           tokenId: item,
           gen0: nftData[idx].clonedFromId === item,
           clonedFromId: nftData[idx].clonedFromId,
-          count: 0
+          count: 0,
         };
         nftsOc.push(kudo);
       });
@@ -178,8 +143,8 @@ const Chievs = ({ featured, account, dao, cols }) => {
       setNftCounts({ ...counts });
       // for each count find index and add count to owned nftsOc
       // counts could be gen0
-      Object.keys(counts).forEach(countItem => {
-        const index = kudos.tokenData.currentOwners[acct].findIndex(item => {
+      Object.keys(counts).forEach((countItem) => {
+        const index = kudos.tokenData.currentOwners[acct].findIndex((item) => {
           return item === countItem;
         });
 
@@ -212,7 +177,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     console.log(
       "clone",
       data.address,
@@ -240,7 +205,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -250,7 +215,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const displayPrice = price => {
+  const displayPrice = (price) => {
     if (!kudos) {
       return "?";
     }
@@ -260,20 +225,20 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = nfts.map(item => item.fields);
+    const metaList = nfts.map((item) => item.fields);
     if (featured) {
-      filteredList = metaList.filter(item => item["Featured"]);
+      filteredList = metaList.filter((item) => item["Featured"]);
     } else {
       filteredList = metaList;
     }
     if (account) {
       filteredList = filteredList.filter(
-        item => nftCounts[item["Gen0 Id"]] > 0
+        (item) => nftCounts[item["Gen0 Id"]] > 0
       );
     }
     if (dao) {
       filteredList = filteredList.filter(
-        item => item["Community (from Artist Submissions)"][0] === dao
+        (item) => item["Community (from Artist Submissions)"][0] === dao
       );
     }
     if (!filteredList.length) {
@@ -306,7 +271,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               }
               alt={item["NFT Name (from Artist Submissions)"][0]}
               fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-              onMouseOver={e => {
+              onMouseOver={(e) => {
                 if (!item["Display Thumb"]) {
                   return;
                 }
@@ -315,7 +280,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     "Image (from Artist Submissions)"
                   ][0].thumbnails.large.url;
               }}
-              onMouseOut={e => {
+              onMouseOut={(e) => {
                 if (!item["Display Thumb"]) {
                   return;
                 }
@@ -453,7 +418,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions)"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={e => {
+                onMouseOver={(e) => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -462,7 +427,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       "Image (from Artist Submissions)"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={e => {
+                onMouseOut={(e) => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
