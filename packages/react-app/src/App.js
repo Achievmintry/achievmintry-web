@@ -38,7 +38,10 @@ const customTheme = {
       900: "#ffcc00",
       200: "#fff0be"
     },
-    breakpoints
+    breakpoints: {
+      ...breakpoints,
+      "2xl": "1920px"
+    }
   },
   fonts: {
     heading: "Arvo, serif",
