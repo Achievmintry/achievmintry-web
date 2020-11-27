@@ -69,22 +69,20 @@ const Communities = ({ featured }) => {
           key={i}
           as={Link}
           to={`/community/${item["Dao Address"]}`}
-          boxShadow="0 0 15px rgba(0,0,0,0.6)"
-          _hover={{ boxShadow: "0 0 10px rgba(0,0,0,0.5)" }}
+          boxShadow="0 0 15px rgba(0,0,0,0.5)"
           bg="brandYellow.900"
           color="black"
           borderWidth="10px"
           overflow="hidden"
           borderColor="black"
-          boxShadow="0 0 15 px rgba(0,0,0,0.5)"
-          p={6}
+          p={{ base: 6, xl: 2, "2xl": 6 }}
         >
-          <Box p="6">
+          <Box p={{ base: 2, xl: 2, "2xl": 6 }}>
             <AspectRatioBox maxW="500px" ratio={1}>
               <Image src={item.Logo[0].url} />
             </AspectRatioBox>
           </Box>
-          <Box p="6" w="100%">
+          <Box p={{ base: 2, xl: 2, "2xl": 6 }} w="100%">
             <Heading as="h3" size="lg">
               {item.Name}
             </Heading>
@@ -97,7 +95,10 @@ const Communities = ({ featured }) => {
 
   return (
     <>
-      <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing={[5, 5, 10, 20]}>
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, xl: 4 }}
+        spacing={{ base: 5, lg: 10, "2xl": 20 }}
+      >
         {renderList()}
         {featured && (
           <HoverBox
@@ -108,11 +109,11 @@ const Communities = ({ featured }) => {
             bg="black"
             color="brandYellow.900"
             borderColor="black"
-            boxShadow="0 0 15 px rgba(0,0,0,0.5)"
+            boxShadow="0 0 15px rgba(0,0,0,0.5)"
             className="hoverbox__featured"
             p={6}
           >
-            <Heading as="h3" size={{ sm: "md", md: "lg" }}>
+            <Heading as="h3" size={{ sm: "md", lg: "xl  " }}>
               Communities
             </Heading>
             <Text>Browse the full list</Text>

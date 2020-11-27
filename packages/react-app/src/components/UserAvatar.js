@@ -1,15 +1,19 @@
 import React from "react";
 import makeBlockie from "ethereum-blockies-base64";
-import { Box, Flex, Avatar, Heading } from "@chakra-ui/core";
+import { Box, Flex, Avatar, Heading, Text } from "@chakra-ui/core";
 import Balance from "./Balance";
 import { truncateAddr } from "../utils/Helpers";
 
 const UserAvatar = ({ user, open }) => {
   return (
     <Box textAlign="right" marginTop="0" position="relative">
-      <Flex direction="row" alignItems="center" justifyContent="flex-end">
+      <Flex
+        direction="row-reverse"
+        alignItems="center"
+        justifyContent="flex-start"
+      >
         {user && user.image && user.image[0] ? (
-          <Box marginTop="0">
+          <Box>
             <Avatar
               name={user.username}
               src={`${"https://ipfs.infura.io/ipfs/" +
@@ -23,26 +27,26 @@ const UserAvatar = ({ user, open }) => {
             <Avatar
               name={user.username}
               src={makeBlockie(user.username)}
-              mr={3}
+              transform={{ base: "scale(0.7)", md: "scale(1)" }}
             />
           </Box>
         )}
-        <Box display={{ base: "none", lg: "block" }}>
-          <Heading as="h3">
+        <Box display={{ base: "none", lg: "block" }} margin="0 10px 0 0">
+          <Text fontSize="sm" fontFamily="body">
             {user.name || truncateAddr(user.username)}{" "}
             <span>{user.emoji || ""} </span>
-          </Heading>
+          </Text>
         </Box>
       </Flex>
       <Balance
         w="auto"
         textAlign="right"
-        opacity={open ? 1 : 0}
+        opacity={{ base: open ? 1 : 0, lg: 1 }}
         transition="all 0.3s ease"
-        position="absolute"
+        position={{ base: "absolute", lg: "relative" }}
         right="10px"
-        bottom="-50px"
-        borderTop="5px solid black"
+        bottom={{ base: "-35px", lg: "0" }}
+        justifyContent="flex-end"
       />
     </Box>
   );

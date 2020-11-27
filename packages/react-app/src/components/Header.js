@@ -28,6 +28,8 @@ const MenuItems = ({ children }) => (
       display="block"
       textAlign="center"
       p="5px 10px"
+      fontSize={{ base: "lg", xl: "lg", "2xl": "xl" }}
+      fontFamily={{ base: "heading", lg: "body" }}
     >
       {children}
     </Text>
@@ -125,8 +127,6 @@ const Header = props => {
         opacity={{ base: show ? 1 : 0, lg: 1 }}
         flexGrow={{ base: "1", xl: "0" }}
         transition="opacity 0.1s 0.3s ease-in-out"
-        fontSize={{ base: "lg", xl: "xs" }}
-        fontFamily={{ base: "heading", lg: "body" }}
         justifyContent={{ base: "unset", lg: "space-around" }}
       >
         <MenuItems>

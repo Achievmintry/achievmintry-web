@@ -325,7 +325,11 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }}
               />
             </AspectRatioBox>
-            <InfoBox p="6" w="100%" bg="brandYellow.900">
+            <InfoBox
+              p={{ base: 6, xl: 2, "2xl": 6 }}
+              w="100%"
+              bg="brandYellow.900"
+            >
               <Heading
                 as="h3"
                 size={["md", "lg"]}
@@ -353,7 +357,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               )}
             </InfoBox>
             {account && (
-              <Box p="6">
+              <Box p={{ base: 6, xl: 2, "2xl": 6 }}>
                 <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
                 <Text>
                   own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
@@ -371,16 +375,19 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          size={["lg", "xl", "2xl"]}
+          fontSize={{ base: "2xl", xl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >
           {dao && dao} Talisman
         </Heading>
-        <Text fontSize={["md", "lg"]} mb="5">
+        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
           Give a talisman of your appreciation
         </Text>
-        <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing={[5, 5, 10, 20]}>
+        <SimpleGrid
+          columns={{ sm: 1, md: 2, xl: 4 }}
+          spacing={{ base: 5, lg: 10, "2xl": 20 }}
+        >
           {renderList()}
           {featured && (
             <HoverBox
@@ -391,9 +398,9 @@ const Chievs = ({ featured, account, dao, cols }) => {
               bg="black"
               color="brandYellow.900"
               borderColor="black"
-              boxShadow="0 0 15 px rgba(0,0,0,0.5)"
+              boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
-              p={6}
+              p={{ base: 6, xl: 2, "2xl": 6 }}
             >
               <InfoBox className="info-box">
                 <Heading as="h3" size="lg">

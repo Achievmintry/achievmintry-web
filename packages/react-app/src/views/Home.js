@@ -16,13 +16,13 @@ const Home = () => {
         <Box p={[2, 4, 6]} mt={6}>
           <Heading
             as="h2"
-            size={["lg", "xl", "2xl"]}
+            fontSize={{ base: "2xl", xl: "4xl" }}
             mb="1"
             textTransform="uppercase"
           >
             Communities
           </Heading>
-          <Text fontSize={["md", "lg"]} mb="5">
+          <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
             Find your community specific talisman
           </Text>
           <Communities featured={true} />
@@ -34,13 +34,13 @@ const Home = () => {
             <Box p={{ sm: 2, md: 4, xl: 6 }} mb="5">
               <Heading
                 as="h2"
-                size={["xl", "2xl", "3xl"]}
+                fontSize={{ base: "2xl", xl: "4xl" }}
                 mb="1"
                 textTransform="uppercase"
               >
                 NFT Artists
               </Heading>
-              <Text fontSize={["md", "lg"]} mb="5">
+              <Text fontSize={{ base: "md", xl: "xl" }} mb="8">
                 Submit your work To own a Gen0 NFT talisman and get a % of all
                 sales.
               </Text>
@@ -51,13 +51,13 @@ const Home = () => {
             <Box p={{ sm: 2, md: 4, xl: 6 }}>
               <Heading
                 as="h2"
-                size={["xl", "2xl", "3xl"]}
+                fontSize={{ base: "2xl", xl: "4xl" }}
                 mb="1"
                 textTransform="uppercase"
               >
                 Bots
               </Heading>
-              <Text fontSize={["md", "lg"]} mb="5">
+              <Text fontSize={{ base: "md", xl: "xl" }} mb="8">
                 Add the tip bot to your discord
               </Text>
               <Button bg="transparent" border="1px">
