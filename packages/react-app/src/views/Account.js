@@ -8,8 +8,7 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Text,
-  Spinner
+  Spinner,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
@@ -50,7 +49,7 @@ const Account = () => {
     // eslint-disable-next-line
   }, [user, addr]);
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     setLoading(true);
     const _addr = ensAddr ? ensAddr : data.address;
     history.push(`/account/${_addr}`);
@@ -63,7 +62,7 @@ const Account = () => {
     setCurrentAccount(_addr);
   };
 
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       setEnsAddr(address);
@@ -86,7 +85,6 @@ const Account = () => {
           w={{ base: "100%", lg: "33%" }}
           mx="auto"
           p={4}
-          color="white"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl color="black">

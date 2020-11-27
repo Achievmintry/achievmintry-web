@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Heading, Text } from "@chakra-ui/core";
-import styled from "@emotion/styled";
 
 import { Communities } from "../components";
 

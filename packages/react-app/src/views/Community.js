@@ -4,13 +4,12 @@ import {
   Box,
   Heading,
   Text,
-  SimpleGrid,
   Flex,
-  AspectRatioBox
+  AspectRatioBox,
 } from "@chakra-ui/core";
 import { useHistory, useParams } from "react-router-dom";
 import { useCommunityApi } from "../contexts/DappContext";
-import { Chievs, Balance } from "../components";
+import { Chievs } from "../components";
 
 const Community = ({ dao }) => {
   const [communities] = useCommunityApi();
@@ -21,8 +20,8 @@ const Community = ({ dao }) => {
 
   useEffect(() => {
     const _dao = communities
-      .map(item => item.fields)
-      .find(item => item["Dao Address"] === currentDao);
+      .map((item) => item.fields)
+      .find((item) => item["Dao Address"] === currentDao);
     setDaoData(_dao);
   }, [communities, currentDao]);
 
