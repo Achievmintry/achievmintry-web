@@ -8,7 +8,6 @@ const DaoLink = styled.a``;
 const Footer = () => {
   const [communities] = useCommunityApi();
   const metaList = communities.map(item => item.fields);
-  console.log(metaList);
 
   return (
     <>
