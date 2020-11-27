@@ -83,7 +83,7 @@ const Account = () => {
           bg="brandYellow.900"
           border="10px solid black"
           color="black"
-          w="33%"
+          w={{ base: "100%", lg: "33%" }}
           mx="auto"
           p={4}
           color="white"
