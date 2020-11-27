@@ -1,10 +1,10 @@
-import React from 'react';
-import Web3Modal from 'web3modal';
-import { Button, useToast } from '@chakra-ui/core';
+import React from "react";
+import Web3Modal from "web3modal";
+import { Button, useToast } from "@chakra-ui/core";
 
-import { getChainData } from '../utils/Chains';
-import { w3connect, providerOptions } from '../utils/Auth';
-import { useWeb3Connect } from '../contexts/DappContext';
+import { getChainData } from "../utils/Chains";
+import { w3connect, providerOptions } from "../utils/Auth";
+import { useWeb3Connect } from "../contexts/DappContext";
 
 // export const logoutOfWeb3Modal = async function() {
 //   const [Web3Connect, updateWeb3Connect] = useWeb3Connect();
@@ -12,7 +12,7 @@ import { useWeb3Connect } from '../contexts/DappContext';
 //   window.location.reload();
 // };
 
-const Web3SignIn = () => {
+const Web3SignIn = (props) => {
   const [, updateWeb3Connect] = useWeb3Connect();
   const toast = useToast();
 
@@ -21,6 +21,13 @@ const Web3SignIn = () => {
       <Button
         bg="transparent"
         border="1px"
+        size={{ base: "sm", lg: "md" }}
+        fontSize={{ base: "12px", lg: "14px" }}
+        padding="8px 10px"
+        _hover={{
+          background: "black",
+          color: "brandYellow.900",
+        }}
         onClick={async () => {
           const _web3Connect = {
             w3c: new Web3Modal({
@@ -36,20 +43,21 @@ const Web3SignIn = () => {
 
             // window.location.reload();
           } catch (err) {
-            console.log('Error web3Connect ', err);
+            console.log("Error web3Connect ", err);
 
             toast({
-              title: 'Wrong Network',
-              position: 'top-right',
+              title: "Wrong Network",
+              position: "top-right",
               description: err.msg,
-              status: 'warning',
+              status: "warning",
               duration: 9000,
               isClosable: true,
             });
           }
         }}
+        {...props}
       >
-        {' '}
+        {" "}
         Connect
       </Button>
     </>

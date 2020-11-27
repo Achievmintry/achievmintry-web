@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
+// import { motion } from "framer-motion";
 
 //import metaList from "../data/metaList.json";
 
 import {
-  Grid,
+  SimpleGrid,
   Box,
   Image,
   Button,
@@ -21,6 +23,7 @@ import {
   useDisclosure,
   Input,
   Heading,
+  AspectRatioBox,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -32,7 +35,41 @@ import {
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
-const Chievs = ({ featured, account, dao }) => {
+const HoverBox = styled(Box)`
+  position: relative;
+  cursor: pointer;
+  z-index: 0;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  }
+  &.hoverbox__featured {
+    &::after {
+      position: absolute;
+      opacity: 1;
+      content: "";
+      display: block;
+      /* background: black; */
+      border-right: 10px solid;
+      background-color: #ffcc00;
+      width: 200%;
+      height: 200%;
+      top: 80%;
+      right: 30px;
+      z-index: 1;
+      transform: rotate(45deg);
+    }
+
+    .info-box {
+      position: relative;
+      z-index: 20;
+    }
+  }
+`;
+const InfoBox = styled(Box)``;
+
+const Chievs = ({ featured, account, dao, cols }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
@@ -48,6 +85,7 @@ const Chievs = ({ featured, account, dao }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
+  console.log(cols);
   useEffect(() => {
     // get clones in wild
     if (!kudos) {
@@ -199,19 +237,21 @@ const Chievs = ({ featured, account, dao }) => {
       );
     }
     if (dao) {
-      filteredList = filteredList.filter((item) => item["Community (from Artist Submissions)"][0] === dao);
+      filteredList = filteredList.filter(
+        (item) => item["Community (from Artist Submissions)"][0] === dao
+      );
     }
     if (!filteredList.length) {
       return <Text>Nothing here</Text>;
     }
     return filteredList.map((item, i) => {
       return (
-        <Box
-          maxW="18rem"
-          borderWidth="1px"
-          rounded="lg"
+        <HoverBox
+          borderWidth="10px"
           overflow="hidden"
-          borderColor="brandPink.900"
+          bg="black"
+          borderColor="black"
+          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
           key={item.id}
           index={i}
           as={Link}
@@ -221,32 +261,45 @@ const Chievs = ({ featured, account, dao }) => {
             onOpen();
           }}
         >
-          <Image
-            src={
-              item["Display Thumb"]
-                ? item["Display Thumb"][0].thumbnails.large.url
-                : item["Image (from Artist Submissions)"][0].thumbnails.large
-                    .url
-            }
-            alt={item["NFT Name (from Artist Submissions)"][0]}
-            fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-            onMouseOver={(e) => {
-              if (!item["Display Thumb"]) {
-                return;
+          <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
+            <Image
+              src={
+                item["Display Thumb"]
+                  ? item["Display Thumb"][0].thumbnails.large.url
+                  : item["Image (from Artist Submissions)"][0].thumbnails.large
+                      .url
               }
-              e.currentTarget.src =
-                item["Image (from Artist Submissions)"][0].thumbnails.large.url;
-            }}
-            onMouseOut={(e) => {
-              if (!item["Display Thumb"]) {
-                return;
-              }
-              e.currentTarget.src =
-                item["Display Thumb"][0].thumbnails.large.url;
-            }}
-          />
-          <Box p="6">
-            <Heading as="h3" size="lg">
+              alt={item["NFT Name (from Artist Submissions)"][0]}
+              fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
+              onMouseOver={(e) => {
+                if (!item["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  item[
+                    "Image (from Artist Submissions)"
+                  ][0].thumbnails.large.url;
+              }}
+              onMouseOut={(e) => {
+                if (!item["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  item["Display Thumb"][0].thumbnails.large.url;
+              }}
+            />
+          </AspectRatioBox>
+          <InfoBox
+            p={{ base: 6, xl: 2, "2xl": 6 }}
+            w="100%"
+            bg="brandYellow.900"
+          >
+            <Heading
+              as="h3"
+              fontSize={{ base: "md", xl: "xl" }}
+              textTransform="uppercase"
+              color="black"
+            >
               {item["NFT Name (from Artist Submissions)"][0]}
             </Heading>
             <Text>
@@ -266,47 +319,61 @@ const Chievs = ({ featured, account, dao }) => {
                   "SOLD OUT"}
               </Text>
             )}
-          </Box>
-          {account && (
-            <Box p="6">
-              <Text>own: {nftCounts[item["Gen0 Id"]]}</Text>
-              <Text>
-                own gen0: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-              </Text>
-            </Box>
-          )}
-        </Box>
+            {account && (
+              <Box>
+                <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
+                <Text>
+                  Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
+                </Text>
+              </Box>
+            )}
+          </InfoBox>
+        </HoverBox>
       );
     });
   };
 
   return (
     <>
-      <Box p="6">
-        <Heading>Talisman</Heading>
-        <Text>Give a talisman of your appreciation</Text>
-        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+      <Box p={[2, 4, 6]}>
+        <Heading
+          as="h2"
+          fontSize={{ base: "2xl  ", xl: "4xl" }}
+          mb="1"
+          textTransform="uppercase"
+        >
+          {dao && dao} Talisman
+        </Heading>
+        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
+          Give a talisman of your appreciation
+        </Text>
+        <SimpleGrid
+          columns={{ sm: 1, md: 2, xl: 4 }}
+          spacing={{ base: 5, lg: 10, "2xl": 20 }}
+        >
           {renderList()}
           {featured && (
-            <Box
+            <HoverBox
               as={Link}
               to="/chievs"
-              maxW="18rem"
-              borderWidth="1px"
-              rounded="lg"
+              borderWidth="10px"
               overflow="hidden"
-              borderColor="brandPink.900"
-              p="6"
+              bg="black"
+              color="brandYellow.900"
+              borderColor="black"
+              boxShadow="0 0 15px rgba(0,0,0,0.5)"
+              className="hoverbox__featured"
+              p={{ base: 6, xl: 2, "2xl": 6 }}
             >
-              <Box>
+              <InfoBox className="info-box">
                 <Heading as="h3" size="lg">
                   Browse More
                 </Heading>
                 <Text>Click here to see the full list</Text>
-              </Box>
-            </Box>
+              </InfoBox>
+            </HoverBox>
           )}
-        </Grid>
+        </SimpleGrid>
       </Box>
 
       <Modal
@@ -317,14 +384,24 @@ const Chievs = ({ featured, account, dao }) => {
           onClose();
         }}
       >
-        <ModalOverlay zIndex={0} />
-        <ModalContent zIndex={1}>
+        <ModalOverlay zIndex={400} />
+        <ModalContent
+          zIndex={500}
+          p={{ base: 10, xl: 25 }}
+          bg="brandYellow.900"
+          border="10px solid black"
+        >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
-              <Text>
-                {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
-                {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
-              </Text>
+              <>
+                <Heading>
+                  {selected["NFT Name (from Artist Submissions)"][0]}
+                </Heading>
+                <Text>
+                  {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                  {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
+                </Text>
+              </>
             ) : (
               <Text>Nothing Selected</Text>
             )}
@@ -357,41 +434,46 @@ const Chievs = ({ featured, account, dao }) => {
                   e.currentTarget.src =
                     selected["Display Thumb"][0].thumbnails.large.url;
                 }}
+                width="100%"
+                height="auto"
               />
             )}
             {loading && <Text>Check MetaMask</Text>}
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <FormLabel htmlFor="address">Eth address</FormLabel>
-                <Input
-                  ref={register}
-                  name="address"
-                  type="text"
-                  id="address"
-                  aria-describedby="address-helper-text"
-                  readOnly={loading}
-                  onChange={handleChange}
-                />
-                <FormHelperText p="1" id="address-helper-text">
-                  {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
-                </FormHelperText>
-              </FormControl>
-              {user?.username ? (
-                <Button
-                  isLoading={loading}
-                  loadingText="Gifting"
-                  bg="transparent"
-                  border="1px"
-                  type="submit"
-                  disabled={loading}
-                >
-                  Mint and Send
-                </Button>
-              ) : (
-                <Web3SignIn />
-              )}
-            </form>
+            <Box pt="20px">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl>
+                  <FormLabel htmlFor="address">Eth address</FormLabel>
+                  <Input
+                    ref={register}
+                    name="address"
+                    type="text"
+                    id="address"
+                    aria-describedby="address-helper-text"
+                    readOnly={loading}
+                    onChange={handleChange}
+                  />
+                  <FormHelperText p="1" id="address-helper-text">
+                    {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                  </FormHelperText>
+                </FormControl>
+                {user?.username ? (
+                  <Button
+                    isLoading={loading}
+                    loadingText="Gifting"
+                    bg="black"
+                    color="brandYellow.900"
+                    border="1px"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    Mint and Send
+                  </Button>
+                ) : (
+                  <Web3SignIn />
+                )}
+              </form>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
