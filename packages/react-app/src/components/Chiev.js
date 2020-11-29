@@ -102,7 +102,7 @@ const Chiev = ({ token }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.clone(
+      kudos.service.service.clone(
         addr,
         user.username,
         token["Gen0 Id"],
@@ -128,10 +128,10 @@ const Chiev = ({ token }) => {
   };
 
   const displayPrice = (price) => {
-    if (!kudos) {
+    if (!kudos.service) {
       return "?";
     }
-    return kudos.displayPrice(price);
+    return kudos.service.displayPrice(price);
   };
 
   return (

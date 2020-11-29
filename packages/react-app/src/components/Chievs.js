@@ -32,6 +32,7 @@ import {
   useUser,
   useNFTApi,
   useEns,
+  useChainLogs,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 
@@ -73,94 +74,48 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
-  const [mintCounts, setMintCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [ensAddr, setEnsAddr] = useState("");
   const [kudos] = useKudos();
   const [user] = useUser();
   const [nfts] = useNFTApi();
   const [ens] = useEns();
+  const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
-  console.log(cols);
-  useEffect(() => {
-    // get clones in wild
-    if (!kudos) {
-      return;
-    }
-    const getMintCount = async () => {
-      var cloneInWild = {};
-      const cloneInWildCounts = await Promise.all(
-        nfts.map((item, idx) =>
-          kudos.getNumClonesInWild(item.fields["Gen0 Id"])
-        )
-      );
-      cloneInWildCounts.forEach((item, idx) => {
-        cloneInWild[nfts[idx].fields["Gen0 Id"]] = item;
-      });
-      setMintCounts(cloneInWild || {});
-    };
 
-    getMintCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nfts, kudos]);
   useEffect(() => {
-    //TODO: eesh, make a subgraph and add more events
     const getKudsDetails = async (acctAddr) => {
-      const promises = [];
-      const nftsOc = [];
       const acct = acctAddr.toLowerCase();
-
-      // get only nfts where *account* is owner
-      // get onchain data
-      if (!kudos.tokenData.currentOwners[acct]) {
+      console.log('new', acctAddr);
+      if (!chainLogs.tokenData.currentOwners[acct]) {
         setNftCounts({});
         setGen0Ownership({});
         return;
       }
-      kudos.tokenData.currentOwners[acct].forEach((item) => {
-        promises.push(kudos.getKudosById(item));
-      });
-      const nftData = await Promise.all(promises);
-      // get details of all *acct* owned tokens and flag if gen0
-      kudos.tokenData.currentOwners[acct].forEach((item, idx) => {
-        const kudo = {
-          tokenId: item,
-          gen0: nftData[idx].clonedFromId === item,
-          clonedFromId: nftData[idx].clonedFromId,
-          count: 0,
-        };
-        nftsOc.push(kudo);
-      });
-      // for each unique owned nft get count
-      var counts = {};
-      nftsOc.forEach((item, idx) => {
-        counts[item.clonedFromId] = 1 + (counts[nftsOc[idx].clonedFromId] || 0);
-      });
-      setNftCounts({ ...counts });
-      // for each count find index and add count to owned nftsOc
-      // counts could be gen0
-      Object.keys(counts).forEach((countItem) => {
-        const index = kudos.tokenData.currentOwners[acct].findIndex((item) => {
-          return item === countItem;
-        });
 
-        if (index > -1) {
-          gen0Ownership[countItem] = true;
-        } else {
-          gen0Ownership[countItem] = false;
-        }
-      });
+      const counts = await kudos.service.getOwnedForAccount(
+        chainLogs.tokenData.currentOwners,
+        acct
+      );
+      setNftCounts({ ...counts });
+
+      const gen0Ownership = kudos.service.getGen0Owned(
+        chainLogs.tokenData.currentOwners,
+        acct,
+        counts
+      );
+
       setGen0Ownership({ ...gen0Ownership });
     };
-    if (account && kudos?.tokenData) {
+    if (account && chainLogs?.tokenData) {
       getKudsDetails(account);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos?.tokenData, account]);
+  }, [kudos, chainLogs, account]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -190,7 +145,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.clone(
+      kudos.service.clone(
         addr,
         user.username,
         selected["Gen0 Id"],
@@ -216,10 +171,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
   };
 
   const displayPrice = (price) => {
-    if (!kudos) {
+    if (!kudos?.service) {
       return "?";
     }
-    return kudos.displayPrice(price);
+    return kudos.service.displayPrice(price);
   };
 
   const renderList = () => {
@@ -311,10 +266,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
               Quantity:{" "}
               {item["Max Quantity (from Artist Submissions)"][0] || "?"}
             </Text>
-            {+item["Gen0 Id"] && (
+            {+item["Gen0 Id"] && chainLogs.cloneInWild && (
               <Text>
-                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
-                {+mintCounts[item["Gen0 Id"]] ===
+                Minted: {chainLogs.cloneInWild[item["Gen0 Id"]]}{" "}
+                {+chainLogs.cloneInWild[item["Gen0 Id"]] ===
                   item["Max Quantity (from Artist Submissions)"][0] &&
                   "SOLD OUT"}
               </Text>

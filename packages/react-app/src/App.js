@@ -13,7 +13,8 @@ import {
   NFTApiInit,
   KudosInit,
   TxProcessorInit,
-  UserInit
+  UserInit,
+  ChainLogsInit,
 } from "./contexts";
 // import supportedChains from "./utils/Chains";
 import "./themes/css/fonts.css";
@@ -29,24 +30,24 @@ const customTheme = {
   colors: {
     ...theme.colors,
     brandPurple: {
-      900: "#6e1fb1"
+      900: "#6e1fb1",
     },
     brandPink: {
-      900: "#cc3385"
+      900: "#cc3385",
     },
     brandYellow: {
       900: "#ffcc00",
-      200: "#fff0be"
+      200: "#fff0be",
     },
     breakpoints: {
       ...breakpoints,
-      "2xl": "1920px"
-    }
+      "2xl": "1920px",
+    },
   },
   fonts: {
     heading: "Arvo, serif",
-    body: "Ubuntu, sans-serif"
-  }
+    body: "Ubuntu, sans-serif",
+  },
 };
 
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
@@ -68,6 +69,7 @@ function App() {
         <EnsInit />
         <NFTApiInit />
         <CommunityApiInit />
+        <ChainLogsInit />
       </>
     );
   }

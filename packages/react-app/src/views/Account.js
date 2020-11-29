@@ -50,8 +50,14 @@ const Account = () => {
   }, [user, addr]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
     const _addr = ensAddr ? ensAddr : data.address;
+    console.log('foo');
+    if (currentAccount && _addr.toLowerCase() === currentAccount.toLowerCase()) {
+      return;
+    }
+    console.log('bar');
+
+    setLoading(true);
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
   };
@@ -133,9 +139,9 @@ const Account = () => {
           <Flex>
             {!loading && currentAccount ? (
               <AccountAvatar addr={currentAccount} />
-            ) : (
+            ) : loading && !currentAccount ? (
               <Spinner />
-            )}
+            ) : null}
           </Flex>
         </Box>
         {currentAccount && <Chievs account={currentAccount} />}

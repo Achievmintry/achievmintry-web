@@ -4,7 +4,6 @@ import Web3 from "web3";
 export class KudosService {
   web3;
   contract;
-  tokenData = {};
 
   constructor(tokenAddr, web3 = null) {
     if (!web3) {
@@ -15,6 +14,15 @@ export class KudosService {
     }
     this.web3 = web3;
     this.contract = new web3.eth.Contract(abis.kudos, tokenAddr);
+
+    this.sendTx = this.sendTx; // eslint-disable-line
+    this.tokenOfOwnerByIndex = this.tokenOfOwnerByIndex; // eslint-disable-line
+    this.getKudosById = this.getKudosById; // eslint-disable-line
+    this.getNumClonesInWild = this.getNumClonesInWild; // eslint-disable-line
+    this.getLatestId = this.getLatestId; // eslint-disable-line
+    this.displayPrice = this.displayPrice; // eslint-disable-line
+    this.getLogs = this.getLogs; // eslint-disable-line
+    this.getOwnedForAccount = this.getOwnedForAccount; // eslint-disable-line
   }
 
   sendTx(name, tx, callback, from, value) {
@@ -92,29 +100,86 @@ export class KudosService {
     const origOwners = {};
     sortedLogs.forEach((item) => {
       const account = item.returnValues._to.toLowerCase();
-      if(item.returnValues._from === "0x0000000000000000000000000000000000000000"){
-        origOwners[account] = origOwners[account] || []
-        origOwners[account].push(item.returnValues._tokenId)
+      if (
+        item.returnValues._from === "0x0000000000000000000000000000000000000000"
+      ) {
+        origOwners[account] = origOwners[account] || [];
+        origOwners[account].push(item.returnValues._tokenId);
       }
-    })
+    });
 
     const currentOwners = {};
     sortedLogs.forEach((item) => {
       const account = item.returnValues._to.toLowerCase();
-      currentOwners[account] = currentOwners[account] || []
-      currentOwners[account].push(item.returnValues._tokenId)
-    })
+      currentOwners[account] = currentOwners[account] || [];
+      currentOwners[account].push(item.returnValues._tokenId);
+    });
 
     return {
       sortedLogs,
       origOwners,
-      currentOwners
-    }
+      currentOwners,
+    };
+  }
 
+  async getOwnedForAccount(currentOwners, acct) {
+    const promises = [];
+    const nftsOc = [];
+
+    // get only nfts where *account* is owner
+    // get onchain data
+    if (!currentOwners[acct]) {
+      return {};
+    }
+    currentOwners[acct].forEach((item) => {
+      promises.push(this.getKudosById(item));
+    });
+    const nftData = await Promise.all(promises);
+    // get details of all *acct* owned tokens and flag if gen0
+    currentOwners[acct].forEach((item, idx) => {
+      const kudo = {
+        tokenId: item,
+        gen0: nftData[idx].clonedFromId === item,
+        clonedFromId: nftData[idx].clonedFromId,
+        count: 0,
+      };
+      nftsOc.push(kudo);
+    });
+    // for each unique owned nft get count
+    var counts = {};
+    nftsOc.forEach((item, idx) => {
+      counts[item.clonedFromId] = 1 + (counts[nftsOc[idx].clonedFromId] || 0);
+    });
+    return counts;
+  }
+
+  getGen0Owned(currentOwners, acct, counts) {
+    const gen0Ownership = {};
+
+    Object.keys(counts).forEach((countItem) => {
+      const index = currentOwners[acct].findIndex((item) => {
+        return item === countItem;
+      });
+
+      if (index > -1) {
+        gen0Ownership[countItem] = true;
+      } else {
+        gen0Ownership[countItem] = false;
+      }
+    });
+    return gen0Ownership;
   }
 }
 
 export class Web3KudosService extends KudosService {
+  constructor(...args) {
+    super(...args);
+
+    this.mint = this.mint; // eslint-disable-line
+    this.burn = this.burn; // eslint-disable-line
+    this.clone = this.clone; // eslint-disable-line
+  }
+
   // admin
   async mint(to, from, priceFinney, numClonesAllowed, tokenURI) {
     await this.contract.methods.mint(
