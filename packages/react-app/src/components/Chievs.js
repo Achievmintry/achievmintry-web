@@ -23,7 +23,6 @@ import {
   useDisclosure,
   Input,
   Heading,
-  AspectRatioBox,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import {
@@ -35,6 +34,7 @@ import {
   useChainLogs,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
+import { ChievCard } from ".";
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -86,11 +86,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
-
   useEffect(() => {
     const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
-      console.log('new', acctAddr);
+      console.log("new", acctAddr);
       if (!chainLogs.tokenData.currentOwners[acct]) {
         setNftCounts({});
         setGen0Ownership({});
@@ -199,90 +198,33 @@ const Chievs = ({ featured, account, dao, cols }) => {
     if (!filteredList.length) {
       return <Text>Nothing here</Text>;
     }
-    return filteredList.map((item, i) => {
+    return filteredList.map((token, i) => {
       return (
         <HoverBox
+          key={token.id}
+          onClick={() => {
+            console.log("clicked");
+            setSelected(token);
+            onOpen();
+          }}
           borderWidth="10px"
           overflow="hidden"
           bg="black"
           borderColor="black"
           boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
-          key={item.id}
-          index={i}
-          as={Link}
-          to={"#"}
-          onClick={() => {
-            setSelected(item);
-            onOpen();
-          }}
         >
-          <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
-            <Image
-              src={
-                item["Display Thumb"]
-                  ? item["Display Thumb"][0].thumbnails.large.url
-                  : item["Image (from Artist Submissions)"][0].thumbnails.large
-                      .url
-              }
-              alt={item["NFT Name (from Artist Submissions)"][0]}
-              fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-              onMouseOver={(e) => {
-                if (!item["Display Thumb"]) {
-                  return;
-                }
-                e.currentTarget.src =
-                  item[
-                    "Image (from Artist Submissions)"
-                  ][0].thumbnails.large.url;
-              }}
-              onMouseOut={(e) => {
-                if (!item["Display Thumb"]) {
-                  return;
-                }
-                e.currentTarget.src =
-                  item["Display Thumb"][0].thumbnails.large.url;
-              }}
-            />
-          </AspectRatioBox>
-          <InfoBox
-            p={{ base: 6, xl: 2, "2xl": 6 }}
-            w="100%"
-            bg="brandYellow.900"
-          >
-            <Heading
-              as="h3"
-              fontSize={{ base: "md", xl: "xl" }}
-              textTransform="uppercase"
-              color="black"
-            >
-              {item["NFT Name (from Artist Submissions)"][0]}
-            </Heading>
-            <Text>
-              {" "}
-              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
+          <ChievCard
+            token={token}
+            owned={nftCounts[token["Gen0 Id"]]}
+            gen0Ownership={gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
+            account={account}
+            displayPrice={displayPrice(token["Price In Wei"] || "0")}
+          />
+          <Link to={`/chiev/${token["Gen0 Id"]}`}>
+            <Text ml={2} color={"white"}>
+              Details
             </Text>
-            <Text>
-              {" "}
-              Quantity:{" "}
-              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-            </Text>
-            {+item["Gen0 Id"] && chainLogs.cloneInWild && (
-              <Text>
-                Minted: {chainLogs.cloneInWild[item["Gen0 Id"]]}{" "}
-                {+chainLogs.cloneInWild[item["Gen0 Id"]] ===
-                  item["Max Quantity (from Artist Submissions)"][0] &&
-                  "SOLD OUT"}
-              </Text>
-            )}
-            {account && (
-              <Box>
-                <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
-                <Text>
-                  Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-                </Text>
-              </Box>
-            )}
-          </InfoBox>
+          </Link>
         </HoverBox>
       );
     });
@@ -306,7 +248,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           columns={{ sm: 1, md: 2, xl: 4 }}
           spacing={{ base: 5, lg: 10, "2xl": 20 }}
         >
-          {renderList()}
+          {nfts && kudos && chainLogs && renderList()}
           {featured && (
             <HoverBox
               as={Link}

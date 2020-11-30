@@ -23,6 +23,7 @@ export class KudosService {
     this.displayPrice = this.displayPrice; // eslint-disable-line
     this.getLogs = this.getLogs; // eslint-disable-line
     this.getOwnedForAccount = this.getOwnedForAccount; // eslint-disable-line
+    this.getTokenUri = this.getTokenUri // eslint-disable-line
   }
 
   sendTx(name, tx, callback, from, value) {
@@ -53,6 +54,16 @@ export class KudosService {
     try {
       token = await this.contract.methods.getKudosById(tokenId).call();
       return token;
+    } catch {
+      return undefined;
+    }
+  }
+
+  async getTokenUri(tokenId) {
+    try {
+      const uri = await this.contract.methods.tokenURI(tokenId).call();
+      const data = await fetch(uri);
+      return data.json();
     } catch {
       return undefined;
     }
@@ -122,21 +133,21 @@ export class KudosService {
     };
   }
 
-  async getOwnedForAccount(currentOwners, acct) {
+  async getOwnedForAccount(ownersObj, acct) {
     const promises = [];
     const nftsOc = [];
 
     // get only nfts where *account* is owner
     // get onchain data
-    if (!currentOwners[acct]) {
+    if (!ownersObj[acct]) {
       return {};
     }
-    currentOwners[acct].forEach((item) => {
+    ownersObj[acct].forEach((item) => {
       promises.push(this.getKudosById(item));
     });
     const nftData = await Promise.all(promises);
     // get details of all *acct* owned tokens and flag if gen0
-    currentOwners[acct].forEach((item, idx) => {
+    ownersObj[acct].forEach((item, idx) => {
       const kudo = {
         tokenId: item,
         gen0: nftData[idx].clonedFromId === item,
@@ -153,11 +164,11 @@ export class KudosService {
     return counts;
   }
 
-  getGen0Owned(currentOwners, acct, counts) {
+  getGen0Owned(ownersObj, acct, counts) {
     const gen0Ownership = {};
 
     Object.keys(counts).forEach((countItem) => {
-      const index = currentOwners[acct].findIndex((item) => {
+      const index = ownersObj[acct].findIndex((item) => {
         return item === countItem;
       });
 
