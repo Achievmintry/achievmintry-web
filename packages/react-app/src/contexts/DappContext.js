@@ -27,6 +27,7 @@ const initialState = {
     }),
   },
   kudos: null,
+  chainLogs: {},
   nftApi: [],
   communityApi: [],
 };
@@ -53,6 +54,9 @@ const reducer = (state, action) => {
     }
     case 'setKudos': {
       return { ...state, kudos: action.payload };
+    }
+    case 'setChainLogs': {
+      return { ...state, chainLogs: action.payload };
     }
     case 'setEns': {
       return { ...state, ens: action.payload };
@@ -104,6 +108,10 @@ function DappContextProvider(props) {
     dispatch({ type: 'setKudos', payload: _kudos });
   }, []);
 
+  const updateChainLogs = useCallback((_chainLogs) => {
+    dispatch({ type: 'setChainLogs', payload: _chainLogs });
+  }, []);
+
   const updateEns = useCallback((_ens) => {
     dispatch({ type: 'setEns', payload: _ens });
   }, []);
@@ -130,6 +138,7 @@ function DappContextProvider(props) {
             updateTxProcessor,
             updateUserWallet,
             updateKudos,
+            updateChainLogs,
             updateEns,
             updateNFTApi,
             updateCommunityApi,
@@ -145,6 +154,7 @@ function DappContextProvider(props) {
           updateTxProcessor,
           updateUserWallet,
           updateKudos,
+          updateChainLogs,
           updateEns,
           updateNFTApi,
           updateCommunityApi
@@ -194,6 +204,11 @@ export function useLoading() {
 export function useKudos() {
   const [state, { updateKudos }] = useDappContext();
   return [state.kudos, updateKudos];
+}
+
+export function useChainLogs() {
+  const [state, { updateChainLogs }] = useDappContext();
+  return [state.chainLogs, updateChainLogs];
 }
 
 export function useEns() {

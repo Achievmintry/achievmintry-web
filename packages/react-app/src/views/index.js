@@ -1,5 +1,6 @@
 export { default as Account } from "./Account";
 export { default as AllChievs } from "./AllChievs";
+export { default as ChievDetail } from "./ChievDetail";
 export { default as AllCommunities } from "./AllCommunities";
 export { default as Community } from "./Community";
 export { default as Home } from "./Home";
