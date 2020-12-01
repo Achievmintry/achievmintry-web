@@ -199,6 +199,13 @@ const Chiev = ({ token }) => {
               {attr.trait_type}:{attr.value}
             </Text>
           ))}
+          <Button
+              bg="black"
+              color="brandYellow.900"
+              border="1px"
+            >
+              Use Theme
+            </Button>
         </Box>
       )}
 

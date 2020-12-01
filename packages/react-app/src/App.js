@@ -22,6 +22,7 @@ import "./themes/css/fonts.css";
 
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
+import { DappContextProvider } from "./contexts/DappContext";
 const breakpoints = createBreakpoints({
   sm: "360px",
   md: "768px",
@@ -83,10 +84,12 @@ function App() {
     <ApolloProvider client={client}>
       <ChakraProvider theme={customTheme}>
         <Router>
-          <Init />
-          <Layout>
-            <Routes />
-          </Layout>
+          <DappContextProvider>
+            <Init />
+            <Layout>
+              <Routes />
+            </Layout>
+          </DappContextProvider>
         </Router>
       </ChakraProvider>
     </ApolloProvider>
