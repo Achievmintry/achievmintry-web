@@ -6,8 +6,8 @@ import {
   Text,
   SimpleGrid,
   Image,
-  AspectRatioBox,
-} from "@chakra-ui/core";
+  AspectRatio,
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useCommunityApi } from "../contexts/DappContext";
 
@@ -73,11 +73,12 @@ const Communities = ({ featured }) => {
           overflow="hidden"
           borderColor="black"
           p={{ base: 6, xl: 2, "2xl": 6 }}
+          m={6}
         >
           <Box p={{ base: 2, xl: 2, "2xl": 6 }}>
-            <AspectRatioBox maxW="500px" ratio={1}>
+            <AspectRatio maxW="500px" ratio={1}>
               <Image src={item.Logo[0].url} />
-            </AspectRatioBox>
+            </AspectRatio>
           </Box>
           <Box p={{ base: 2, xl: 2, "2xl": 6 }} w="100%">
             <Heading as="h3" size="lg">
@@ -109,6 +110,7 @@ const Communities = ({ featured }) => {
             boxShadow="0 0 15px rgba(0,0,0,0.5)"
             className="hoverbox__featured"
             p={6}
+            m={6}
           >
             <Heading as="h3" size="lg">
               Communities

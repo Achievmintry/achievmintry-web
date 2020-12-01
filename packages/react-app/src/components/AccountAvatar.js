@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import makeBlockie from "ethereum-blockies-base64";
-import { Flex, Avatar, Link, Text } from "@chakra-ui/core";
+import { Flex, Avatar, Link, Text } from "@chakra-ui/react";
 
 import { getProfile } from "3box";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Image, Heading, Flex } from "@chakra-ui/core";
+import { Box, Image, Heading, Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 import { useCommunityApi } from "../contexts/DappContext";

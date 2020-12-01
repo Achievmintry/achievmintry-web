@@ -1,6 +1,6 @@
 import React from "react";
 import Web3Modal from "web3modal";
-import { Button, useToast } from "@chakra-ui/core";
+import { Button, useToast } from "@chakra-ui/react";
 
 import { getChainData } from "../utils/Chains";
 import { w3connect, providerOptions } from "../utils/Auth";

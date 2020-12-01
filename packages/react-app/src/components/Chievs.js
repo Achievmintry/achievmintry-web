@@ -23,7 +23,7 @@ import {
   useDisclosure,
   Input,
   Heading,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
   useKudos,
@@ -212,6 +212,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           bg="black"
           borderColor="black"
           boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+          m={6}
         >
           <ChievCard
             token={token}
@@ -261,6 +262,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
               p={{ base: 6, xl: 2, "2xl": 6 }}
+              m={6}
             >
               <InfoBox className="info-box">
                 <Heading as="h3" size="lg">

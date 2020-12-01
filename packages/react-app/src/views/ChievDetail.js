@@ -3,7 +3,7 @@ import {
   Box,
   Text,
   Flex,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useNFTApi} from "../contexts/DappContext";
 import { Chiev } from "../components";

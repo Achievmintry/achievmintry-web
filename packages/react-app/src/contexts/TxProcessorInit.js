@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useToast } from "@chakra-ui/core";
+import { useToast } from "@chakra-ui/react";
 
 import {
   Text,
@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import { TxProcessorService } from "../utils/TxProcessorService";
 import { useTxProcessor, useUser, useWeb3Connect } from "./DappContext";

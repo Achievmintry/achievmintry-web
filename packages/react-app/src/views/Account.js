@@ -9,7 +9,7 @@ import {
   FormLabel,
   Input,
   Spinner,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
 import { Chievs, AccountAvatar } from "../components";

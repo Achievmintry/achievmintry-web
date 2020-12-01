@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Heading, Flex, Text, PseudoBox, Image } from "@chakra-ui/core";
+import { Box, Heading, Flex, Text,  Image } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useUser, useLoading } from "../contexts/DappContext";
@@ -10,7 +10,7 @@ import UserAvatar from "./UserAvatar";
 import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
-  <PseudoBox
+  <Box
     _hover={{ backgroundColor: "brandYellow.900", color: "black" }}
     transition="color 0.1s ease-in"
   >
@@ -24,7 +24,7 @@ const MenuItems = ({ children }) => (
     >
       {children}
     </Text>
-  </PseudoBox>
+  </Box>
 );
 
 const Header = (props) => {

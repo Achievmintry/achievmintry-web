@@ -6,7 +6,7 @@ import {
   Text,
   Flex,
   AspectRatioBox,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { useCommunityApi } from "../contexts/DappContext";
 import { Chievs } from "../components";

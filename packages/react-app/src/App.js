@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
-import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
 import { Header, Footer } from "./components";
 import Routes from "./Routes";
 import {
@@ -19,16 +19,19 @@ import {
 // import supportedChains from "./utils/Chains";
 import "./themes/css/fonts.css";
 
-const breakpoints = ["360px", "768px", "1024px", "1440px"];
-breakpoints.sm = breakpoints[0];
-breakpoints.md = breakpoints[1];
-breakpoints.lg = breakpoints[2];
-breakpoints.xl = breakpoints[3];
+import { extendTheme } from "@chakra-ui/react";
+import { createBreakpoints } from "@chakra-ui/theme-tools";
+const breakpoints = createBreakpoints({
+  sm: "360px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1440px",
+  "2xl": "1920px",
+});
 
-const customTheme = {
-  ...theme,
+const overrides = {
+  breakpoints,
   colors: {
-    ...theme.colors,
     brandPurple: {
       900: "#6e1fb1",
     },
@@ -39,16 +42,14 @@ const customTheme = {
       900: "#ffcc00",
       200: "#fff0be",
     },
-    breakpoints: {
-      ...breakpoints,
-      "2xl": "1920px",
-    },
   },
   fonts: {
     heading: "Arvo, serif",
     body: "Ubuntu, sans-serif",
   },
 };
+
+const customTheme = extendTheme(overrides);
 
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
 
@@ -76,15 +77,14 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <ThemeProvider theme={customTheme}>
-        <CSSReset />
+      <ChakraProvider theme={customTheme}>
         <Router>
           <Init />
           <Header />
           <Routes />
           <Footer />
         </Router>
-      </ThemeProvider>
+      </ChakraProvider>
     </ApolloProvider>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Heading, Text, SimpleGrid } from "@chakra-ui/core";
+import { Box, Button, Heading, Text, SimpleGrid } from "@chakra-ui/react";
 import { Chievs, Communities } from "../components";
 
 const Home = () => {
