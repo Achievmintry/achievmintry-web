@@ -5,7 +5,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { Header, Footer } from "./components";
+import { Layout } from "./components";
 import Routes from "./Routes";
 import {
   CommunityApiInit,
@@ -18,6 +18,7 @@ import {
 } from "./contexts";
 // import supportedChains from "./utils/Chains";
 import "./themes/css/fonts.css";
+// import BgImg from "./static/assets/img/rainbow-waves.jpg";
 
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
@@ -31,6 +32,9 @@ const breakpoints = createBreakpoints({
 
 const overrides = {
   breakpoints,
+  images: {
+    bgImg: null,
+  },
   colors: {
     brandPurple: {
       900: "#6e1fb1",
@@ -80,9 +84,9 @@ function App() {
       <ChakraProvider theme={customTheme}>
         <Router>
           <Init />
-          <Header />
-          <Routes />
-          <Footer />
+          <Layout>
+            <Routes />
+          </Layout>
         </Router>
       </ChakraProvider>
     </ApolloProvider>

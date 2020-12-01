@@ -35,43 +35,35 @@ const Community = ({ dao }) => {
     // eslint-disable-next-line
   }, [addr]);
   return (
-    <Box
-      bg="brandYellow.200"
-      w="100%"
-      minH="100vh"
-      textAlign="center"
-      pt="90px"
-    >
-      <Box mx="auto" maxW="90vw" textAlign="left">
-        {daoData && (
-          <Flex
-            align="flex-start"
-            overflow="hidden"
-            direction="row"
-            wrap="nowrap"
-          >
-            <Box p="6" w="300px" flexShrink="0">
-              <AspectRatioBox
-                maxW="300px"
-                ratio={1}
-                borderBottom="10px solid black"
-              >
-                <Image src={daoData.Logo[0].url} />
-              </AspectRatioBox>
-            </Box>
-            <Box p="6" flexGrow="1">
-              <Heading as="h2" size="2xl">
-                {daoData.Name}
-              </Heading>
-              <Text>{daoData.Blurb}</Text>
-            </Box>
-          </Flex>
-        )}
+    <Box mx="auto" maxW="90vw" textAlign="left">
+      {daoData && (
+        <Flex
+          align="flex-start"
+          overflow="hidden"
+          direction="row"
+          wrap="nowrap"
+        >
+          <Box p="6" w="300px" flexShrink="0">
+            <AspectRatioBox
+              maxW="300px"
+              ratio={1}
+              borderBottom="10px solid black"
+            >
+              <Image src={daoData.Logo[0].url} />
+            </AspectRatioBox>
+          </Box>
+          <Box p="6" flexGrow="1">
+            <Heading as="h2" size="2xl">
+              {daoData.Name}
+            </Heading>
+            <Text>{daoData.Blurb}</Text>
+          </Box>
+        </Flex>
+      )}
 
-        {daoData?.Name && (
-          <Chievs dao={daoData.Name} cols={{ sm: 1, md: 2, lg: 4 }} />
-        )}
-      </Box>
+      {daoData?.Name && (
+        <Chievs dao={daoData.Name} cols={{ sm: 1, md: 2, lg: 4 }} />
+      )}
     </Box>
   );
 };

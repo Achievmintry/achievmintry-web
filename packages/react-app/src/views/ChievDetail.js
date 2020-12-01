@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Text,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { useNFTApi} from "../contexts/DappContext";
+import { useNFTApi } from "../contexts/DappContext";
 import { Chiev } from "../components";
 
 const ChievDetail = () => {
@@ -15,7 +11,9 @@ const ChievDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const nft = nfts.find((item) => item.fields["Gen0 Id"].toString() === tokenId);
+    const nft = nfts.find(
+      (item) => item.fields["Gen0 Id"].toString() === tokenId
+    );
     console.log(nft);
     if (nft) {
       setCurrentToken(nft.fields);
@@ -26,29 +24,21 @@ const ChievDetail = () => {
   }, [nfts, tokenId]);
 
   return (
-    <Box
-      bg="brandYellow.200"
-      w="100%"
-      minH="100vh"
-      textAlign="center"
-      pt="90px"
-    >
-      <Box mx="auto" maxW="90vw" textAlign="left">
-        {currentToken ? (
-          <Flex
-            align="flex-start"
-            overflow="hidden"
-            direction="row"
-            wrap="nowrap"
-          >
-            <Chiev token={currentToken} />
-          </Flex>
-        ) : loading ? (
-          <Text>loading</Text>
-        ) : (
-          <Text>Nufin here</Text>
-        )}
-      </Box>
+    <Box mx="auto" maxW="90vw" textAlign="left">
+      {currentToken ? (
+        <Flex
+          align="flex-start"
+          overflow="hidden"
+          direction="row"
+          wrap="nowrap"
+        >
+          <Chiev token={currentToken} />
+        </Flex>
+      ) : loading ? (
+        <Text>loading</Text>
+      ) : (
+        <Text>Nufin here</Text>
+      )}
     </Box>
   );
 };
