@@ -43,7 +43,7 @@ const Home = () => {
               Submit your work To own a Gen0 NFT talisman and get a % of all
               sales.
             </Text>
-            <Button bg="transparent" border="1px" as={Link} to="/submissions">
+            <Button bg="transparent" borderWidth="1px" as={Link} to="/submissions">
               Submissions
             </Button>
           </Box>
@@ -59,7 +59,7 @@ const Home = () => {
             <Text fontSize={{ base: "md", xl: "xl" }} mb="8">
               Add the tip bot to your discord
             </Text>
-            <Button bg="transparent" border="1px">
+            <Button bg="transparent" borderWidth="1px">
               Coming Soon
             </Button>
           </Box>

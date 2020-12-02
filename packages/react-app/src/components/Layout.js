@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
     <>
       <Box
         bgImage={"url(" + theme.images?.bgImg + ")"}
-        bgColor="brandYellow.200"
+        bgColor="primary.500"
         bgSize="cover"
         bgPosition="center"
         zIndex="-1"
@@ -26,8 +26,8 @@ const Layout = ({ children }) => {
           position: "absolute",
           w: "100%",
           h: "100%",
-          bgColor: "bg500",
-          opacity: "bgOverlayOpacity",
+          bgColor: "background.500",
+          opacity: theme.styles.bgOverlayOpacity,
           pointerEvents: "none",
           top: "0",
           right: "0",

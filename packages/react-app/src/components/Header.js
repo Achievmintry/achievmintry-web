@@ -11,7 +11,7 @@ import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
   <Box
-    _hover={{ backgroundColor: "brandYellow.900", color: "black" }}
+    _hover={{ backgroundColor: "secondary500", color: "black" }}
     transition="color 0.1s ease-in"
   >
     <Text

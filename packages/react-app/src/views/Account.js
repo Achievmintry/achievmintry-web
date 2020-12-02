@@ -82,7 +82,7 @@ const Account = () => {
   return (
     <Box mx="auto" maxW="90vw" textAlign="left">
       <Box
-        bg="brandYellow.900"
+        bg="secondary.500"
         border="10px solid black"
         color="black"
         w={{ base: "100%", lg: "33%" }}
@@ -111,7 +111,7 @@ const Account = () => {
               isLoading={loading}
               loadingText="Gifting"
               bg="black"
-              color="brandYellow.900"
+              color="secondary.500"
               border="0"
               type="submit"
             >
@@ -122,7 +122,7 @@ const Account = () => {
                 isLoading={loading}
                 loadingText="Gifting"
                 bg="black"
-                color="brandYellow.900"
+                color="secondary.500"
                 border="0"
                 onClick={loadMyAccount}
               >

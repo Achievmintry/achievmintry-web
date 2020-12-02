@@ -11,7 +11,7 @@ const Footer = () => {
 
   return (
     <>
-      <Box w="full" textAlign="center" bg="brandYellow.200">
+      <Box w="full" textAlign="center" bg="primary.500">
         <Box mx="auto" p={{ base: 6, xl: 25 }} w="75%">
           <Heading
             as="h4"

@@ -1,8 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
 import { lighten, darken } from 'polished';
-//Custom Chakra Components
-import { ContentBoxComponent } from './content-box-component';
-import { TextBoxComponent } from './text-box-component';
 import { defaultTheme } from './theme-defaults';
 
 export const getRandomTheme = async (images) => {
@@ -89,6 +86,20 @@ export const setTheme = (nftTheme) => {
       space: 'Space Mono',
     },
     daoMeta: {
+    },
+    styles: {
+      bgOverlayOpacity: themeOverrides.bgOverlayOpacity,
+      global: {
+        'html, body': {
+          fontSize: 'm',
+          color: 'blackAlpha.900',
+          lineHeight: 'tall',
+        },
+        a: {
+          transition: 'all 0.15s linear',
+          _hover: { textDecoration: 'none', color: 'secondary.500' },
+        },
+      },
     }
   });
 };

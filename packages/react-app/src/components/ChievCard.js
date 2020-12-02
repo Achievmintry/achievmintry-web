@@ -36,7 +36,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
             }}
           />
         </AspectRatio>
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="brandYellow.900">
+        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
           <Heading
             as="h3"
             fontSize={{ base: "md", xl: "xl" }}
