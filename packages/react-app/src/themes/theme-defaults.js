@@ -11,18 +11,6 @@ const breakpoints = createBreakpoints({
 
 export const defaultTheme = {
   breakpoints,
-  colors: {
-    brandPurple: {
-      900: "#6e1fb1",
-    },
-    brandPink: {
-      900: "#cc3385",
-    },
-    brandYellow: {
-      900: "#ffcc00",
-      200: "#fff0be",
-    },
-  },
   primary500: "#fff0be",
   primaryAlpha: rgba("#fff0be", 0.9),
   secondary500: "#ffcc00",
