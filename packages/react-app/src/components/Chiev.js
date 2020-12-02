@@ -10,9 +10,12 @@ import {
   FormHelperText,
   Input,
   Heading,
+  extendTheme,
+  theme,
 } from "@chakra-ui/react";
 import {
   useChainLogs,
+  useCustomTheme,
   useEns,
   useKudos,
   useTxProcessor,
@@ -20,6 +23,10 @@ import {
 } from "../contexts/DappContext";
 import { useForm } from "react-hook-form";
 import Web3SignIn from "./Web3SignIn";
+
+
+import BgImg from "../static/assets/img/rainbow-waves.jpg";
+import { useTheme } from "../contexts/CustomThemeContext";
 
 const Chiev = ({ token }) => {
   const [kudos] = useKudos();
@@ -32,15 +39,15 @@ const Chiev = ({ token }) => {
   const [uriJson, setUriJson] = useState();
   const [loading, setLoading] = useState(false);
   const [ensAddr, setEnsAddr] = useState("");
+  // const theme = useTheme();
+  const [theme, setTheme] = useTheme();
 
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
-      console.log("new", acctAddr);
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
-      console.log("currentOwner", currentOwner);
       if (!currentOwner) {
         setNftCounts({});
         setGen0Ownership({});
@@ -59,7 +66,7 @@ const Chiev = ({ token }) => {
       );
 
       const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
-      console.log("URI", uri);
+      // console.log("URI", uri);
       setUriJson(uri);
 
       setGen0Ownership({ ...gen0Ownership });
@@ -128,6 +135,12 @@ const Chiev = ({ token }) => {
     }
     return kudos.service.displayPrice(price);
   };
+
+  const handleClick = () => {
+    const theme1= {bgImg:uriJson?.image}
+
+    setTheme(theme1)
+  }
 
   return (
     <Box>
@@ -203,6 +216,7 @@ const Chiev = ({ token }) => {
               bg="black"
               color="brandYellow.900"
               border="1px"
+              onClick={handleClick}
             >
               Use Theme
             </Button>

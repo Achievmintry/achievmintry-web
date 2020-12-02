@@ -2,9 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
+import { CustomThemeContextProvider } from "./contexts/CustomThemeContext";
 
 ReactDOM.render(
-  
-    <App />,
+  <CustomThemeContextProvider>
+    <App />
+    </CustomThemeContextProvider>,
   document.getElementById("root")
 );

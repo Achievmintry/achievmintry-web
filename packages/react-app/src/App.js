@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
@@ -23,6 +23,8 @@ import "./themes/css/fonts.css";
 import { extendTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 import { DappContextProvider } from "./contexts/DappContext";
+import { useTheme } from './contexts/CustomThemeContext';
+
 const breakpoints = createBreakpoints({
   sm: "360px",
   md: "768px",
@@ -54,8 +56,6 @@ const overrides = {
   },
 };
 
-const customTheme = extendTheme(overrides);
-
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
 
 const client = new ApolloClient({
@@ -66,6 +66,11 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [theme] = useTheme();
+
+  useEffect(()=>{console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', theme);},[theme])
+
+
   function Init() {
     return (
       <>
@@ -82,7 +87,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <ChakraProvider theme={customTheme}>
+      <ChakraProvider theme={theme}>
         <Router>
           <DappContextProvider>
             <Init />

@@ -1,69 +1,94 @@
-import { theme } from "@chakra-ui/react";
+import { extendTheme } from '@chakra-ui/react';
+import { lighten, darken } from 'polished';
+//Custom Chakra Components
+import { ContentBoxComponent } from './content-box-component';
+import { TextBoxComponent } from './text-box-component';
+import { defaultTheme } from './theme-defaults';
 
-// export * from './components';
+export const getRandomTheme = async (images) => {
+  const theme = {
+    primary500: `#${((Math.random() * 0xffffff) << 0)
+      .toString(16)
+      .padStart(6, '0')}`,
+    secondary500: `#${((Math.random() * 0xffffff) << 0)
+      .toString(16)
+      .padStart(6, '0')}`,
+    bg500: `#${((Math.random() * 0xffffff) << 0)
+      .toString(16)
+      .padStart(6, '0')}`,
+  };
 
-const defaultTheme = {
-  brand50: "#1c2363",
-  brand100: "#1c2363",
-  brand200: "#1c2363",
-  brand300: "#1c2363",
-  brand400: "#10153d",
-  brand500: "#03061B",
-  brand600: "#03061B",
-  brand700: "#03061B",
-  brand800: "#03061B",
-  brand900: "#03061B",
-  // brandImg: Brand,
-  bg400: "#03061B"
+  if (images) {
+    const request = new Request('https://source.unsplash.com/random/200x200');
+    const brandImg = await fetch(request);
+
+    const requestBg = new Request('https://source.unsplash.com/random/800x800');
+    const bgImg = await fetch(requestBg);
+
+    theme.brandImg = brandImg.url;
+    theme.bgImg = bgImg.url;
+  }
+
+  return theme;
 };
 
-export const customTheme = dappTheme => {
-  const themeOverrides = dappTheme || defaultTheme;
-  return {
-    ...theme,
-    styles: {
-      global: {
-        "html, body": {
-          fontSize: "sm",
-          color: "gray.600",
-          lineHeight: "tall",
-          width: "100%",
-          minHeight: "100%"
-        }
-      }
-    },
+export const setTheme = (nftTheme) => {
+  const themeOverrides = { ...defaultTheme, ...nftTheme };
+
+  return extendTheme({
     colors: {
-      ...theme.colors,
-      brand: {
-        ...theme.colors.brand,
-        50: themeOverrides.brand50,
-        100: themeOverrides.brand100,
-        200: themeOverrides.brand200,
-        300: themeOverrides.brand300,
-        400: themeOverrides.brand400,
-        500: themeOverrides.brand500,
-        600: themeOverrides.brand600,
-        700: themeOverrides.brand700,
-        800: themeOverrides.brand800,
-        900: themeOverrides.brand900
+      secondaryAlpha: themeOverrides.secondaryAlpha,
+      primaryAlpha: themeOverrides.primaryAlpha,
+      primary: {
+        50: lighten(0.4, themeOverrides.primary500),
+        100: lighten(0.3, themeOverrides.primary500),
+        200: lighten(0.2, themeOverrides.primary500),
+        300: lighten(0.1, themeOverrides.primary500),
+        400: lighten(0.05, themeOverrides.primary500),
+        500: themeOverrides.primary500,
+        600: darken(0.05, themeOverrides.primary500),
+        700: darken(0.1, themeOverrides.primary500),
+        800: darken(0.15, themeOverrides.primary500),
+        900: darken(0.2, themeOverrides.primary500),
       },
       background: {
-        ...theme.colors.background,
-        50: themeOverrides.bg50,
-        100: themeOverrides.bg100,
-        200: themeOverrides.bg200,
-        300: themeOverrides.bg300,
-        400: themeOverrides.bg400,
+        50: lighten(0.4, themeOverrides.bg500),
+        100: lighten(0.3, themeOverrides.bg500),
+        200: lighten(0.2, themeOverrides.bg500),
+        300: lighten(0.1, themeOverrides.bg500),
+        400: lighten(0.05, themeOverrides.bg500),
         500: themeOverrides.bg500,
-        600: themeOverrides.bg600,
-        700: themeOverrides.bg700,
-        800: themeOverrides.bg800,
-        900: themeOverrides.bg900
-      }
+        600: darken(0.05, themeOverrides.bg500),
+        700: darken(0.1, themeOverrides.bg500),
+        800: darken(0.15, themeOverrides.bg500),
+        900: darken(0.2, themeOverrides.bg500),
+      },
+      secondary: {
+        50: lighten(0.4, themeOverrides.secondary500),
+        100: lighten(0.3, themeOverrides.secondary500),
+        200: lighten(0.2, themeOverrides.secondary500),
+        300: lighten(0.1, themeOverrides.secondary500),
+        400: lighten(0.05, themeOverrides.secondary500),
+        500: themeOverrides.secondary500,
+        600: darken(0.05, themeOverrides.secondary500),
+        700: darken(0.1, themeOverrides.secondary500),
+        800: darken(0.15, themeOverrides.secondary500),
+        900: darken(0.2, themeOverrides.secondary500),
+      },
+    },
+    images: {
+      brandImg: themeOverrides.brandImg,
+      bgImg: themeOverrides.bgImg,
+    },
+    fonts: {
+      heading: themeOverrides.primaryFont,
+      body: themeOverrides.bodyFont,
+      mono: themeOverrides.monoFont,
+      hub: 'Mirza',
+      accessory: 'Roboto Mono',
+      space: 'Space Mono',
+    },
+    daoMeta: {
     }
-    // images: {
-    //   ...theme.images,
-    //   brandImg: themeOverrides.brandImg,
-    // },
-  };
+  });
 };

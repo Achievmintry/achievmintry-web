@@ -2,14 +2,15 @@ import React from "react";
 import { Box } from "@chakra-ui/react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useTheme } from "@chakra-ui/react";
+import { useTheme } from "../contexts/CustomThemeContext";
 
 const Layout = ({ children }) => {
-  const theme = useTheme();
+  const [theme] = useTheme();
+  console.log('******************* layout theme', theme);
   return (
     <>
       <Box
-        bgImage={"url(" + theme.images.bgImg + ")"}
+        bgImage={"url(" + theme.images?.bgImg + ")"}
         bgColor="brandYellow.200"
         bgSize="cover"
         bgPosition="center"
@@ -25,8 +26,8 @@ const Layout = ({ children }) => {
           position: "absolute",
           w: "100%",
           h: "100%",
-          bgColor: "brandYellow.200",
-          opacity: ".5",
+          bgColor: "bg500",
+          opacity: "bgOverlayOpacity",
           pointerEvents: "none",
           top: "0",
           right: "0",
