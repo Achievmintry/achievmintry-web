@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import Web3SignIn from "./Web3SignIn";
 
 import { useTheme } from "../contexts/CustomThemeContext";
+import { NFTThemeService } from "../utils/NFTThemeService";
 
 const Chiev = ({ token }) => {
   const [kudos] = useKudos();
@@ -38,6 +39,8 @@ const Chiev = ({ token }) => {
   const [, setTheme] = useTheme();
 
   const { register, handleSubmit } = useForm();
+
+  const themeNFTService = new NFTThemeService();
 
   useEffect(() => {
     const getKudsDetails = async (acctAddr) => {
@@ -71,6 +74,8 @@ const Chiev = ({ token }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kudos, chainLogs, user]);
+
+  useEffect(() => {}, []);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -132,10 +137,14 @@ const Chiev = ({ token }) => {
   };
 
   const handleClick = () => {
-    const theme1= {bgImg:uriJson?.image}
+    const _theme = { bgImg: uriJson?.image };
 
-    setTheme(theme1)
-  }
+    themeNFTService.setUserTheme(
+      { id: token["Gen0 Id"], name: uriJson?.name, themeAttributes: _theme },
+      user.username
+    );
+    setTheme(_theme);
+  };
 
   return (
     <Box>
@@ -164,7 +173,7 @@ const Chiev = ({ token }) => {
           }}
         />
       </Box>
-      <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
+      <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
         <Heading
           as="h3"
           fontSize={{ base: "md", xl: "xl" }}
@@ -180,7 +189,7 @@ const Chiev = ({ token }) => {
         </Text>
       </Box>
       {user?.username && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
+        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
           <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
           <Text>
             Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
@@ -188,12 +197,13 @@ const Chiev = ({ token }) => {
         </Box>
       )}
       {uriJson && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
-          {uriJson?.attributes && uriJson?.attributes.map((attr, idx) => (
-            <Text key={idx}>
-              {attr.trait_type}:{attr.value}
-            </Text>
-          ))}
+        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
+          {uriJson?.attributes &&
+            uriJson?.attributes.map((attr, idx) => (
+              <Text key={idx}>
+                {attr.trait_type}:{attr.value}
+              </Text>
+            ))}
           <Text>name: {uriJson?.name || ""}</Text>
           <Text>description: {uriJson?.description || ""}</Text>
           <Text>external_url: {uriJson?.external_url || ""}</Text>
@@ -202,19 +212,22 @@ const Chiev = ({ token }) => {
           <Text>youtube_url: {uriJson?.youtube_url || ""}</Text>
           <Text>mp4: {uriJson?.mp4 || ""}</Text>
           <Text>theme_attributes: </Text>
-          {uriJson?.theme_attributes && uriJson?.theme_attributes.map((attr, idx) => (
-            <Text key={idx}>
-              {attr.trait_type}:{attr.value}
-            </Text>
-          ))}
-          <Button
+          {uriJson?.theme_attributes &&
+            uriJson?.theme_attributes.map((attr, idx) => (
+              <Text key={idx}>
+                {attr.trait_type}:{attr.value}
+              </Text>
+            ))}
+          {nftCounts[token["Gen0 Id"]] && (
+            <Button
               bg="black"
-              color='secondary.500'
+              color="secondary.500"
               border="1px"
               onClick={handleClick}
             >
               Use Theme
             </Button>
+          )}
         </Box>
       )}
 
@@ -242,7 +255,7 @@ const Chiev = ({ token }) => {
               isLoading={loading}
               loadingText="Gifting"
               bg="black"
-              color='secondary.500'
+              color="secondary.500"
               border="1px"
               type="submit"
               disabled={loading}

@@ -6,7 +6,6 @@ import { useTheme } from "../contexts/CustomThemeContext";
 
 const Layout = ({ children }) => {
   const [theme] = useTheme();
-  console.log('******************* layout theme', theme);
   return (
     <>
       <Box

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
@@ -21,7 +21,7 @@ import "./themes/css/fonts.css";
 // import BgImg from "./static/assets/img/rainbow-waves.jpg";
 
 import { DappContextProvider } from "./contexts/DappContext";
-import { useTheme } from './contexts/CustomThemeContext';
+import { useTheme } from "./contexts/CustomThemeContext";
 
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
 
@@ -34,9 +34,6 @@ const client = new ApolloClient({
 
 function App() {
   const [theme] = useTheme();
-
-  useEffect(()=>{console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', theme);},[theme])
-
 
   function Init() {
     return (
