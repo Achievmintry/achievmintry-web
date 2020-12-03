@@ -67,7 +67,7 @@ const Communities = ({ featured }) => {
           as={Link}
           to={`/community/${item["Dao Address"]}`}
           boxShadow="0 0 15px rgba(0,0,0,0.5)"
-          bg="brandYellow.900"
+          bg="secondary.500"
           color="black"
           borderWidth="10px"
           overflow="hidden"
@@ -106,7 +106,7 @@ const Communities = ({ featured }) => {
             borderWidth="10px"
             overflow="hidden"
             bg="black"
-            color="brandYellow.900"
+            color="secondary.500"
             borderColor="black"
             boxShadow="0 0 15px rgba(0,0,0,0.5)"
             className="hoverbox__featured"

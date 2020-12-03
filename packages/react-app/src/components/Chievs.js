@@ -252,7 +252,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               borderWidth="10px"
               overflow="hidden"
               bg="black"
-              color="brandYellow.900"
+              color="primary.500"
               borderColor="black"
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
@@ -287,7 +287,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="brandYellow.900"
+          bg="primary.500"
           border="10px solid black"
         >
           <ModalHeader>
@@ -361,7 +361,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     isLoading={loading}
                     loadingText="Gifting"
                     bg="black"
-                    color="brandYellow.900"
+                    color="primary.500"
                     border="1px"
                     type="submit"
                     disabled={loading}

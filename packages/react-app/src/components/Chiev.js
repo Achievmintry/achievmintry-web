@@ -21,6 +21,8 @@ import {
 import { useForm } from "react-hook-form";
 import Web3SignIn from "./Web3SignIn";
 
+import { useTheme } from "../contexts/CustomThemeContext";
+
 const Chiev = ({ token }) => {
   const [kudos] = useKudos();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
@@ -32,15 +34,15 @@ const Chiev = ({ token }) => {
   const [uriJson, setUriJson] = useState();
   const [loading, setLoading] = useState(false);
   const [ensAddr, setEnsAddr] = useState("");
+  // const theme = useTheme();
+  const [, setTheme] = useTheme();
 
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
-      console.log("new", acctAddr);
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
-      console.log("currentOwner", currentOwner);
       if (!currentOwner) {
         setNftCounts({});
         setGen0Ownership({});
@@ -59,7 +61,7 @@ const Chiev = ({ token }) => {
       );
 
       const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
-      console.log("URI", uri);
+      // console.log("URI", uri);
       setUriJson(uri);
 
       setGen0Ownership({ ...gen0Ownership });
@@ -129,6 +131,12 @@ const Chiev = ({ token }) => {
     return kudos.service.displayPrice(price);
   };
 
+  const handleClick = () => {
+    const theme1= {bgImg:uriJson?.image}
+
+    setTheme(theme1)
+  }
+
   return (
     <Box>
       <Box maxW="500px" ratio={1} overflow="hidden">
@@ -156,7 +164,7 @@ const Chiev = ({ token }) => {
           }}
         />
       </Box>
-      <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="brandYellow.900">
+      <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
         <Heading
           as="h3"
           fontSize={{ base: "md", xl: "xl" }}
@@ -172,7 +180,7 @@ const Chiev = ({ token }) => {
         </Text>
       </Box>
       {user?.username && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="brandYellow.900">
+        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
           <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
           <Text>
             Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
@@ -180,7 +188,7 @@ const Chiev = ({ token }) => {
         </Box>
       )}
       {uriJson && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="brandYellow.900">
+        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg='secondary.500'>
           {uriJson?.attributes && uriJson?.attributes.map((attr, idx) => (
             <Text key={idx}>
               {attr.trait_type}:{attr.value}
@@ -201,8 +209,9 @@ const Chiev = ({ token }) => {
           ))}
           <Button
               bg="black"
-              color="brandYellow.900"
+              color='secondary.500'
               border="1px"
+              onClick={handleClick}
             >
               Use Theme
             </Button>
@@ -233,7 +242,7 @@ const Chiev = ({ token }) => {
               isLoading={loading}
               loadingText="Gifting"
               bg="black"
-              color="brandYellow.900"
+              color='secondary.500'
               border="1px"
               type="submit"
               disabled={loading}

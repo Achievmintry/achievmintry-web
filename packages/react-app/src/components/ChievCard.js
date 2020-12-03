@@ -36,7 +36,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
       <Box
         p={{ base: 6, lg: 4, xl: 6 }}
         w="100%"
-        bg="brandYellow.900"
+        bg="secondary.500"
         fontSize={{ base: "md", xl: "xl", xxl: "2xl" }}
       >
         <Heading
