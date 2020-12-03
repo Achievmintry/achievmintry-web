@@ -93,6 +93,7 @@ const Header = props => {
         w={{ base: "33%" }}
       >
         <IconButton
+          backgroundColor="white"
           aria-label="Menu"
           icon={<HamburgerIcon />}
           onClick={handleToggle}
