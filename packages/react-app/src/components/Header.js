@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Heading, Flex, Text,  Image } from "@chakra-ui/react";
+import { Box, Heading, Flex, Text, Image } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useUser, useLoading } from "../contexts/DappContext";
@@ -15,19 +15,20 @@ const MenuItems = ({ children }) => (
     transition="color 0.1s ease-in"
   >
     <Text
-      mt={{ base: 4, md: 0 }}
+      mt={{ base: 4, lg: 0 }}
       display="block"
       textAlign="center"
-      p="5px 10px"
-      fontSize={{ base: "lg", xl: "lg", "2xl": "xl" }}
+      p={{ base: "5px 10px", lg: "5px", xxl: "5px 10px" }}
+      fontSize={{ base: "lg", lg: "sm", xxl: "md" }}
       fontFamily={{ base: "heading", lg: "body" }}
+      fontWeight={{ base: "bold", lg: "semibold" }}
     >
       {children}
     </Text>
   </Box>
 );
 
-const Header = (props) => {
+const Header = props => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();

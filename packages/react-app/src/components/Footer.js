@@ -11,22 +11,30 @@ const Footer = () => {
 
   return (
     <>
-      <Box w="full" textAlign="center" bg="primary.500">
+      <Box
+        w="full"
+        textAlign="center"
+        bg="white"
+        boxShadow="0 0 25px rgba(0,0,0,0.3)"
+        mt={5}
+        className="footer"
+      >
         <Box mx="auto" p={{ base: 6, xl: 25 }} w="75%">
           <Heading
             as="h4"
-            my="10"
-            fontSize={{ base: "xl", xl: "4xl" }}
+            mt="5"
+            mb="5"
+            fontSize={{ base: "lg", lg: "xl", xl: "2xl" }}
             fontWeight="400"
           >
-            Achievmintry is brought to you by...
+            Chievmint is brought to you by...
           </Heading>
           <Flex
             className="daos"
             alignItems="center"
             justifyContent="space-between"
             direction="row"
-            p={{ base: "25px", xl: "50px" }}
+            p={{ base: "25px" }}
           >
             {metaList &&
               metaList.map((item, i) => {
@@ -47,7 +55,7 @@ const Footer = () => {
                       key={`daoImage-${i}`}
                       src={item.Logo[0].url}
                       name={item.Name}
-                      width={{ base: "50px", xl: "75px" }}
+                      width={{ base: "50px", xxl: "75px" }}
                     />
                   </DaoLink>
                 );
