@@ -137,8 +137,25 @@ const Chiev = ({ token }) => {
   };
 
   const handleClick = () => {
-    const _theme = { bgImg: uriJson?.image };
+    const _theme = {}
+    _theme.bgImg = uriJson?.static_image || uriJson?.image;
+    console.log(uriJson);
+    const primary = uriJson?.theme_attributes?.find((item)=>item.trait_type==="primary")
+    if(primary){
+      _theme.primary500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="primary").value
+    }
+    
+    const secondary = uriJson?.theme_attributes?.find((item)=>item.trait_type==="secondary")
+    if(secondary){
+      _theme.secondary500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="secondary").value
+    }
+    console.log(_theme);
 
+    
+    const bg = uriJson?.theme_attributes?.find((item)=>item.trait_type==="bg")
+    if(bg){
+      _theme.bg500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="bg").value
+    }
     themeNFTService.setUserTheme(
       { id: token["Gen0 Id"], name: uriJson?.name, themeAttributes: _theme },
       user.username

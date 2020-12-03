@@ -1,12 +1,14 @@
   {
-    "name": "One Up Pink Strip",
-    "description": "Bot gift",
-    "image": "https://gateway.pinata.cloud/ipfs/QmZV9MR7epESWX6nuu2ES43E9ugxB6GsJbBaetv3uueauS",
-    "external_url": "https://chiev.network",
+    "name": "Theme Test",
+    "description": "Theme #1",
+    "image": "https://gateway.pinata.cloud/ipfs/QmUuXU95EbAstHRHm1S6zSXiwURpmdS9p9Y4QAotU2vTCw",
+    "static_image": "https://gateway.pinata.cloud/ipfs/QmcefNbAt4rUjbeppLn5iWNksiZkVpurLs2UfnhwXKZjf3",
+    "external_url": "https://chiev.net",
+    "youtube_video": "https://youtu.be/S3OJOGxy21k",
     "attributes": [
       {
         "trait_type": "Base",
-        "value": "Chiev"
+        "value": "Theme"
       },
       {
         "trait_type": "Level",
@@ -15,6 +17,20 @@
       {
         "trait_type": "Artist",
         "value": "Chiever"
+      }
+    ],
+    "theme_attributes": [
+      {
+        "trait_type": "primary",
+        "value": "#6e1fb1"
+      },
+      {
+        "trait_type": "secondary",
+        "value": "#cc3385"
+      },
+      {
+        "trait_type": "bg",
+        "value": "#a4a39d"
       }
     ]
   }
