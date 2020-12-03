@@ -39,15 +39,16 @@ const Community = ({ dao }) => {
         <Flex
           align="flex-start"
           overflow="hidden"
-          direction="row"
+          direction={{ base: "column", lg: "row" }}
           wrap="nowrap"
+          mb={{ base: 3, lg: 0 }}
         >
-          <Box p="6" w="300px" flexShrink="0">
+          <Box p="6" w={{ base: "100%", lg: "300px" }} flexShrink="0">
             <AspectRatio maxW="300px" ratio={1} borderBottom="10px solid black">
               <Image src={daoData.Logo[0].url} />
             </AspectRatio>
           </Box>
-          <Box p="6" flexGrow="1">
+          <Box p={{ base: 2, md: 6 }} flexGrow="1">
             <Heading as="h2" fontSize={{ base: "xl", xl: "3xl", xxl: "4xl" }}>
               {daoData.Name}
             </Heading>

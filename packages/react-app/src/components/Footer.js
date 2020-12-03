@@ -19,12 +19,17 @@ const Footer = () => {
         mt={5}
         className="footer"
       >
-        <Box mx="auto" p={{ base: 6, xl: 25 }} w="75%">
+        <Box
+          mx="auto"
+          p={{ base: 6, xl: 25 }}
+          w={{ base: "100%", sm: "75%" }}
+          maxW="1170px"
+        >
           <Heading
             as="h4"
-            mt="5"
-            mb="5"
-            fontSize={{ base: "lg", lg: "xl", xl: "2xl" }}
+            mt={{ base: 2, lg: 5 }}
+            mb={{ base: 2, lg: 5 }}
+            fontSize={{ base: "sm", md: "lg", lg: "xl", xl: "2xl" }}
             fontWeight="400"
           >
             Chievmint is brought to you by...
@@ -34,7 +39,7 @@ const Footer = () => {
             alignItems="center"
             justifyContent="space-between"
             direction="row"
-            p={{ base: "25px" }}
+            p={{ base: "25px 0" }}
           >
             {metaList &&
               metaList.map((item, i) => {
@@ -45,8 +50,8 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     display="block"
-                    flex="0 0 50px"
-                    w="50px"
+                    flex={{ base: "0 0 25px", sm: "0 0 50px", lg: "0 0 50px" }}
+                    maxW={{ base: "25px", sm: "50px", lg: "50px" }}
                     flexGrow="0"
                     flexShrink="1"
                     bg="transparent"
@@ -55,7 +60,7 @@ const Footer = () => {
                       key={`daoImage-${i}`}
                       src={item.Logo[0].url}
                       name={item.Name}
-                      width={{ base: "50px", xxl: "75px" }}
+                      width={{ base: "25px", sm: "50px", lg: "50px" }}
                     />
                   </DaoLink>
                 );

@@ -107,7 +107,7 @@ const Communities = ({ featured }) => {
     <>
       <SimpleGrid
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
-        spacing={{ base: 10, sm: 10, lg: 10 }}
+        spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
       >
         {renderList()}
         {featured && (

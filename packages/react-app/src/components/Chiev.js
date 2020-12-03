@@ -144,11 +144,11 @@ const Chiev = ({ token }) => {
         borderWidth="10px"
         borderColor="black.500"
         borderRadius="0"
-        maxW="66%"
-        minW="66%"
+        maxW={{ base: "100%", lg: "66%" }}
+        minW={{ base: "100%", lg: "66%" }}
         bg="secondary.300"
         d="flex"
-        flexDir="row"
+        flexDir={{ base: "column", sm: "row" }}
         flexWrap="wrap"
         justifyContent="left"
         mx="auto"
@@ -157,7 +157,7 @@ const Chiev = ({ token }) => {
         <Box
           d="inline-flex"
           bg="black.500"
-          w="33%"
+          w={{ base: "100%", sm: "33%", lg: "33%" }}
           minW="33%"
           flexGrow={0}
           alignItems="center"
@@ -193,10 +193,11 @@ const Chiev = ({ token }) => {
         </Box>
         <Box
           p={{ base: 6, xl: 2, xxl: 6 }}
-          w="33%"
-          minW="33%"
+          w={{ base: "100%", sm: "66%", lg: "33%" }}
+          minW={{ base: "100%", sm: "66%", lg: "33%" }}
           flexShrink={1}
           bg="secondary.300"
+          fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
         >
           <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
             {token["NFT Name (from Artist Submissions)"][0]}
@@ -219,7 +220,11 @@ const Chiev = ({ token }) => {
         </Box>
         {loading && <Text>Check MetaMask</Text>}
         {uriJson && (
-          <Box p={{ base: 6, xl: 2, xxl: 6 }} w="33%">
+          <Box
+            p={{ base: 6, xl: 2, xxl: 6 }}
+            w={{ base: "100%", sm: "100%", lg: "33%" }}
+            fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
+          >
             {uriJson?.attributes &&
               uriJson?.attributes.map((attr, idx) => (
                 <Text key={idx}>

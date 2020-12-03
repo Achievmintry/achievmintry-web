@@ -230,7 +230,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          fontSize={{ base: "2xl", xxl: "4xl" }}
+          fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >

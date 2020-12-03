@@ -89,6 +89,7 @@ const Header = props => {
         display={{ base: "block", lg: "none" }}
         order="1"
         marginLeft="10px"
+        textAlign={{ base: "left" }}
         w={{ base: "33%" }}
       >
         <IconButton
