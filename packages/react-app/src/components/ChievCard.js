@@ -34,16 +34,16 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
         />
       </AspectRatio>
       <Box
-        p={{ base: 6, lg: 4, xl: 6 }}
+        p={{ base: 3, sm: 3, lg: 4, xl: 4 }}
         w="100%"
         bg="secondary.500"
-        fontSize={{ base: "md", xl: "xl", xxl: "2xl" }}
+        fontSize={{ base: "xs", xl: "xs", xxl: "lg" }}
       >
         <Heading
           as="h3"
-          fontSize={{ base: "md", lg: "2xl", xxl: "3xl" }}
+          fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
           textTransform="uppercase"
-          color="black"
+          color="black.500"
         >
           {token["NFT Name (from Artist Submissions)"][0]}
         </Heading>
@@ -67,11 +67,12 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
         )}
         <Link as={ReactLink} to={`/chiev/${token["Gen0 Id"]}`}>
           <Text
-            color={"primary.black"}
+            color={"black.500"}
             bg={"white"}
             borderWidth="10px"
-            borderColor="primary.black"
+            borderColor="black.500"
             fontFamily="Quicksand"
+            fontSize={{ base: "xs", sm: "md", xl: "sm", xxl: "md" }}
             fontWeight="semibold"
             d="flex"
             alignItems="flex-start"
@@ -80,18 +81,35 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
             pr={0}
             pt={0}
             h={170}
-            w="500px"
+            w="300px"
             pos="absolute"
-            b="-50px"
-            transform="rotate(-40deg)"
+            bottom={{
+              base: "-140px",
+              sm: "-130px",
+              lg: "-120px",
+              xl: "-130px",
+              xl: "-130px"
+            }}
+            right={{
+              base: "-65px",
+              sm: "-50px",
+              lg: "-90px",
+              xl: "-65px",
+              xxl: "-50px"
+            }}
+            transform={{
+              base: "rotate(-40deg) scale(0.8)",
+              lg: "rotate(-40deg) scale(0.65)",
+              xl: "rotate(-40deg) scale(0.8)",
+              xxl: "rotate(-40deg) scale(0.9)"
+            }}
             transition="transform 0.3s ease-in-out, color 0.2s ease, background-color 0.3s ease, border-color 0.3s ease"
             textAlign="center"
             // textTransform="lowercase"
             _hover={{
-              color: "brandYellow.200",
-              bg: "primary.black",
-              borderColor: "primary.black",
-              transform: "rotate(-40deg), scale(1.05)"
+              color: "white",
+              bg: "black.500",
+              borderColor: "black.500"
             }}
           >
             <Box transform="rotate(25deg)" p={4}>

@@ -209,10 +209,9 @@ const Chievs = ({ featured, account, dao, cols }) => {
           }}
           borderWidth="10px"
           overflow="hidden"
-          bg="black"
-          borderColor="black"
+          bg="black.500"
+          borderColor="black.500"
           boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
-          m={6}
         >
           <ChievCard
             token={token}
@@ -231,18 +230,18 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          fontSize={{ base: "2xl  ", xl: "4xl" }}
+          fontSize={{ base: "2xl", xxl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >
           {dao && dao} Talisman
         </Heading>
-        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
+        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
           Give a talisman of your appreciation
         </Text>
         <SimpleGrid
-          columns={{ sm: 1, md: 2, xl: 4 }}
-          spacing={{ base: 5, lg: 10 }}
+          columns={{ base: 1, sm: 2, lg: 4 }}
+          spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
         >
           {nfts && kudos && chainLogs && renderList()}
           {featured && (
@@ -251,22 +250,21 @@ const Chievs = ({ featured, account, dao, cols }) => {
               to="/chievs"
               borderWidth="10px"
               overflow="hidden"
-              bg="black"
-              color="primary.500"
-              borderColor="black"
+              bg="black.500"
+              color="secondary.500"
+              borderColor="black.500"
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
-              p={{ base: 6, xl: 2, xxl: 6 }}
-              m={6}
+              p={{ base: 3, xl: 4, xxl: 6 }}
             >
               <InfoBox className="info-box">
                 <Heading
                   as="h3"
-                  fontSize={{ base: "md", lg: "2xl", xxl: "3xl" }}
+                  fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
                 >
                   Browse More
                 </Heading>
-                <Text fontSize={{ base: "md", lg: "xl", xxl: "2xl" }}>
+                <Text fontSize={{ base: "sm", lg: "md", xxl: "lg" }}>
                   Click here to see the full list
                 </Text>
               </InfoBox>
@@ -287,8 +285,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="primary.500"
+          bg="primary.900"
           border="10px solid black"
+          borderRadius="0"
+          minWidth={{ base: "full", xxl: "33%" }}
         >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
@@ -349,6 +349,11 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     type="text"
                     id="address"
                     aria-describedby="address-helper-text"
+                    color="black"
+                    bg="primary.300"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     readOnly={loading}
                     onChange={handleChange}
                   />
@@ -360,9 +365,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   <Button
                     isLoading={loading}
                     loadingText="Gifting"
-                    bg="black"
-                    color="primary.500"
-                    border="1px"
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     type="submit"
                     disabled={loading}
                   >
