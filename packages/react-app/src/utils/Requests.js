@@ -3,12 +3,12 @@ import supportedChains from './Chains';
 
 const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
 
-export const BaseUrl = () => {
+export const AtBaseUrl = () => {
   return chainData.api_url;
 };
 
 export const getAirTable = async (table) => {
-  const baseURL = BaseUrl();
+  const baseURL = AtBaseUrl();
   const endpoint = `${table}?maxRecords=99&view=Grid%20view`
 
   const instance = axios.create({

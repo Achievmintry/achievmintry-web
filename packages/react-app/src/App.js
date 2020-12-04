@@ -4,8 +4,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
-import { theme, ThemeProvider, CSSReset } from "@chakra-ui/core";
-import { Header, Footer } from "./components";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Layout } from "./components";
 import Routes from "./Routes";
 import {
   CommunityApiInit,
@@ -13,41 +13,17 @@ import {
   NFTApiInit,
   KudosInit,
   TxProcessorInit,
-  UserInit
+  UserInit,
+  ChainLogsInit,
 } from "./contexts";
 // import supportedChains from "./utils/Chains";
 import "./themes/css/fonts.css";
+import "./themes/css/web3modal.css";
 
-const breakpoints = ["360px", "768px", "1024px", "1440px"];
-breakpoints.sm = breakpoints[0];
-breakpoints.md = breakpoints[1];
-breakpoints.lg = breakpoints[2];
-breakpoints.xl = breakpoints[3];
+// import BgImg from "./static/assets/img/rainbow-waves.jpg";
 
-const customTheme = {
-  ...theme,
-  colors: {
-    ...theme.colors,
-    brandPurple: {
-      900: "#6e1fb1"
-    },
-    brandPink: {
-      900: "#cc3385"
-    },
-    brandYellow: {
-      900: "#ffcc00",
-      200: "#fff0be"
-    },
-    breakpoints: {
-      ...breakpoints,
-      "2xl": "1920px"
-    }
-  },
-  fonts: {
-    heading: "Arvo, serif",
-    body: "Ubuntu, sans-serif"
-  }
-};
+import { DappContextProvider } from "./contexts/DappContext";
+import { useTheme } from "./contexts/CustomThemeContext";
 
 // const chainData = supportedChains[+process.env.REACT_APP_NETWORK_ID];
 
@@ -59,6 +35,8 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [theme] = useTheme();
+
   function Init() {
     return (
       <>
@@ -68,21 +46,23 @@ function App() {
         <EnsInit />
         <NFTApiInit />
         <CommunityApiInit />
+        <ChainLogsInit />
       </>
     );
   }
 
   return (
     <ApolloProvider client={client}>
-      <ThemeProvider theme={customTheme}>
-        <CSSReset />
+      <ChakraProvider theme={theme}>
         <Router>
-          <Init />
-          <Header />
-          <Routes />
-          <Footer />
+          <DappContextProvider>
+            <Init />
+            <Layout>
+              <Routes />
+            </Layout>
+          </DappContextProvider>
         </Router>
-      </ThemeProvider>
+      </ChakraProvider>
     </ApolloProvider>
   );
 }

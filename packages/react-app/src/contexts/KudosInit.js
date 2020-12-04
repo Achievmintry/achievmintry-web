@@ -7,7 +7,7 @@ import { useKudos, useWeb3Connect } from "./DappContext";
 import { KudosService, Web3KudosService } from "../utils/KudosService";
 
 const KudosInit = () => {
-  const [, updateKudos] = useKudos();
+  const [kudos, updateKudos] = useKudos();
   const [web3Connect] = useWeb3Connect();
 
   useEffect(() => {
@@ -23,9 +23,8 @@ const KudosInit = () => {
     } else {
       kudosService = new Web3KudosService(addresses.kudos, web3Connect.web3);
     }
-    kudosService.tokenData = await kudosService.getLogs();
     try {
-      updateKudos(kudosService);
+      updateKudos({...kudos, service: kudosService});
     } catch (e) {
       console.error(`Could not get kudos`, e);
     }

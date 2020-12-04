@@ -9,7 +9,8 @@ import {
   FormLabel,
   Input,
   Spinner,
-} from "@chakra-ui/core";
+  Heading
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
 import { Chievs, AccountAvatar } from "../components";
@@ -49,9 +50,18 @@ const Account = () => {
     // eslint-disable-next-line
   }, [user, addr]);
 
-  const onSubmit = async (data) => {
-    setLoading(true);
+  const onSubmit = async data => {
     const _addr = ensAddr ? ensAddr : data.address;
+    console.log("foo");
+    if (
+      currentAccount &&
+      _addr.toLowerCase() === currentAccount.toLowerCase()
+    ) {
+      return;
+    }
+    console.log("bar");
+
+    setLoading(true);
     history.push(`/account/${_addr}`);
     setCurrentAccount(_addr);
   };
@@ -62,7 +72,7 @@ const Account = () => {
     setCurrentAccount(_addr);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async e => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       setEnsAddr(address);
@@ -72,74 +82,85 @@ const Account = () => {
   };
   return (
     <Box
-      bg="brandYellow.200"
-      w="100%"
-      textAlign="center"
-      padding={{ base: "50px 0", lg: "90px 0" }}
+      mx="auto"
+      maxW="90vw"
+      textAlign="left"
+      padding={{ base: "50px 0", xl: "90px 0" }}
     >
-      <Box mx="auto" maxW="90vw" textAlign="left">
-        <Box
-          bg="brandYellow.900"
-          border="10px solid black"
-          color="black"
-          w={{ base: "100%", lg: "33%" }}
-          mx="auto"
-          p={4}
+      <Box
+        bg="secondary.500"
+        border="10px solid black"
+        color="black"
+        w={{ base: "100%", lg: "33%" }}
+        mx="auto"
+        p={4}
+      >
+        <Heading
+          as="h2"
+          fontSize={{ base: "xl", xxl: "2xl" }}
+          mb="1"
+          textTransform="uppercase"
         >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl color="black">
-              <FormLabel htmlFor="address">Eth address</FormLabel>
-              <Input
-                ref={register}
-                name="address"
-                type="text"
-                id="address"
-                aria-describedby="address-helper-text"
-                color="black"
-                onChange={handleChange}
-                required
-              />
-              <FormHelperText p="1" id="email-helper-text">
-                {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
-              </FormHelperText>
-            </FormControl>
-            <Flex>
+          Address lookup
+        </Heading>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl color="black">
+            <FormLabel htmlFor="address">Eth address</FormLabel>
+            <Input
+              ref={register}
+              name="address"
+              type="text"
+              id="address"
+              aria-describedby="address-helper-text"
+              color="black"
+              bg="primary.300"
+              borderWidth="5px"
+              borderColor="black.500"
+              borderRadius="0"
+              onChange={handleChange}
+              required
+            />
+            <FormHelperText p="1" id="email-helper-text">
+              {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+            </FormHelperText>
+          </FormControl>
+          <Flex>
+            <Button
+              isLoading={loading}
+              loadingText="Gifting"
+              bg="white"
+              borderWidth="5px"
+              borderColor="black.500"
+              borderRadius="0"
+              type="submit"
+            >
+              Look Up Account
+            </Button>
+            {user?.username && currentAccount !== user.username ? (
               <Button
                 isLoading={loading}
                 loadingText="Gifting"
                 bg="black"
-                color="brandYellow.900"
+                color="secondary.500"
                 border="0"
-                type="submit"
+                onClick={loadMyAccount}
               >
-                Look Up Account
+                Load My Account
               </Button>
-              {user?.username && currentAccount !== user.username ? (
-                <Button
-                  isLoading={loading}
-                  loadingText="Gifting"
-                  bg="black"
-                  color="brandYellow.900"
-                  border="0"
-                  onClick={loadMyAccount}
-                >
-                  Load My Account
-                </Button>
-              ) : null}
-            </Flex>
-          </form>
-        </Box>
-        <Box w="100%" p={4} color="black">
-          <Flex>
-            {!loading && currentAccount ? (
-              <AccountAvatar addr={currentAccount} />
-            ) : (
-              <Spinner />
-            )}
+            ) : null}
           </Flex>
-        </Box>
-        {currentAccount && <Chievs account={currentAccount} />}
+        </form>
       </Box>
+      <Box w="100%" p={4} color="black">
+        <Flex>
+          {!loading && currentAccount ? (
+            <AccountAvatar addr={currentAccount} />
+          ) : loading && !currentAccount ? (
+            <Spinner />
+          ) : null}
+        </Flex>
+      </Box>
+      {currentAccount && <Chievs account={currentAccount} />}
     </Box>
   );
 };

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  Box,
-  Heading,
-  Text,
-  Flex,
-  AspectRatioBox,
-} from "@chakra-ui/core";
+import { Image, Box, Heading, Text, Flex, AspectRatio } from "@chakra-ui/react";
 import { useHistory, useParams } from "react-router-dom";
 import { useCommunityApi } from "../contexts/DappContext";
 import { Chievs } from "../components";
@@ -20,8 +13,8 @@ const Community = ({ dao }) => {
 
   useEffect(() => {
     const _dao = communities
-      .map((item) => item.fields)
-      .find((item) => item["Dao Address"] === currentDao);
+      .map(item => item.fields)
+      .find(item => item["Dao Address"] === currentDao);
     setDaoData(_dao);
   }, [communities, currentDao]);
 
@@ -36,42 +29,37 @@ const Community = ({ dao }) => {
   }, [addr]);
   return (
     <Box
-      bg="brandYellow.200"
-      w="100%"
+      mx="auto"
+      maxW="90vw"
       minH="100vh"
-      textAlign="center"
-      pt="90px"
+      textAlign="left"
+      padding={{ base: "50px 0", xl: "90px 0 0 0" }}
     >
-      <Box mx="auto" maxW="90vw" textAlign="left">
-        {daoData && (
-          <Flex
-            align="flex-start"
-            overflow="hidden"
-            direction="row"
-            wrap="nowrap"
-          >
-            <Box p="6" w="300px" flexShrink="0">
-              <AspectRatioBox
-                maxW="300px"
-                ratio={1}
-                borderBottom="10px solid black"
-              >
-                <Image src={daoData.Logo[0].url} />
-              </AspectRatioBox>
-            </Box>
-            <Box p="6" flexGrow="1">
-              <Heading as="h2" size="2xl">
-                {daoData.Name}
-              </Heading>
-              <Text>{daoData.Blurb}</Text>
-            </Box>
-          </Flex>
-        )}
+      {daoData && (
+        <Flex
+          align="flex-start"
+          overflow="hidden"
+          direction={{ base: "column", lg: "row" }}
+          wrap="nowrap"
+          mb={{ base: 3, lg: 0 }}
+        >
+          <Box p="6" w={{ base: "100%", lg: "300px" }} flexShrink="0">
+            <AspectRatio maxW="300px" ratio={1} borderBottom="10px solid black">
+              <Image src={daoData.Logo[0].url} />
+            </AspectRatio>
+          </Box>
+          <Box p={{ base: 2, md: 6 }} flexGrow="1">
+            <Heading as="h2" fontSize={{ base: "xl", xl: "3xl", xxl: "4xl" }}>
+              {daoData.Name}
+            </Heading>
+            <Text>{daoData.Blurb}</Text>
+          </Box>
+        </Flex>
+      )}
 
-        {daoData?.Name && (
-          <Chievs dao={daoData.Name} cols={{ sm: 1, md: 2, lg: 4 }} />
-        )}
-      </Box>
+      {daoData?.Name && (
+        <Chievs dao={daoData.Name} cols={{ sm: 1, md: 2, lg: 4 }} />
+      )}
     </Box>
   );
 };

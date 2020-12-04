@@ -22,9 +22,8 @@ import {
   FormHelperText,
   useDisclosure,
   Input,
-  Heading,
-  AspectRatioBox,
-} from "@chakra-ui/core";
+  Heading
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
   useKudos,
@@ -32,8 +31,10 @@ import {
   useUser,
   useNFTApi,
   useEns,
+  useChainLogs
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
+import { ChievCard } from ".";
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -73,94 +74,47 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [selected, setSelected] = useState(1);
   const [loading, setLoading] = useState(false);
   const [nftCounts, setNftCounts] = useState({});
-  const [mintCounts, setMintCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [ensAddr, setEnsAddr] = useState("");
   const [kudos] = useKudos();
   const [user] = useUser();
   const [nfts] = useNFTApi();
   const [ens] = useEns();
+  const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
-  console.log(cols);
   useEffect(() => {
-    // get clones in wild
-    if (!kudos) {
-      return;
-    }
-    const getMintCount = async () => {
-      var cloneInWild = {};
-      const cloneInWildCounts = await Promise.all(
-        nfts.map((item, idx) =>
-          kudos.getNumClonesInWild(item.fields["Gen0 Id"])
-        )
-      );
-      cloneInWildCounts.forEach((item, idx) => {
-        cloneInWild[nfts[idx].fields["Gen0 Id"]] = item;
-      });
-      setMintCounts(cloneInWild || {});
-    };
-
-    getMintCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nfts, kudos]);
-  useEffect(() => {
-    //TODO: eesh, make a subgraph and add more events
-    const getKudsDetails = async (acctAddr) => {
-      const promises = [];
-      const nftsOc = [];
+    const getKudsDetails = async acctAddr => {
       const acct = acctAddr.toLowerCase();
-
-      // get only nfts where *account* is owner
-      // get onchain data
-      if (!kudos.tokenData.currentOwners[acct]) {
+      console.log("new", acctAddr);
+      if (!chainLogs.tokenData.currentOwners[acct]) {
         setNftCounts({});
         setGen0Ownership({});
         return;
       }
-      kudos.tokenData.currentOwners[acct].forEach((item) => {
-        promises.push(kudos.getKudosById(item));
-      });
-      const nftData = await Promise.all(promises);
-      // get details of all *acct* owned tokens and flag if gen0
-      kudos.tokenData.currentOwners[acct].forEach((item, idx) => {
-        const kudo = {
-          tokenId: item,
-          gen0: nftData[idx].clonedFromId === item,
-          clonedFromId: nftData[idx].clonedFromId,
-          count: 0,
-        };
-        nftsOc.push(kudo);
-      });
-      // for each unique owned nft get count
-      var counts = {};
-      nftsOc.forEach((item, idx) => {
-        counts[item.clonedFromId] = 1 + (counts[nftsOc[idx].clonedFromId] || 0);
-      });
-      setNftCounts({ ...counts });
-      // for each count find index and add count to owned nftsOc
-      // counts could be gen0
-      Object.keys(counts).forEach((countItem) => {
-        const index = kudos.tokenData.currentOwners[acct].findIndex((item) => {
-          return item === countItem;
-        });
 
-        if (index > -1) {
-          gen0Ownership[countItem] = true;
-        } else {
-          gen0Ownership[countItem] = false;
-        }
-      });
+      const counts = await kudos.service.getOwnedForAccount(
+        chainLogs.tokenData.currentOwners,
+        acct
+      );
+      setNftCounts({ ...counts });
+
+      const gen0Ownership = kudos.service.getGen0Owned(
+        chainLogs.tokenData.currentOwners,
+        acct,
+        counts
+      );
+
       setGen0Ownership({ ...gen0Ownership });
     };
-    if (account && kudos?.tokenData) {
+    if (account && chainLogs?.tokenData) {
       getKudsDetails(account);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos?.tokenData, account]);
+  }, [kudos, chainLogs, account]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -177,7 +131,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     console.log(
       "clone",
       data.address,
@@ -190,7 +144,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.clone(
+      kudos.service.clone(
         addr,
         user.username,
         selected["Gen0 Id"],
@@ -205,7 +159,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async e => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -215,119 +169,57 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const displayPrice = (price) => {
-    if (!kudos) {
+  const displayPrice = price => {
+    if (!kudos?.service) {
       return "?";
     }
-    return kudos.displayPrice(price);
+    return kudos.service.displayPrice(price);
   };
 
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = nfts.map((item) => item.fields);
+    const metaList = nfts.map(item => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(item => item["Featured"]);
     } else {
       filteredList = metaList;
     }
     if (account) {
       filteredList = filteredList.filter(
-        (item) => nftCounts[item["Gen0 Id"]] > 0
+        item => nftCounts[item["Gen0 Id"]] > 0
       );
     }
     if (dao) {
       filteredList = filteredList.filter(
-        (item) => item["Community (from Artist Submissions)"][0] === dao
+        item => item["Community (from Artist Submissions)"][0] === dao
       );
     }
     if (!filteredList.length) {
       return <Text>Nothing here</Text>;
     }
-    return filteredList.map((item, i) => {
+    return filteredList.map((token, i) => {
       return (
         <HoverBox
-          borderWidth="10px"
-          overflow="hidden"
-          bg="black"
-          borderColor="black"
-          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
-          key={item.id}
-          index={i}
-          as={Link}
-          to={"#"}
+          key={token.id}
           onClick={() => {
-            setSelected(item);
+            console.log("clicked");
+            setSelected(token);
             onOpen();
           }}
+          borderWidth="10px"
+          overflow="hidden"
+          bg="black.500"
+          borderColor="black.500"
+          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
         >
-          <AspectRatioBox maxW="500px" ratio={1} overflow="hidden">
-            <Image
-              src={
-                item["Display Thumb"]
-                  ? item["Display Thumb"][0].thumbnails.large.url
-                  : item["Image (from Artist Submissions)"][0].thumbnails.large
-                      .url
-              }
-              alt={item["NFT Name (from Artist Submissions)"][0]}
-              fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-              onMouseOver={(e) => {
-                if (!item["Display Thumb"]) {
-                  return;
-                }
-                e.currentTarget.src =
-                  item[
-                    "Image (from Artist Submissions)"
-                  ][0].thumbnails.large.url;
-              }}
-              onMouseOut={(e) => {
-                if (!item["Display Thumb"]) {
-                  return;
-                }
-                e.currentTarget.src =
-                  item["Display Thumb"][0].thumbnails.large.url;
-              }}
-            />
-          </AspectRatioBox>
-          <InfoBox
-            p={{ base: 6, xl: 2, "2xl": 6 }}
-            w="100%"
-            bg="brandYellow.900"
-          >
-            <Heading
-              as="h3"
-              fontSize={{ base: "md", xl: "xl" }}
-              textTransform="uppercase"
-              color="black"
-            >
-              {item["NFT Name (from Artist Submissions)"][0]}
-            </Heading>
-            <Text>
-              {" "}
-              Price: {displayPrice(item["Price In Wei"] || "0")} xDai
-            </Text>
-            <Text>
-              {" "}
-              Quantity:{" "}
-              {item["Max Quantity (from Artist Submissions)"][0] || "?"}
-            </Text>
-            {+item["Gen0 Id"] && (
-              <Text>
-                Minted: {mintCounts[item["Gen0 Id"]]}{" "}
-                {+mintCounts[item["Gen0 Id"]] ===
-                  item["Max Quantity (from Artist Submissions)"][0] &&
-                  "SOLD OUT"}
-              </Text>
-            )}
-            {account && (
-              <Box>
-                <Text>Owned: {nftCounts[item["Gen0 Id"]]}</Text>
-                <Text>
-                  Gen0 owned: {gen0Ownership[item["Gen0 Id"]] ? "yes" : "no"}
-                </Text>
-              </Box>
-            )}
-          </InfoBox>
+          <ChievCard
+            token={token}
+            owned={nftCounts[token["Gen0 Id"]]}
+            gen0Ownership={gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
+            account={account}
+            displayPrice={displayPrice(token["Price In Wei"] || "0")}
+          />
         </HoverBox>
       );
     });
@@ -338,38 +230,43 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          fontSize={{ base: "2xl  ", xl: "4xl" }}
+          fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >
           {dao && dao} Talisman
         </Heading>
-        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
+        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
           Give a talisman of your appreciation
         </Text>
         <SimpleGrid
-          columns={{ sm: 1, md: 2, xl: 4 }}
-          spacing={{ base: 5, lg: 10, "2xl": 20 }}
+          columns={{ base: 1, sm: 2, lg: 4 }}
+          spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
         >
-          {renderList()}
+          {nfts && kudos && chainLogs && renderList()}
           {featured && (
             <HoverBox
               as={Link}
               to="/chievs"
               borderWidth="10px"
               overflow="hidden"
-              bg="black"
-              color="brandYellow.900"
-              borderColor="black"
+              bg="black.500"
+              color="secondary.500"
+              borderColor="black.500"
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
-              p={{ base: 6, xl: 2, "2xl": 6 }}
+              p={{ base: 3, xl: 4, xxl: 6 }}
             >
               <InfoBox className="info-box">
-                <Heading as="h3" size="lg">
+                <Heading
+                  as="h3"
+                  fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
+                >
                   Browse More
                 </Heading>
-                <Text>Click here to see the full list</Text>
+                <Text fontSize={{ base: "sm", lg: "md", xxl: "lg" }}>
+                  Click here to see the full list
+                </Text>
               </InfoBox>
             </HoverBox>
           )}
@@ -388,8 +285,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="brandYellow.900"
+          bg="primary.900"
           border="10px solid black"
+          borderRadius="0"
+          minWidth={{ base: "33%", xxl: "33%" }}
         >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
@@ -418,7 +317,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions)"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={(e) => {
+                onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -427,7 +326,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       "Image (from Artist Submissions)"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={(e) => {
+                onMouseOut={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -450,6 +349,11 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     type="text"
                     id="address"
                     aria-describedby="address-helper-text"
+                    color="black"
+                    bg="primary.300"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     readOnly={loading}
                     onChange={handleChange}
                   />
@@ -461,9 +365,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   <Button
                     isLoading={loading}
                     loadingText="Gifting"
-                    bg="black"
-                    color="brandYellow.900"
-                    border="1px"
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     type="submit"
                     disabled={loading}
                   >

@@ -1,39 +1,40 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Heading, Flex, Text, PseudoBox, Image } from "@chakra-ui/core";
+import { Box, Heading, Flex, Text, Image } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { useUser, useLoading } from "../contexts/DappContext";
+import { useUser } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import UserAvatar from "./UserAvatar";
 
 import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
-  <PseudoBox
-    _hover={{ backgroundColor: "brandYellow.900", color: "black" }}
+  <Box
+    _hover={{ backgroundColor: "secondary500", color: "black" }}
     transition="color 0.1s ease-in"
   >
     <Text
-      mt={{ base: 4, md: 0 }}
+      mt={{ base: 4, lg: 0 }}
       display="block"
       textAlign="center"
-      p="5px 10px"
-      fontSize={{ base: "lg", xl: "lg", "2xl": "xl" }}
+      p={{ base: "5px 10px", lg: "5px", xxl: "5px 10px" }}
+      fontSize={{ base: "lg", lg: "sm", xxl: "md" }}
       fontFamily={{ base: "heading", lg: "body" }}
+      fontWeight={{ base: "bold", lg: "semibold" }}
     >
       {children}
     </Text>
-  </PseudoBox>
+  </Box>
 );
 
-const Header = (props) => {
+const Header = props => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();
-  const [loading] = useLoading();
+  // const [loading] = useLoading();
 
-  console.log("header render loading", loading);
+  // console.log("header render loading", loading);
 
   return (
     <Flex
@@ -88,9 +89,11 @@ const Header = (props) => {
         display={{ base: "block", lg: "none" }}
         order="1"
         marginLeft="10px"
+        textAlign={{ base: "left" }}
         w={{ base: "33%" }}
       >
         <IconButton
+          backgroundColor="white"
           aria-label="Menu"
           icon={<HamburgerIcon />}
           onClick={handleToggle}
