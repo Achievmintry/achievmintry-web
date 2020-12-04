@@ -22,7 +22,7 @@ import {
   FormHelperText,
   useDisclosure,
   Input,
-  Heading,
+  Heading
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
@@ -31,7 +31,7 @@ import {
   useUser,
   useNFTApi,
   useEns,
-  useChainLogs,
+  useChainLogs
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import { ChievCard } from ".";
@@ -87,7 +87,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    const getKudsDetails = async (acctAddr) => {
+    const getKudsDetails = async acctAddr => {
       const acct = acctAddr.toLowerCase();
       console.log("new", acctAddr);
       if (!chainLogs.tokenData.currentOwners[acct]) {
@@ -131,7 +131,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     console.log(
       "clone",
       data.address,
@@ -159,7 +159,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async e => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -169,7 +169,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const displayPrice = (price) => {
+  const displayPrice = price => {
     if (!kudos?.service) {
       return "?";
     }
@@ -179,20 +179,20 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = nfts.map((item) => item.fields);
+    const metaList = nfts.map(item => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(item => item["Featured"]);
     } else {
       filteredList = metaList;
     }
     if (account) {
       filteredList = filteredList.filter(
-        (item) => nftCounts[item["Gen0 Id"]] > 0
+        item => nftCounts[item["Gen0 Id"]] > 0
       );
     }
     if (dao) {
       filteredList = filteredList.filter(
-        (item) => item["Community (from Artist Submissions)"][0] === dao
+        item => item["Community (from Artist Submissions)"][0] === dao
       );
     }
     if (!filteredList.length) {
@@ -209,10 +209,9 @@ const Chievs = ({ featured, account, dao, cols }) => {
           }}
           borderWidth="10px"
           overflow="hidden"
-          bg="black"
-          borderColor="black"
+          bg="black.500"
+          borderColor="black.500"
           boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
-          m={6}
         >
           <ChievCard
             token={token}
@@ -221,11 +220,6 @@ const Chievs = ({ featured, account, dao, cols }) => {
             account={account}
             displayPrice={displayPrice(token["Price In Wei"] || "0")}
           />
-          <Link to={`/chiev/${token["Gen0 Id"]}`}>
-            <Text ml={2} color={"white"}>
-              Details
-            </Text>
-          </Link>
         </HoverBox>
       );
     });
@@ -236,18 +230,18 @@ const Chievs = ({ featured, account, dao, cols }) => {
       <Box p={[2, 4, 6]}>
         <Heading
           as="h2"
-          fontSize={{ base: "2xl  ", xl: "4xl" }}
+          fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
           mb="1"
           textTransform="uppercase"
         >
           {dao && dao} Talisman
         </Heading>
-        <Text fontSize={{ base: "md", xl: "2xl" }} mb="8">
+        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
           Give a talisman of your appreciation
         </Text>
         <SimpleGrid
-          columns={{ sm: 1, md: 2, xl: 4 }}
-          spacing={{ base: 5, lg: 10, "2xl": 20 }}
+          columns={{ base: 1, sm: 2, lg: 4 }}
+          spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
         >
           {nfts && kudos && chainLogs && renderList()}
           {featured && (
@@ -256,19 +250,23 @@ const Chievs = ({ featured, account, dao, cols }) => {
               to="/chievs"
               borderWidth="10px"
               overflow="hidden"
-              bg="black"
-              color="primary.500"
-              borderColor="black"
+              bg="black.500"
+              color="secondary.500"
+              borderColor="black.500"
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
-              p={{ base: 6, xl: 2, "2xl": 6 }}
-              m={6}
+              p={{ base: 3, xl: 4, xxl: 6 }}
             >
               <InfoBox className="info-box">
-                <Heading as="h3" size="lg">
+                <Heading
+                  as="h3"
+                  fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
+                >
                   Browse More
                 </Heading>
-                <Text>Click here to see the full list</Text>
+                <Text fontSize={{ base: "sm", lg: "md", xxl: "lg" }}>
+                  Click here to see the full list
+                </Text>
               </InfoBox>
             </HoverBox>
           )}
@@ -287,8 +285,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="primary.500"
+          bg="primary.900"
           border="10px solid black"
+          borderRadius="0"
+          minWidth={{ base: "full", xxl: "33%" }}
         >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (
@@ -317,7 +317,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions)"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={(e) => {
+                onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -326,7 +326,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       "Image (from Artist Submissions)"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={(e) => {
+                onMouseOut={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -349,6 +349,11 @@ const Chievs = ({ featured, account, dao, cols }) => {
                     type="text"
                     id="address"
                     aria-describedby="address-helper-text"
+                    color="black"
+                    bg="primary.300"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     readOnly={loading}
                     onChange={handleChange}
                   />
@@ -360,9 +365,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   <Button
                     isLoading={loading}
                     loadingText="Gifting"
-                    bg="black"
-                    color="primary.500"
-                    border="1px"
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
                     type="submit"
                     disabled={loading}
                   >
