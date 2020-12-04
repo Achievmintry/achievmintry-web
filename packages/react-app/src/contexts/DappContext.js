@@ -2,7 +2,6 @@ import React, { useContext, useCallback, useMemo, createContext } from 'react';
 import Web3Modal from 'web3modal';
 
 import { providerOptions } from '../utils/Auth';
-import { customTheme } from '../themes/theme';
 import supportedChains, { getChainData } from '../utils/Chains';
 
 const DappContext = createContext();
@@ -14,7 +13,6 @@ function useDappContext() {
 const initialState = {
   loading: false,
   user: null,
-  theme: customTheme(),
   network: supportedChains[100],
   txProcessor: {},
   ens: {},
@@ -39,9 +37,6 @@ const reducer = (state, action) => {
     }
     case 'setUser': {
       return { ...state, user: action.payload };
-    }
-    case 'setTheme': {
-      return { ...state, theme: customTheme(action.payload) };
     }
     case 'setWeb3Connect': {
       return { ...state, web3Connect: action.payload };
@@ -82,10 +77,6 @@ function DappContextProvider(props) {
 
   const updateUser = useCallback((user) => {
     dispatch({ type: 'setUser', payload: user });
-  }, []);
-
-  const updateTheme = useCallback((theme) => {
-    dispatch({ type: 'setTheme', payload: theme });
   }, []);
 
   const updateWeb3Connect = useCallback((data) => {
@@ -132,7 +123,6 @@ function DappContextProvider(props) {
           {
             updateLoading,
             updateUser,
-            updateTheme,
             updateWeb3Connect,
             updateNetwork,
             updateTxProcessor,
@@ -148,7 +138,6 @@ function DappContextProvider(props) {
           state,
           updateLoading,
           updateUser,
-          updateTheme,
           updateWeb3Connect,
           updateNetwork,
           updateTxProcessor,
@@ -169,11 +158,6 @@ function DappContextProvider(props) {
 export function useUser() {
   const [state, { updateUser }] = useDappContext();
   return [state.user, updateUser];
-}
-
-export function useTheme() {
-  const [state, { updateTheme }] = useDappContext();
-  return [state.theme, updateTheme];
 }
 
 export function useNetwork() {

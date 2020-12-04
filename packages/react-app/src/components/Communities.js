@@ -6,8 +6,8 @@ import {
   Text,
   SimpleGrid,
   Image,
-  AspectRatioBox,
-} from "@chakra-ui/core";
+  AspectRatio
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useCommunityApi } from "../contexts/DappContext";
 
@@ -51,9 +51,9 @@ const Communities = ({ featured }) => {
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = communities.map((item) => item.fields);
+    const metaList = communities.map(item => item.fields);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(item => item["Featured"]);
     } else {
       filteredList = metaList;
     }
@@ -67,23 +67,36 @@ const Communities = ({ featured }) => {
           as={Link}
           to={`/community/${item["Dao Address"]}`}
           boxShadow="0 0 15px rgba(0,0,0,0.5)"
-          bg="brandYellow.900"
-          color="black"
+          backgroundColor="secondary.500"
+          color="black.500"
           borderWidth="10px"
           overflow="hidden"
-          borderColor="black"
-          p={{ base: 6, xl: 2, "2xl": 6 }}
+          borderColor="black.500"
+          fontSize={{ base: "md", xl: "xl", xxl: "2xl" }}
+          p={{ base: 6, sm: 3, lg: 4, xl: 4 }}
+          transition="background-color 0.2s ease color 0.2s ease"
+          _hover={{
+            backgroundColor: "black.500",
+            color: "white"
+          }}
         >
           <Box p={{ base: 2, xl: 2, "2xl": 6 }}>
-            <AspectRatioBox maxW="500px" ratio={1}>
+            <AspectRatio maxW="500px" ratio={1}>
               <Image src={item.Logo[0].url} />
-            </AspectRatioBox>
+            </AspectRatio>
           </Box>
-          <Box p={{ base: 2, xl: 2, "2xl": 6 }} w="100%">
-            <Heading as="h3" size="lg">
+          <Box
+            p={{ base: 2, xl: 2, "2xl": 6 }}
+            mt={5}
+            w="100%"
+            fontSize={{ base: "xs", xl: "xs", xxl: "lg" }}
+          >
+            <Heading as="h3" fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}>
               {item.Name}
             </Heading>
-            <Text>{item.Blurb}</Text>
+            <Text fontSize={{ base: "xs", xl: "xs", xxl: "lg" }}>
+              {item.Blurb}
+            </Text>
           </Box>
         </HoverBox>
       );
@@ -93,8 +106,8 @@ const Communities = ({ featured }) => {
   return (
     <>
       <SimpleGrid
-        columns={{ sm: 1, md: 2, xl: 4 }}
-        spacing={{ base: 5, lg: 10, "2xl": 20 }}
+        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
       >
         {renderList()}
         {featured && (
@@ -103,17 +116,19 @@ const Communities = ({ featured }) => {
             to="/communities"
             borderWidth="10px"
             overflow="hidden"
-            bg="black"
-            color="brandYellow.900"
-            borderColor="black"
+            bg="black.500"
+            color="secondary.500"
+            borderColor="black.500"
             boxShadow="0 0 15px rgba(0,0,0,0.5)"
             className="hoverbox__featured"
-            p={6}
+            p={{ base: 3, xl: 4, xxl: 6 }}
           >
-            <Heading as="h3" size="lg">
+            <Heading as="h3" fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}>
               Communities
             </Heading>
-            <Text>Browse the full list</Text>
+            <Text fontSize={{ base: "sm", lg: "md", xxl: "lg" }}>
+              Browse the full list
+            </Text>
           </HoverBox>
         )}
       </SimpleGrid>

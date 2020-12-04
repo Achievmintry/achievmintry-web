@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text } from "@chakra-ui/core";
+import { Text } from "@chakra-ui/react";
 import { useEns } from "../contexts/DappContext";
 
 import { truncateAddr } from "../utils/Helpers";

@@ -1,6 +1,6 @@
 import React from "react";
 import Web3Modal from "web3modal";
-import { Button, useToast } from "@chakra-ui/core";
+import { Button, useToast } from "@chakra-ui/react";
 
 import { getChainData } from "../utils/Chains";
 import { w3connect, providerOptions } from "../utils/Auth";
@@ -26,7 +26,7 @@ const Web3SignIn = (props) => {
         padding="8px 10px"
         _hover={{
           background: "black",
-          color: "brandYellow.900",
+          color: "secondary.500",
         }}
         onClick={async () => {
           const _web3Connect = {
