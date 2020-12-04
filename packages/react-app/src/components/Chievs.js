@@ -35,6 +35,7 @@ import {
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import { ChievCard } from ".";
+import { useTheme } from "../contexts/CustomThemeContext";
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -53,7 +54,9 @@ const HoverBox = styled(Box)`
       display: block;
       /* background: black; */
       border-right: 10px solid;
-      background-color: #ffcc00;
+      background-color: ${(props) => {
+        return props._hover?.themecolor;
+      }};
       width: 200%;
       height: 200%;
       top: 80%;
@@ -82,6 +85,8 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [ens] = useEns();
   const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
+  const [theme] = useTheme()
+
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
@@ -256,6 +261,9 @@ const Chievs = ({ featured, account, dao, cols }) => {
               boxShadow="0 0 15px rgba(0,0,0,0.5)"
               className="hoverbox__featured"
               p={{ base: 3, xl: 4, xxl: 6 }}
+              _hover={{
+                themecolor: theme.colors.secondary[500]
+              }}
             >
               <InfoBox className="info-box">
                 <Heading
