@@ -5,7 +5,7 @@ import { useUserWallet } from "../contexts/DappContext";
 
 const Balance = props => {
   const [userWallet] = useUserWallet();
-  console.log(userWallet);
+  // console.log(userWallet);
   const roundUp = balance => {
     if (typeof balance !== "string") {
       return Math.round((balance + Number.EPSILON) * 100) / 100;

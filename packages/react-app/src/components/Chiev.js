@@ -64,10 +64,6 @@ const Chiev = ({ token }) => {
         counts
       );
 
-      const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
-      // console.log("URI", uri);
-      setUriJson(uri);
-
       setGen0Ownership({ ...gen0Ownership });
     };
     if (user?.username && chainLogs?.tokenData) {
@@ -76,7 +72,15 @@ const Chiev = ({ token }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kudos, chainLogs, user]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const getUri = async () => {
+      const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
+      console.log("URI", uri);
+      setUriJson(uri);
+    };
+
+    getUri();
+  }, [kudos, token]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -284,7 +288,8 @@ const Chiev = ({ token }) => {
               <strong>thumbnail:</strong> {uriJson?.theme || ""}
             </Text>
             <Text>
-              <strong>youtube_url:</strong> {uriJson?.youtube_url || ""}
+              <strong>youtube_url:</strong>{" "}
+              {uriJson?.youtube_url || uriJson?.youtube_video || ""}
             </Text>
             <Text>
               <strong>mp4:</strong> {uriJson?.mp4 || ""}
@@ -318,7 +323,6 @@ const Chiev = ({ token }) => {
         pt="20px"
         alignSelf="center"
         justifySelf="center"
-        w="50%"
         bg="secondary.500"
         border="10px solid black"
         color="black"

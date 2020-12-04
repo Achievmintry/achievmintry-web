@@ -66,7 +66,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
           </Box>
         )}
         <Link as={ReactLink} to={`/chiev/${token["Gen0 Id"]}`}>
-          <Text
+          <Box
             color={"black.500"}
             bg={"white"}
             borderWidth="10px"
@@ -88,7 +88,6 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
               sm: "-130px",
               lg: "-120px",
               xl: "-130px",
-              xl: "-130px"
             }}
             right={{
               base: "-65px",
@@ -116,7 +115,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
               CHIEV
               <br /> details
             </Box>
-          </Text>
+          </Box>
         </Link>
       </Box>
     </>

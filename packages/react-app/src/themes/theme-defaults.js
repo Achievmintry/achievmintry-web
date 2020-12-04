@@ -8,11 +8,7 @@ const breakpoints = createBreakpoints({
   md: "1024px",
   lg: "1280px",
   xl: "1440px",
-<<<<<<< HEAD
   xxl: "1920px",
-=======
-  xxl: "1920px"
->>>>>>> c4d8f105193b31e9518dd397f5dd5eb6b4eaafa5
 });
 
 export const defaultTheme = {
@@ -28,5 +24,5 @@ export const defaultTheme = {
   bodyFont: "Ubuntu, sans-serif",
   monoFont: "Space Mono",
   brandImg: null,
-  bgImg: null
+  bgImg: null,
 };

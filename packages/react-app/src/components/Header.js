@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Box, Heading, Flex, Text, Image } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { useUser, useLoading } from "../contexts/DappContext";
+import { useUser } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import UserAvatar from "./UserAvatar";
 
@@ -32,9 +32,9 @@ const Header = props => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
   const [user] = useUser();
-  const [loading] = useLoading();
+  // const [loading] = useLoading();
 
-  console.log("header render loading", loading);
+  // console.log("header render loading", loading);
 
   return (
     <Flex

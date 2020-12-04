@@ -14,7 +14,6 @@ const ChievDetail = () => {
     const nft = nfts.find(
       item => item.fields["Gen0 Id"].toString() === tokenId
     );
-    console.log(nft);
     if (nft) {
       setCurrentToken(nft.fields);
     }

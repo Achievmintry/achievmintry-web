@@ -288,7 +288,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           bg="primary.900"
           border="10px solid black"
           borderRadius="0"
-          minWidth={{ base: "full", xxl: "33%" }}
+          minWidth={{ base: "33%", xxl: "33%" }}
         >
           <ModalHeader>
             {selected["NFT Name (from Artist Submissions)"] ? (

@@ -18,6 +18,8 @@ import {
 } from "./contexts";
 // import supportedChains from "./utils/Chains";
 import "./themes/css/fonts.css";
+import "./themes/css/web3modal.css";
+
 // import BgImg from "./static/assets/img/rainbow-waves.jpg";
 
 import { DappContextProvider } from "./contexts/DappContext";
