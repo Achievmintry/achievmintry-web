@@ -12,7 +12,7 @@ const ChievDetail = () => {
 
   useEffect(() => {
     const nft = nfts.find(
-      (item) => item.fields["Gen0 Id"].toString() === tokenId
+      item => item.fields["Gen0 Id"].toString() === tokenId
     );
     console.log(nft);
     if (nft) {
@@ -24,13 +24,20 @@ const ChievDetail = () => {
   }, [nfts, tokenId]);
 
   return (
-    <Box mx="auto" maxW="90vw" textAlign="left">
+    <Box
+      mx="auto"
+      maxW="90vw"
+      minH="100vh"
+      textAlign="left"
+      padding={{ base: "50px 0", xl: "90px 0" }}
+    >
       {currentToken ? (
         <Flex
           align="flex-start"
           overflow="hidden"
-          direction="row"
-          wrap="nowrap"
+          direction="column"
+          wrap="wrap"
+          justifyContent="center"
         >
           <Chiev token={currentToken} />
         </Flex>

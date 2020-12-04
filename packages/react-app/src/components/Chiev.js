@@ -10,6 +10,7 @@ import {
   FormHelperText,
   Input,
   Heading,
+  AspectRatio,
 } from "@chakra-ui/react";
 import {
   useChainLogs,
@@ -137,24 +138,35 @@ const Chiev = ({ token }) => {
   };
 
   const handleClick = () => {
-    const _theme = {}
+    const _theme = {};
     _theme.bgImg = uriJson?.static_image || uriJson?.image;
     console.log(uriJson);
-    const primary = uriJson?.theme_attributes?.find((item)=>item.trait_type==="primary")
-    if(primary){
-      _theme.primary500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="primary").value
+    const primary = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "primary"
+    );
+    if (primary) {
+      _theme.primary500 = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "primary"
+      ).value;
     }
-    
-    const secondary = uriJson?.theme_attributes?.find((item)=>item.trait_type==="secondary")
-    if(secondary){
-      _theme.secondary500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="secondary").value
+
+    const secondary = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "secondary"
+    );
+    if (secondary) {
+      _theme.secondary500 = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "secondary"
+      ).value;
     }
     console.log(_theme);
 
-    
-    const bg = uriJson?.theme_attributes?.find((item)=>item.trait_type==="bg")
-    if(bg){
-      _theme.bg500 = uriJson?.theme_attributes.find((item)=>item.trait_type==="bg").value
+    const bg = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "bg"
+    );
+    if (bg) {
+      _theme.bg500 = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "bg"
+      ).value;
     }
     themeNFTService.setUserTheme(
       { id: token["Gen0 Id"], name: uriJson?.name, themeAttributes: _theme },
@@ -164,93 +176,166 @@ const Chiev = ({ token }) => {
   };
 
   return (
-    <Box>
-      <Box maxW="500px" ratio={1} overflow="hidden">
-        <Image
-          src={
-            token["Display Thumb"]
-              ? token["Display Thumb"][0].thumbnails.large.url
-              : token["Image (from Artist Submissions)"][0].thumbnails.large.url
-          }
-          alt={token["NFT Name (from Artist Submissions)"][0]}
-          fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-          onMouseOver={(e) => {
-            if (!token["Display Thumb"]) {
-              return;
-            }
-            e.currentTarget.src =
-              token["Image (from Artist Submissions)"][0].thumbnails.large.url;
-          }}
-          onMouseOut={(e) => {
-            if (!token["Display Thumb"]) {
-              return;
-            }
-            e.currentTarget.src =
-              token["Display Thumb"][0].thumbnails.large.url;
-          }}
-        />
-      </Box>
-      <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
-        <Heading
-          as="h3"
-          fontSize={{ base: "md", xl: "xl" }}
-          textTransform="uppercase"
-          color="black"
+    <>
+      <Box
+        borderWidth="10px"
+        borderColor="black.500"
+        borderRadius="0"
+        maxW={{ base: "100%", lg: "66%" }}
+        minW={{ base: "100%", lg: "66%" }}
+        bg="secondary.300"
+        d="flex"
+        flexDir={{ base: "column", sm: "row" }}
+        flexWrap="wrap"
+        justifyContent="left"
+        mx="auto"
+        boxShadow="0 0 15px rgba(0,0,0,0.5)"
+      >
+        <Box
+          d="inline-flex"
+          bg="black.500"
+          w={{ base: "100%", sm: "33%", lg: "33%" }}
+          minW="33%"
+          flexGrow={0}
+          alignItems="center"
         >
-          {token["NFT Name (from Artist Submissions)"][0]}
-        </Heading>
-        <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
-        <Text>
-          {" "}
-          Quantity: {token["Max Quantity (from Artist Submissions)"][0] || "?"}
-        </Text>
-      </Box>
-      {user?.username && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
-          <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
-          <Text>
-            Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
-          </Text>
+          <AspectRatio w="100%" ratio={1} overflow="hidden">
+            <Image
+              src={
+                token["Display Thumb"]
+                  ? token["Display Thumb"][0].thumbnails.large.url
+                  : token["Image (from Artist Submissions)"][0].thumbnails.large
+                      .url
+              }
+              alt={token["NFT Name (from Artist Submissions)"][0]}
+              fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
+              onMouseOver={(e) => {
+                if (!token["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  token[
+                    "Image (from Artist Submissions)"
+                  ][0].thumbnails.large.url;
+              }}
+              onMouseOut={(e) => {
+                if (!token["Display Thumb"]) {
+                  return;
+                }
+                e.currentTarget.src =
+                  token["Display Thumb"][0].thumbnails.large.url;
+              }}
+            />
+          </AspectRatio>
         </Box>
-      )}
-      {uriJson && (
-        <Box p={{ base: 6, xl: 2, "2xl": 6 }} w="100%" bg="secondary.500">
-          {uriJson?.attributes &&
-            uriJson?.attributes.map((attr, idx) => (
-              <Text key={idx}>
-                {attr.trait_type}:{attr.value}
+        <Box
+          p={{ base: 6, xl: 2, xxl: 6 }}
+          w={{ base: "100%", sm: "66%", lg: "33%" }}
+          minW={{ base: "100%", sm: "66%", lg: "33%" }}
+          flexShrink={1}
+          bg="secondary.300"
+          fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
+        >
+          <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
+            {token["NFT Name (from Artist Submissions)"][0]}
+          </Heading>
+          <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
+          <Text>
+            {" "}
+            Quantity:{" "}
+            {token["Max Quantity (from Artist Submissions)"][0] || "?"}
+          </Text>
+
+          {user?.username && (
+            <>
+              <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
+              <Text>
+                Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
               </Text>
-            ))}
-          <Text>name: {uriJson?.name || ""}</Text>
-          <Text>description: {uriJson?.description || ""}</Text>
-          <Text>external_url: {uriJson?.external_url || ""}</Text>
-          <Text>image: {uriJson?.image || ""}</Text>
-          <Text>thumbnail: {uriJson?.theme || ""}</Text>
-          <Text>youtube_url: {uriJson?.youtube_url || ""}</Text>
-          <Text>mp4: {uriJson?.mp4 || ""}</Text>
-          <Text>theme_attributes: </Text>
-          {uriJson?.theme_attributes &&
-            uriJson?.theme_attributes.map((attr, idx) => (
-              <Text key={idx}>
-                {attr.trait_type}:{attr.value}
-              </Text>
-            ))}
-          {nftCounts[token["Gen0 Id"]] && (
-            <Button
-              bg="black"
-              color="secondary.500"
-              border="1px"
-              onClick={handleClick}
-            >
-              Use Theme
-            </Button>
+            </>
           )}
         </Box>
-      )}
+        {loading && <Text>Check MetaMask</Text>}
+        {uriJson && (
+          <Box
+            p={{ base: 6, xl: 2, xxl: 6 }}
+            w={{ base: "100%", sm: "100%", lg: "33%" }}
+            fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
+          >
+            {uriJson?.attributes &&
+              uriJson?.attributes.map((attr, idx) => (
+                <Text key={idx}>
+                  <strong>{attr.trait_type}:</strong> {attr.value}
+                </Text>
+              ))}
+            <Text>
+              <strong>name:</strong> {uriJson?.name || ""}
+            </Text>
+            <Text>
+              <strong>description:</strong> {uriJson?.description || ""}
+            </Text>
+            <Text>
+              <strong>external_url:</strong> {uriJson?.external_url || ""}
+            </Text>
+            <Text>
+              <strong>image:</strong> {uriJson?.image || ""}
+            </Text>
+            <Text>
+              <strong>thumbnail:</strong> {uriJson?.theme || ""}
+            </Text>
+            <Text>
+              <strong>youtube_url:</strong> {uriJson?.youtube_url || ""}
+            </Text>
+            <Text>
+              <strong>mp4:</strong> {uriJson?.mp4 || ""}
+            </Text>
+            <Text>
+              <strong>theme_attributes:</strong>{" "}
+            </Text>
+            {uriJson?.theme_attributes &&
+              uriJson?.theme_attributes.map((attr, idx) => (
+                <Text key={idx}>
+                  {attr.trait_type}:{attr.value}
+                </Text>
+              ))}
+            {nftCounts[token["Gen0 Id"]] && (
+              <Button
+                bg="white"
+                borderWidth="5px"
+                borderColor="black.500"
+                borderRadius="0"
+                mt={5}
+                onClick={handleClick}
+              >
+                Use Theme
+              </Button>
+            )}
+          </Box>
+        )}
+      </Box>
 
-      {loading && <Text>Check MetaMask</Text>}
-
-      <Box pt="20px">
+      <Box
+        pt="20px"
+        alignSelf="center"
+        justifySelf="center"
+        w="50%"
+        bg="secondary.500"
+        border="10px solid black"
+        color="black"
+        mx="auto"
+        p={4}
+        mt={10}
+        w={{ base: "100%", lg: "33%" }}
+        boxShadow="0 0 15px rgba(0,0,0,0.5)"
+      >
+        <Heading
+          as="h4"
+          fontSize={{ base: "xl", xxl: "2xl" }}
+          mb="1"
+          textTransform="uppercase"
+        >
+          Send this CHIEV
+        </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl>
             <FormLabel htmlFor="address">Eth address</FormLabel>
@@ -260,6 +345,11 @@ const Chiev = ({ token }) => {
               type="text"
               id="address"
               aria-describedby="address-helper-text"
+              color="black"
+              bg="primary.300"
+              borderWidth="5px"
+              borderColor="black.500"
+              borderRadius="0"
               readOnly={loading}
               onChange={handleChange}
             />
@@ -271,9 +361,10 @@ const Chiev = ({ token }) => {
             <Button
               isLoading={loading}
               loadingText="Gifting"
-              bg="black"
-              color="secondary.500"
-              border="1px"
+              bg="white"
+              borderWidth="5px"
+              borderColor="black.500"
+              borderRadius="0"
               type="submit"
               disabled={loading}
             >
@@ -284,7 +375,7 @@ const Chiev = ({ token }) => {
           )}
         </form>
       </Box>
-    </Box>
+    </>
   );
 };
 
