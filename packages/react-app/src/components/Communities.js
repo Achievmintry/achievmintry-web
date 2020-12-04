@@ -6,10 +6,11 @@ import {
   Text,
   SimpleGrid,
   Image,
-  AspectRatio
+  AspectRatio,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useCommunityApi } from "../contexts/DappContext";
+import { useTheme } from "../contexts/CustomThemeContext";
 
 const HoverBox = styled(Box)`
   position: relative;
@@ -29,7 +30,9 @@ const HoverBox = styled(Box)`
       display: block;
       /* background: black; */
       border-right: 10px solid;
-      background-color: #ffcc00;
+      background-color: ${(props) => {
+        return props._hover?.themecolor;
+      }};
       width: 200%;
       height: 200%;
       top: 80%;
@@ -47,13 +50,14 @@ const HoverBox = styled(Box)`
 
 const Communities = ({ featured }) => {
   const [communities] = useCommunityApi();
+  const [theme] = useTheme()
 
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = communities.map(item => item.fields);
+    const metaList = communities.map((item) => item.fields);
     if (featured) {
-      filteredList = metaList.filter(item => item["Featured"]);
+      filteredList = metaList.filter((item) => item["Featured"]);
     } else {
       filteredList = metaList;
     }
@@ -77,7 +81,7 @@ const Communities = ({ featured }) => {
           transition="background-color 0.2s ease color 0.2s ease"
           _hover={{
             backgroundColor: "black.500",
-            color: "white"
+            color: "white",
           }}
         >
           <Box p={{ base: 2, xl: 2, "2xl": 6 }}>
@@ -122,6 +126,9 @@ const Communities = ({ featured }) => {
             boxShadow="0 0 15px rgba(0,0,0,0.5)"
             className="hoverbox__featured"
             p={{ base: 3, xl: 4, xxl: 6 }}
+            _hover={{
+              themecolor: theme.colors.secondary[500]
+            }}
           >
             <Heading as="h3" fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}>
               Communities
