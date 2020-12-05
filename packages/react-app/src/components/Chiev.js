@@ -172,6 +172,14 @@ const Chiev = ({ token }) => {
         (item) => item.trait_type === "bg"
       ).value;
     }
+    const bgSize = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "bgSize"
+    );
+    if (bgSize) {
+      _theme.bgSize = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "bgSize"
+      ).value;
+    }
     themeNFTService.setUserTheme(
       { id: token["Gen0 Id"], name: uriJson?.name, themeAttributes: _theme },
       user.username

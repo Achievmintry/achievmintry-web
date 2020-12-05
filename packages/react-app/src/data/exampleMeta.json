@@ -1,10 +1,10 @@
   {
-    "name": "Theme Test",
-    "description": "Theme #1",
-    "image": "https://gateway.pinata.cloud/ipfs/QmUuXU95EbAstHRHm1S6zSXiwURpmdS9p9Y4QAotU2vTCw",
-    "static_image": "https://gateway.pinata.cloud/ipfs/QmcefNbAt4rUjbeppLn5iWNksiZkVpurLs2UfnhwXKZjf3",
-    "external_url": "https://chiev.net",
-    "youtube_video": "https://youtu.be/S3OJOGxy21k",
+    "name": "The Golden Shovel",
+    "description": "DAOhaus Foundations Program Genesis Member",
+    "image": "https://gateway.pinata.cloud/ipfs/QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx",
+    "static_image": "https://gateway.pinata.cloud/ipfs/QmfQRbtwVfwSiZoNunJGGpzF8Rmw1bNx1DKiGSvpGt7a2Q",
+    "external_url": "https://daohaus.club",
+    "youtube_video": "https://youtu.be/vt8gUDiHRJI",
     "attributes": [
       {
         "trait_type": "Base",
@@ -22,15 +22,23 @@
     "theme_attributes": [
       {
         "trait_type": "primary",
-        "value": "#6e1fb1"
+        "value": "#c8cfd0"
       },
       {
         "trait_type": "secondary",
-        "value": "#cc3385"
+        "value": "#d6d496"
+      },
+      {
+        "trait_type": "tertiary",
+        "value": "#000000"
       },
       {
         "trait_type": "bg",
         "value": "#a4a39d"
+      },
+      {
+        "trait_type": "bgSize",
+        "value": "tile"
       }
     ]
   }
