@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
       <Box
         bgImage={"url(" + theme.images?.bgImg + ")"}
         bgColor="primary.500"
-        bgSize="cover"
+        bgSize={theme.bgSize || "cover"}
         bgPosition="center"
         zIndex="-1"
         h="100vh"
