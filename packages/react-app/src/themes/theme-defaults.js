@@ -18,6 +18,7 @@ export const defaultTheme = {
   secondary500: "#ffcc00",
   secondaryAlpha: rgba("#ffcc00", 0.75),
   bg500: "#fff0be",
+  bgSize: "cover",
   black: "#111",
   bgOverlayOpacity: "0.5",
   primaryFont: "Arvo, serif",

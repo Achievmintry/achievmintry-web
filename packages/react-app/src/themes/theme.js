@@ -83,6 +83,7 @@ export const setTheme = nftTheme => {
         900: darken(0.2, themeOverrides.black)
       }
     },
+    bgSize: themeOverrides.bgSize,
     images: {
       brandImg: themeOverrides.brandImg,
       bgImg: themeOverrides.bgImg
