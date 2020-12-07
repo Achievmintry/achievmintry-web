@@ -13,7 +13,7 @@ const NFTApiInit = () => {
 
   const initNFTApi = async () => {
     try {
-      const nfts = await getAirTable('NFTs');
+      const nfts = await getAirTable('NFTsV2');
       updateNFTApi(nfts.data.records);
     } catch (err) {
       console.log("Error fetching from airtable", err);

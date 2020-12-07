@@ -65,6 +65,8 @@ const Chiev = ({ token }) => {
       );
 
       setGen0Ownership({ ...gen0Ownership });
+
+      console.log("owner", chainLogs.tokenData.currentOwners);
     };
     if (user?.username && chainLogs?.tokenData) {
       getKudsDetails(user.username);

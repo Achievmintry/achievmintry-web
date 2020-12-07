@@ -2,17 +2,12 @@
     "name": "The Golden Shovel",
     "description": "DAOhaus Foundations Program Genesis Member",
     "image": "https://gateway.pinata.cloud/ipfs/QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx",
-    "static_image": "https://gateway.pinata.cloud/ipfs/QmfQRbtwVfwSiZoNunJGGpzF8Rmw1bNx1DKiGSvpGt7a2Q",
     "external_url": "https://daohaus.club",
     "youtube_video": "https://youtu.be/vt8gUDiHRJI",
     "attributes": [
       {
         "trait_type": "Base",
         "value": "Theme"
-      },
-      {
-        "trait_type": "Level",
-        "value": 1
       },
       {
         "trait_type": "Artist",
@@ -38,7 +33,17 @@
       },
       {
         "trait_type": "bgSize",
-        "value": "tile"
+        "value": "tile|cover|contain"
+      },
+      {
+        "trait_type": "bgImg",
+        "value": "QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx"
+      },
+      {
+        "trait_type": "icon",
+        "value": "QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx"
       }
-    ]
+      ]
   }
+
+

@@ -95,14 +95,16 @@ export class KudosService {
   }
 
   async getLogs() {
-    const logs = await this.contract.getPastEvents("AllEvents", {
-      filter: {
-        myIndexedParam: [20, 23],
-        myOtherIndexedParam: "0x123456789...",
-      }, // Using an array means OR: e.g. 20 or 23
+    const logs = await this.contract.getPastEvents("Transfer", {
+      // filter: {
+      //   myIndexedParam: [20, 23],
+      //   myOtherIndexedParam: "0x123456789...",
+      // }, // Using an array means OR: e.g. 20 or 23
       fromBlock: 0,
       toBlock: "latest",
     });
+
+    console.log('logs', logs);
 
     const sortedLogs = logs.sort(function(a, b) {
       return a.blockNumber - b.blockNumber;
@@ -136,6 +138,8 @@ export class KudosService {
   async getOwnedForAccount(ownersObj, acct) {
     const promises = [];
     const nftsOc = [];
+
+    // ownersObj list of all accts that own a token and the token ids it owns
 
     // get only nfts where *account* is owner
     // get onchain data
