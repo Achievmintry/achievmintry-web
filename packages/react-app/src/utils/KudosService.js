@@ -17,7 +17,7 @@ export class KudosService {
 
     this.sendTx = this.sendTx; // eslint-disable-line
     this.tokenOfOwnerByIndex = this.tokenOfOwnerByIndex; // eslint-disable-line
-    this.getKudosById = this.getKudosById; // eslint-disable-line
+    this.getChievsById = this.getChievsById; // eslint-disable-line
     this.getNumClonesInWild = this.getNumClonesInWild; // eslint-disable-line
     this.getLatestId = this.getLatestId; // eslint-disable-line
     this.displayPrice = this.displayPrice; // eslint-disable-line
@@ -49,10 +49,10 @@ export class KudosService {
     return tokenId;
   }
 
-  async getKudosById(tokenId) {
+  async getChievsById(tokenId) {
     let token;
     try {
-      token = await this.contract.methods.getKudosById(tokenId).call();
+      token = await this.contract.methods.getChievsById(tokenId).call();
       return token;
     } catch {
       return undefined;
@@ -112,20 +112,20 @@ export class KudosService {
     // console.log('sortedLogs', sortedLogs);
     const origOwners = {};
     sortedLogs.forEach((item) => {
-      const account = item.returnValues._to.toLowerCase();
+      const account = item.returnValues.to.toLowerCase();
       if (
-        item.returnValues._from === "0x0000000000000000000000000000000000000000"
+        item.returnValues.from === "0x0000000000000000000000000000000000000000"
       ) {
         origOwners[account] = origOwners[account] || [];
-        origOwners[account].push(item.returnValues._tokenId);
+        origOwners[account].push(item.returnValues.tokenId);
       }
     });
 
     const currentOwners = {};
     sortedLogs.forEach((item) => {
-      const account = item.returnValues._to.toLowerCase();
+      const account = item.returnValues.to.toLowerCase();
       currentOwners[account] = currentOwners[account] || [];
-      currentOwners[account].push(item.returnValues._tokenId);
+      currentOwners[account].push(item.returnValues.tokenId);
     });
 
     return {
@@ -147,9 +147,10 @@ export class KudosService {
       return {};
     }
     ownersObj[acct].forEach((item) => {
-      promises.push(this.getKudosById(item));
+      promises.push(this.getChievsById(item));
     });
     const nftData = await Promise.all(promises);
+    // console.log('nftData', nftData);
     // get details of all *acct* owned tokens and flag if gen0
     ownersObj[acct].forEach((item, idx) => {
       const kudo = {

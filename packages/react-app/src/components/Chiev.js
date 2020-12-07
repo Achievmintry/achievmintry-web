@@ -145,8 +145,16 @@ const Chiev = ({ token }) => {
 
   const handleClick = () => {
     const _theme = {};
-    _theme.bgImg = uriJson?.static_image || uriJson?.image;
-    console.log(uriJson);
+    //_theme.bgImg = uriJson?.static_image || uriJson?.image;
+    const bgImg = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "bgImg"
+    );
+    if (bgImg) {
+      _theme.bgImg = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "bgImg"
+      ).value;
+    }
+    
     const primary = uriJson?.theme_attributes?.find(
       (item) => item.trait_type === "primary"
     );
@@ -218,10 +226,10 @@ const Chiev = ({ token }) => {
               src={
                 token["Display Thumb"]
                   ? token["Display Thumb"][0].thumbnails.large.url
-                  : token["Image (from Artist Submissions)"][0].thumbnails.large
+                  : token["Image (from Artist Submissions) 2"][0].thumbnails.large
                       .url
               }
-              alt={token["NFT Name (from Artist Submissions)"][0]}
+              alt={token["NFT Name (from Artist Submissions) 2"][0]}
               fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
               onMouseOver={(e) => {
                 if (!token["Display Thumb"]) {
@@ -229,7 +237,7 @@ const Chiev = ({ token }) => {
                 }
                 e.currentTarget.src =
                   token[
-                    "Image (from Artist Submissions)"
+                    "Image (from Artist Submissions) 2"
                   ][0].thumbnails.large.url;
               }}
               onMouseOut={(e) => {
@@ -251,13 +259,13 @@ const Chiev = ({ token }) => {
           fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
         >
           <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
-            {token["NFT Name (from Artist Submissions)"][0]}
+            {token["NFT Name (from Artist Submissions) 2"][0]}
           </Heading>
           <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
           <Text>
             {" "}
             Quantity:{" "}
-            {token["Max Quantity (from Artist Submissions)"][0] || "?"}
+            {token["Max Quantity (from Artist Submissions) 2"][0] || "?"}
           </Text>
 
           {user?.username && (

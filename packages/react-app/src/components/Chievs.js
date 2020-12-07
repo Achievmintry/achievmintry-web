@@ -197,7 +197,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
     if (dao) {
       filteredList = filteredList.filter(
-        item => item["Community (from Artist Submissions)"][0] === dao
+        item => item["Community (from Artist Submissions) 2"][0] === dao
       );
     }
     if (!filteredList.length) {
@@ -299,13 +299,13 @@ const Chievs = ({ featured, account, dao, cols }) => {
           minWidth={{ base: "33%", xxl: "33%" }}
         >
           <ModalHeader>
-            {selected["NFT Name (from Artist Submissions)"] ? (
+            {selected["NFT Name (from Artist Submissions) 2"] ? (
               <>
                 <Heading>
-                  {selected["NFT Name (from Artist Submissions)"][0]}
+                  {selected["NFT Name (from Artist Submissions) 2"][0]}
                 </Heading>
                 <Text>
-                  {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                  {selected["NFT Name (from Artist Submissions) 2"][0]} price:{" "}
                   {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
                 </Text>
               </>
@@ -315,15 +315,15 @@ const Chievs = ({ featured, account, dao, cols }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {selected["Image (from Artist Submissions)"] && (
+            {selected["Image (from Artist Submissions) 2"] && (
               <Image
                 src={
                   selected["Display Thumb"]
                     ? selected["Display Thumb"][0].thumbnails.large.url
-                    : selected["Image (from Artist Submissions)"][0].thumbnails
+                    : selected["Image (from Artist Submissions) 2"][0].thumbnails
                         .large.url
                 }
-                alt={selected["NFT Name (from Artist Submissions)"][0]}
+                alt={selected["NFT Name (from Artist Submissions) 2"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
                 onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
@@ -331,7 +331,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                   }
                   e.currentTarget.src =
                     selected[
-                      "Image (from Artist Submissions)"
+                      "Image (from Artist Submissions) 2"
                     ][0].thumbnails.large.url;
                 }}
                 onMouseOut={e => {
