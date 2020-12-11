@@ -20,6 +20,7 @@ const ChainLogsInit = () => {
     const getMintCount = async () => {
       var cloneInWild = {};
       const tokenData = await kudos.service.getLogs();
+      // TODO: update from logs instead of making more contract calls
       const cloneInWildCounts = await Promise.all(
         nfts.map((item, idx) =>
           kudos.service.getNumClonesInWild(item.fields["Gen0 Id"])
@@ -55,13 +56,20 @@ const ChainLogsInit = () => {
       const userTheme = themeNFTService.getUserTheme(user.username);
       if (userTheme?.themeAttributes) {
         const acct = user.username.toLowerCase();
-        const currentOwner = {
-          [acct]: chainLogs.tokenData.currentOwners[acct],
-        };
-        const counts = await kudos.service.getOwnedForAccount(
-          currentOwner,
-          acct
+        const _usersTokens = chainLogs.tokenData.usersTokens;
+
+        const userTokens = _usersTokens.find(
+          (token) => token.address.toLowerCase() === acct
         );
+
+        if (!userTokens) {
+          return;
+        }
+
+        const counts = {};
+        userTokens.tokens.forEach((item, idx) => {
+          counts[item.clonedFromId] = 1 + (counts[item.clonedFromId] || 0);
+        });
         if (counts[userTheme.id]) {
           setTheme(userTheme.themeAttributes);
         }

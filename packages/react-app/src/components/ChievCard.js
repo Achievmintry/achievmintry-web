@@ -13,16 +13,16 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
           src={
             token["Display Thumb"]
               ? token["Display Thumb"][0].thumbnails.large.url
-              : token["Image (from Artist Submissions)"][0].thumbnails.large.url
+              : token["Image (from Artist Submissions) 2"][0].thumbnails.large.url
           }
-          alt={token["NFT Name (from Artist Submissions)"][0]}
+          alt={token["NFT Name (from Artist Submissions) 2"][0]}
           fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
           onMouseOver={e => {
             if (!token["Display Thumb"]) {
               return;
             }
             e.currentTarget.src =
-              token["Image (from Artist Submissions)"][0].thumbnails.large.url;
+              token["Image (from Artist Submissions) 2"][0].thumbnails.large.url;
           }}
           onMouseOut={e => {
             if (!token["Display Thumb"]) {
@@ -45,23 +45,23 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
           textTransform="uppercase"
           color="black.500"
         >
-          {token["NFT Name (from Artist Submissions)"][0]}
+          {token["NFT Name (from Artist Submissions) 2"][0]}
         </Heading>
         <Text> Price: {displayPrice} xDai</Text>
         <Text>
           {" "}
-          Quantity: {token["Max Quantity (from Artist Submissions)"][0] || "?"}
+          Quantity: {token["Max Quantity (from Artist Submissions) 2"][0] || "?"}
         </Text>
         {+token["Gen0 Id"] && chainLogs.cloneInWild && (
           <Text>
             Minted: {chainLogs.cloneInWild[token["Gen0 Id"]]}{" "}
             {+chainLogs.cloneInWild[token["Gen0 Id"]] ===
-              token["Max Quantity (from Artist Submissions)"][0] && "SOLD OUT"}
+              token["Max Quantity (from Artist Submissions) 2"][0] && "SOLD OUT"}
           </Text>
         )}
         {account && (
           <Box>
-            <Text>Owned: {owned}</Text>
+            <Text>Owned: {owned  || 0}</Text>
             <Text>Gen0 owned: {gen0Ownership}</Text>
           </Box>
         )}
