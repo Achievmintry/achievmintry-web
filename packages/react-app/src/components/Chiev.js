@@ -47,26 +47,32 @@ const Chiev = ({ token }) => {
     const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
-      if (!currentOwner) {
+      const usersTokens = chainLogs.tokenData.usersTokens;
+
+      if (!currentOwner || !usersTokens) {
         setNftCounts({});
         setGen0Ownership({});
         return;
       }
-      // const currentOwnerAndToken = { [acct]: [token["Gen0 Id"]] };
-      // console.log("currentOwnerAndToken", currentOwnerAndToken);
-
-      const counts = await kudos.service.getOwnedForAccount(currentOwner, acct);
+      const userTokens = usersTokens.find(
+        (token) => token.address.toLowerCase() === acct
+      );
+      if (!userTokens) {
+        return;
+      }
+      const counts = {};
+      userTokens.tokens.forEach((item, idx) => {
+        counts[item.clonedFromId] = 1 + (counts[item.clonedFromId] || 0);
+      });
       setNftCounts({ ...counts });
 
-      const gen0Ownership = kudos.service.getGen0Owned(
-        currentOwner,
-        acct,
-        counts
-      );
+      const gen0Ownership = {};
+      userTokens.tokens
+        .filter((token) => token.type === "gen0")
+        .forEach((token) => (gen0Ownership[token.tokenId] = true))
 
       setGen0Ownership({ ...gen0Ownership });
 
-      console.log("owner", chainLogs.tokenData.currentOwners);
     };
     if (user?.username && chainLogs?.tokenData) {
       getKudsDetails(user.username);
@@ -77,7 +83,6 @@ const Chiev = ({ token }) => {
   useEffect(() => {
     const getUri = async () => {
       const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
-      console.log("URI", uri);
       setUriJson(uri);
     };
 
@@ -270,7 +275,7 @@ const Chiev = ({ token }) => {
 
           {user?.username && (
             <>
-              <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
+              <Text>Owned: {nftCounts[token["Gen0 Id"]] || 0}</Text>
               <Text>
                 Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
               </Text>

@@ -1298,22 +1298,19 @@ contract ERC721Full is ERC721, ERC721Enumerable, ERC721Metadata {
 }
 
 // File: browser/Chiev.sol
-
 pragma solidity ^0.5.0;
-
-
 
 /// @title Chievs
 /// @author Dekan Brown <dekanbrown[at]odyssy.io>
 /// @notice Chievs ERC721 interface for minting, cloning, and transferring Chievs tokens. Based on Kudos by Jason Haas <jasonrhaas[at]gmail.com>
 
-
-
 contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
     using SafeMath for uint256;
     
-    event MintGen0(address indexed to, uint256 numClonesAllowed, uint256 indexed tokenId, address indexed cloner);
-    event Clone(address indexed sender, address indexed receiver, uint256 tokenId, uint256 indexed clonedFromId);
+    event MintGen0(address indexed to, uint256 numClonesAllowed, uint256 indexed tokenId, address indexed cloner, uint256 priceFinney);
+    event Clone(address indexed sender, address indexed receiver, uint256 tokenId, uint256 indexed clonedFromId, uint256 tokenOwnerFee, uint256 contractOwnerFee);
+    event SetPrice(uint256 indexed tokenId, uint256 newPriceFinne);
+    event SetTokenUri(uint256 indexed tokenId, string _tokenURI);
 
     struct Chiev {
         uint256 priceFinney;
@@ -1325,6 +1322,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
 
     Chiev[] public chievs;
     uint256 public cloneFeePercentage = 50;
+    // uint256 public clonerFeePercentage = 10;
     bool public isMintable = true;
 
     modifier mintable {
@@ -1365,7 +1363,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         _mint(_to, tokenId);
         _setTokenURI(tokenId, _tokenURI);
         
-        emit MintGen0(_to, _numClonesAllowed, tokenId, address(0));
+        emit MintGen0(_to, _numClonesAllowed, tokenId, address(0), _priceFinney);
 
     }
     
@@ -1390,7 +1388,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         _mint(_to, tokenId);
         _setTokenURI(tokenId, _tokenURI);
         
-        emit MintGen0(_to, _numClonesAllowed, tokenId, _cloner);
+        emit MintGen0(_to, _numClonesAllowed, tokenId, _cloner, _priceFinney);
 
     }
 
@@ -1405,15 +1403,17 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         address payable ownedBy = address(uint160(ownerAddr));
 
         uint256 cloningCost  = _chiev.priceFinney * 10**15 * _numClonesRequested;
-        if(_chiev.cloner != address(0)){
-            require(msg.sender == _chiev.cloner, "Only cloner can clone");
-        }
         require(
             _chiev.numClonesInWild + _numClonesRequested <= _chiev.numClonesAllowed,
             "The number of Chievs clones requested exceeds the number of clones allowed.");
         require(
             msg.value >= cloningCost,
             "Not enough Wei to pay for the Chievs clones.");
+        if(_chiev.cloner != address(0)){
+            require(msg.sender == _chiev.cloner, "Only cloner can clone");
+            // uint256 contractClonerFee = (cloningCost.mul(clonerFeePercentage)).div(100);
+            // address(_chiev.cloner).transfer(contractClonerFee);
+        }
 
         // Pay the contract owner the cloneFeePercentage amount
         uint256 contractOwnerFee = (cloningCost.mul(cloneFeePercentage)).div(100);
@@ -1446,7 +1446,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
             // Use the same tokenURI metadata from the Gen0 Chievs
             string memory _g0tokenURI = tokenURI(_tokenId);
             _setTokenURI(newTokenId, _g0tokenURI);
-            emit Clone(msg.sender, _to, newTokenId, _tokenId);
+            emit Clone(msg.sender, _to, newTokenId, _tokenId, tokenOwnerFee, contractOwnerFee);
         }
         // Return the any leftvoer ETH to the sender
         msg.sender.transfer(msg.value - contractOwnerFee - tokenOwnerFee);
@@ -1478,6 +1478,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
             "Invalid range for cloneFeePercentage.  Must be between 0 and 100.");
         cloneFeePercentage = _cloneFeePercentage;
     }
+    
 
     /// @dev setMintable(): set the isMintable public variable.  When set to `false`, no new 
     ///                     chievs are allowed to be minted or cloned.  However, all of already
@@ -1495,6 +1496,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
 
         _chiev.priceFinney = _newPriceFinney;
         chievs[_tokenId] = _chiev;
+        emit SetPrice(_tokenId, _newPriceFinney);
     }
 
     /// @dev setTokenURI(): Set an existing token URI.
@@ -1502,6 +1504,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
     /// @param _tokenURI The tokenURI string.  Typically this will be a link to a json file on IPFS.
     function setTokenURI(uint256 _tokenId, string memory _tokenURI) public onlyOwner {
         _setTokenURI(_tokenId, _tokenURI);
+        emit SetTokenUri(_tokenId, _tokenURI);
     }
 
     /// @dev getChievsById(): Return a Chievs struct/array given a Chievs Id. 
@@ -1510,7 +1513,8 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
     function getChievsById(uint256 _tokenId) view public returns (uint256 priceFinney,
                                                                 uint256 numClonesAllowed,
                                                                 uint256 numClonesInWild,
-                                                                uint256 clonedFromId
+                                                                uint256 clonedFromId,
+                                                                address cloner
                                                                 )
     {
         Chiev memory _chiev = chievs[_tokenId];
@@ -1519,6 +1523,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         numClonesAllowed = _chiev.numClonesAllowed;
         numClonesInWild = _chiev.numClonesInWild;
         clonedFromId = _chiev.clonedFromId;
+        cloner = _chiev.cloner;
     }
 
     /// @dev getNumClonesInWild(): Return a Chievs struct/array given a Chievs Id. 

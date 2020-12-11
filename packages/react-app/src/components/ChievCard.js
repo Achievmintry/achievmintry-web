@@ -61,7 +61,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
         )}
         {account && (
           <Box>
-            <Text>Owned: {owned}</Text>
+            <Text>Owned: {owned  || 0}</Text>
             <Text>Gen0 owned: {gen0Ownership}</Text>
           </Box>
         )}

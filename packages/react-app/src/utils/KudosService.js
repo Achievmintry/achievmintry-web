@@ -22,8 +22,8 @@ export class KudosService {
     this.getLatestId = this.getLatestId; // eslint-disable-line
     this.displayPrice = this.displayPrice; // eslint-disable-line
     this.getLogs = this.getLogs; // eslint-disable-line
-    this.getOwnedForAccount = this.getOwnedForAccount; // eslint-disable-line
-    this.getTokenUri = this.getTokenUri // eslint-disable-line
+    // this.getOwnedForAccount = this.getOwnedForAccount; // eslint-disable-line
+    this.getTokenUri = this.getTokenUri; // eslint-disable-line
   }
 
   sendTx(name, tx, callback, from, value) {
@@ -95,23 +95,23 @@ export class KudosService {
   }
 
   async getLogs() {
-    const logs = await this.contract.getPastEvents("Transfer", {
-      // filter: {
-      //   myIndexedParam: [20, 23],
-      //   myOtherIndexedParam: "0x123456789...",
-      // }, // Using an array means OR: e.g. 20 or 23
+    const allEvents = await this.contract.getPastEvents("AllEvents", {
       fromBlock: 0,
       toBlock: "latest",
     });
 
-    console.log('logs', logs);
+    const transferLogs = allEvents.filter((e) => e.event === "Transfer");
+    const gen0Logs = allEvents.filter((e) => e.event === "MintGen0");
+    const cloneLogs = allEvents.filter((e) => e.event === "Clone");
 
-    const sortedLogs = logs.sort(function(a, b) {
+    // sort log oldest to newest so latest transfer is owner
+    const sortedTransfers = transferLogs.sort(function(a, b) {
       return a.blockNumber - b.blockNumber;
     });
-    // console.log('sortedLogs', sortedLogs);
+    // get the original owners
+    // the first transfer maybe the one that counts
     const origOwners = {};
-    sortedLogs.forEach((item) => {
+    sortedTransfers.forEach((item) => {
       const account = item.returnValues.to.toLowerCase();
       if (
         item.returnValues.from === "0x0000000000000000000000000000000000000000"
@@ -121,70 +121,72 @@ export class KudosService {
       }
     });
 
+    // current owners in the case that someone has transfered ownership
     const currentOwners = {};
-    sortedLogs.forEach((item) => {
+    sortedTransfers.forEach((item) => {
       const account = item.returnValues.to.toLowerCase();
       currentOwners[account] = currentOwners[account] || [];
       currentOwners[account].push(item.returnValues.tokenId);
     });
+    
+    // get all clone token info
+    const clones = cloneLogs.map((token) => {
+      return {
+        type: "clone",
+        sender: token.returnValues.sender,
+        reciever: token.returnValues.receiver,
+        tokenId: token.returnValues.tokenId,
+        clonedFromId: token.returnValues.clonedFromId,
+        tokenOwnerFee: token.returnValues.tokenOwnerFee,
+        contractOwnerFee: token.returnValues.contractOwnerFee,
+        ownedBy: Object.keys(currentOwners).find(
+          (owner) =>
+            currentOwners[owner].indexOf(token.returnValues.tokenId) > -1
+        ),
+      };
+    });
+
+    // get all gen0 token info
+    const gen0s = gen0Logs.map((token) => {
+      return {
+        type: "gen0",
+        sender: null,
+        reciever: token.returnValues.to,
+        tokenId: token.returnValues.tokenId,
+        clonedFromId: token.returnValues.tokenId,
+        numClonesAllowed: token.returnValues.numClonesAllowed,
+        cloner: token.returnValues.cloner,
+        priceFinney: token.returnValues.priceFinney,
+        ownedBy: Object.keys(currentOwners).find(
+          (owner) =>
+            currentOwners[owner].indexOf(token.returnValues.tokenId) > -1
+        ),
+        clones: clones.filter(
+          (clone) => clone.clonedFromId === token.returnValues.tokenId
+        ),
+      };
+    });
+    // get all token info
+    const allTokens = [...clones, ...gen0s];
+
+    // get all tokens for all the current owners
+    const usersTokens = [];
+    Object.keys(currentOwners).forEach((key) => {
+      const item = {
+        address: key,
+        tokens: allTokens.filter((token) => token.ownedBy === key),
+      };
+      usersTokens.push(item);
+    });
+
 
     return {
-      sortedLogs,
       origOwners,
       currentOwners,
+      usersTokens
     };
   }
 
-  async getOwnedForAccount(ownersObj, acct) {
-    const promises = [];
-    const nftsOc = [];
-
-    // ownersObj list of all accts that own a token and the token ids it owns
-
-    // get only nfts where *account* is owner
-    // get onchain data
-    if (!ownersObj[acct]) {
-      return {};
-    }
-    ownersObj[acct].forEach((item) => {
-      promises.push(this.getChievsById(item));
-    });
-    const nftData = await Promise.all(promises);
-    // console.log('nftData', nftData);
-    // get details of all *acct* owned tokens and flag if gen0
-    ownersObj[acct].forEach((item, idx) => {
-      const kudo = {
-        tokenId: item,
-        gen0: nftData[idx].clonedFromId === item,
-        clonedFromId: nftData[idx].clonedFromId,
-        count: 0,
-      };
-      nftsOc.push(kudo);
-    });
-    // for each unique owned nft get count
-    var counts = {};
-    nftsOc.forEach((item, idx) => {
-      counts[item.clonedFromId] = 1 + (counts[nftsOc[idx].clonedFromId] || 0);
-    });
-    return counts;
-  }
-
-  getGen0Owned(ownersObj, acct, counts) {
-    const gen0Ownership = {};
-
-    Object.keys(counts).forEach((countItem) => {
-      const index = ownersObj[acct].findIndex((item) => {
-        return item === countItem;
-      });
-
-      if (index > -1) {
-        gen0Ownership[countItem] = true;
-      } else {
-        gen0Ownership[countItem] = false;
-      }
-    });
-    return gen0Ownership;
-  }
 }
 
 export class Web3KudosService extends KudosService {
