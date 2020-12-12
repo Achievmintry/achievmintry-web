@@ -116,11 +116,10 @@ const Chiev = ({ token }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.service.service.clone(
-        addr,
+      kudos.service.clone(
+        [addr],
         user.username,
         token["Gen0 Id"],
-        1,
         token["Price In Wei"],
         txCallBack
       );

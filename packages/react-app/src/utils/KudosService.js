@@ -214,9 +214,23 @@ export class Web3KudosService extends KudosService {
   }
 
   // public
-  async clone(to, from, tokenId, numClonesRequested, value, callback) {
+  // async clone(to, from, tokenId, numClonesRequested, value, callback) {
+  //   console.log("clone", from);
+  //   const newTx = this.contract.methods.clone(to, tokenId, numClonesRequested);
+  //   const txReceipt = this.sendTx(
+  //     "clone",
+  //     newTx,
+  //     callback,
+  //     from,
+  //     value,
+  //     callback
+  //   );
+  //   return txReceipt.transactionHash;
+  // }
+  async clone(to, from, tokenId, value, callback) {
+    // to is an array
     console.log("clone", from);
-    const newTx = this.contract.methods.clone(to, tokenId, numClonesRequested);
+    const newTx = this.contract.methods.clone(to, tokenId);
     const txReceipt = this.sendTx(
       "clone",
       newTx,

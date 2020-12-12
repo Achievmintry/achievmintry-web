@@ -152,10 +152,9 @@ const Chievs = ({ featured, account, dao, cols }) => {
     const addr = ensAddr ? ensAddr : data.address;
     try {
       kudos.service.clone(
-        addr,
+        [addr],
         user.username,
         selected["Gen0 Id"],
-        1,
         selected["Price In Wei"],
         txCallBack
       );
