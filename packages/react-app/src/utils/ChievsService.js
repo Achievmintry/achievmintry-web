@@ -1,7 +1,7 @@
 import { abis } from "@project/contracts";
 import Web3 from "web3";
 
-export class KudosService {
+export class ChievsService {
   web3;
   contract;
 
@@ -13,7 +13,7 @@ export class KudosService {
       );
     }
     this.web3 = web3;
-    this.contract = new web3.eth.Contract(abis.kudos, tokenAddr);
+    this.contract = new web3.eth.Contract(abis.chievs, tokenAddr);
 
     this.sendTx = this.sendTx; // eslint-disable-line
     this.tokenOfOwnerByIndex = this.tokenOfOwnerByIndex; // eslint-disable-line
@@ -189,7 +189,7 @@ export class KudosService {
 
 }
 
-export class Web3KudosService extends KudosService {
+export class Web3ChievsService extends ChievsService {
   constructor(...args) {
     super(...args);
 
