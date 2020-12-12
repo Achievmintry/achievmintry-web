@@ -11,7 +11,7 @@ import {
   CommunityApiInit,
   EnsInit,
   NFTApiInit,
-  KudosInit,
+  ChievsInit,
   TxProcessorInit,
   UserInit,
   ChainLogsInit,
@@ -42,7 +42,7 @@ function App() {
       <>
         <UserInit />
         <TxProcessorInit />
-        <KudosInit />
+        <ChievsInit />
         <EnsInit />
         <NFTApiInit />
         <CommunityApiInit />

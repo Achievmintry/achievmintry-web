@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
-  useKudos,
+  useChievs,
   useTxProcessor,
   useUser,
   useNFTApi,
@@ -79,7 +79,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [nftCounts, setNftCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [ensAddr, setEnsAddr] = useState("");
-  const [kudos] = useKudos();
+  const [chievs] = useChievs();
   const [user] = useUser();
   const [nfts] = useNFTApi();
   const [ens] = useEns();
@@ -121,7 +121,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
       getKudsDetails(account);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos, chainLogs, account]);
+  }, [chievs, chainLogs, account]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -151,11 +151,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.service.clone(
-        addr,
+      chievs.service.clone(
+        [addr],
         user.username,
         selected["Gen0 Id"],
-        1,
         selected["Price In Wei"],
         txCallBack
       );
@@ -177,10 +176,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
   };
 
   const displayPrice = (price) => {
-    if (!kudos?.service) {
+    if (!chievs?.service) {
       return "?";
     }
-    return kudos.service.displayPrice(price);
+    return chievs.service.displayPrice(price);
   };
 
   const renderList = () => {
@@ -250,7 +249,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           columns={{ base: 1, sm: 2, lg: 4 }}
           spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
         >
-          {nfts && kudos && chainLogs && renderList()}
+          {nfts && chievs && chainLogs && renderList()}
           {featured && (
             <HoverBox
               as={Link}

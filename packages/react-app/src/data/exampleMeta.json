@@ -18,3 +18,36 @@
     { "trait_type": "icon", "value": "https://gateway.pinata.cloud/ipfs/QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF" }
   ]
 }
+
+
+{
+  "name": "Chiev!",
+  "description": "Don't let your memes be dreams.",
+  "image": "QmaWfJcpjamVkQSDU7tXmgucPvwZPsTZ5e5LjSAYnrMnNc",
+  "external_url": "https:\/\/raidguild.org",
+  "youtube_video": "QmbZip5aJnRfYBvDGMP1YmwWApC2qKhXWWKjpFiRS9xT7o",
+  "animation_url": "https:\/\/s3.amazonaws.com\/your-bucket\/images\/{id}.mp4",
+  "background_color": "#DBFCFF",
+  "ipfs": "https:\/\/gateway.pinata.cloud\/ipfs\/",
+  "properties": {
+      "base": "Talisman|Premier",
+      "artist": "Dekan",
+      "artist_address": "0x...",
+      "rich_property": {
+          "name": "Theme",
+          "value": "Mario",
+          "display_value": "Mario Theme",
+          "properties": {
+              "primary": "#CC4B09",
+              "secondary": "#5D94FB",
+              "tertiary": "#127C22",
+              "bg": "#DBFCFF",
+              "bgSize": "cover",
+              "bgImg": "QmbZip5aJnRfYBvDGMP1YmwWApC2qKhXWWKjpFiRS9xT7o",
+              "icon": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
+              "primaryFont": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
+              "dataFont": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
+          }
+      }
+  }
+}

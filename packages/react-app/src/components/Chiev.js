@@ -15,7 +15,7 @@ import {
 import {
   useChainLogs,
   useEns,
-  useKudos,
+  useChievs,
   useTxProcessor,
   useUser,
 } from "../contexts/DappContext";
@@ -26,7 +26,7 @@ import { useTheme } from "../contexts/CustomThemeContext";
 import { NFTThemeService } from "../utils/NFTThemeService";
 
 const Chiev = ({ token }) => {
-  const [kudos] = useKudos();
+  const [chievs] = useChievs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
   const [user] = useUser();
   const [ens] = useEns();
@@ -78,16 +78,16 @@ const Chiev = ({ token }) => {
       getKudsDetails(user.username);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos, chainLogs, user]);
+  }, [chievs, chainLogs, user]);
 
   useEffect(() => {
     const getUri = async () => {
-      const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
+      const uri = await chievs.service.getTokenUri(token["Gen0 Id"]);
       setUriJson(uri);
     };
 
     getUri();
-  }, [kudos, token]);
+  }, [chievs, token]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -116,11 +116,10 @@ const Chiev = ({ token }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.service.service.clone(
-        addr,
+      chievs.service.clone(
+        [addr],
         user.username,
         token["Gen0 Id"],
-        1,
         token["Price In Wei"],
         txCallBack
       );
@@ -142,10 +141,10 @@ const Chiev = ({ token }) => {
   };
 
   const displayPrice = (price) => {
-    if (!kudos.service) {
+    if (!chievs.service) {
       return "?";
     }
-    return kudos.service.displayPrice(price);
+    return chievs.service.displayPrice(price);
   };
 
   const handleClick = () => {
