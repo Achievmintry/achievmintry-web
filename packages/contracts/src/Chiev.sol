@@ -12,10 +12,9 @@ import 'https://github.com/Achievmintry/openzeppelin-contracts/blob/release-v2.5
 contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
     using SafeMath for uint256;
     
-    event MintGen0(address indexed to, uint256 numClonesAllowed, uint256 indexed tokenId, address indexed cloner, uint256 priceFinney, uint256 permTokenId);
+    event MintGen0(address indexed to, uint256 numClonesAllowed, uint256 indexed tokenId, uint256 priceFinney, uint256 permTokenId);
     event Clone(address indexed sender, address indexed receiver, uint256 tokenId, uint256 indexed clonedFromId, uint256 tokenOwnerFee, uint256 contractOwnerFee);
     event SetPrice(uint256 indexed tokenId, uint256 newPriceFinne);
-    event SetCloner(uint256 indexed tokenId, address newCloner);
     event SetPermTokenId(uint256 indexed tokenId, uint256 newPermTokenId);
     event SetTokenUri(uint256 indexed tokenId, string _tokenURI);
 
@@ -24,8 +23,8 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         uint256 numClonesAllowed;
         uint256 numClonesInWild;
         uint256 clonedFromId;
-        address cloner;
         uint256 permTokenId;
+        uint256 permTokenMin;
     }
 
     Chiev[] public chievs;
@@ -45,7 +44,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         // If the array is new, skip over the first index.
         if(chievs.length == 0) {
             Chiev memory _dummyChiev = Chiev({priceFinney: 0,numClonesAllowed: 0, numClonesInWild: 0,
-                                           clonedFromId: 0, cloner: address(0), permTokenId: 0
+                                           clonedFromId: 0, permTokenId: 0, permTokenMin: 0
                                            });
             chievs.push(_dummyChiev);
         }
@@ -60,7 +59,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
     function mint(address _to, uint256 _priceFinney, uint256 _numClonesAllowed, string memory _tokenURI) public mintable onlyOwnerOrRole returns (uint256 tokenId) {
 
         Chiev memory _chiev = Chiev({priceFinney: _priceFinney, numClonesAllowed: _numClonesAllowed,
-                                  numClonesInWild: 0, clonedFromId: 0, cloner: address(0), permTokenId: 0
+                                  numClonesInWild: 0, clonedFromId: 0,  permTokenId: 0, permTokenMin: 0
                                   });
         // The new chiev is pushed onto the array and minted
         // Note that Solidity uses 0 as a default value when an item is not found in a mapping.
@@ -71,54 +70,33 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         _mint(_to, tokenId);
         _setTokenURI(tokenId, _tokenURI);
         
-        emit MintGen0(_to, _numClonesAllowed, tokenId, address(0), _priceFinney, 0);
-
-    }
-    
-    /// @dev mintPermissioned(): Mint a new permissioned Gen0 Chievs.  These are the tokens that other Chievs will be "cloned from". and can only be cloned by cloner addr
-    /// @param _to Address to mint to.
-    /// @param _cloner Address which can clone.
-    /// @param _priceFinney Price of the Chievs in Finney.
-    /// @param _numClonesAllowed Maximum number of times this Chievs is allowed to be cloned.
-    /// @param _tokenURI A URL to the JSON file containing the metadata for the Chievs.  See metadata.json for an example.
-    /// @return the tokenId of the Chievs that has been minted.  Note that in a transaction only the tx_hash is returned.
-    function mintPermissioned(address _to, address _cloner, uint256 _priceFinney, uint256 _numClonesAllowed, string memory _tokenURI) public mintable onlyOwnerOrRole returns (uint256 tokenId) {
-
-        Chiev memory _chiev = Chiev({priceFinney: _priceFinney, numClonesAllowed: _numClonesAllowed,
-                                  numClonesInWild: 0, clonedFromId: 0, cloner: _cloner, permTokenId: 0
-                                  });
-        // The new chiev is pushed onto the array and minted
-        // Note that Solidity uses 0 as a default value when an item is not found in a mapping.
-
-        tokenId = chievs.push(_chiev) - 1;
-        chievs[tokenId].clonedFromId = tokenId;
-
-        _mint(_to, tokenId);
-        _setTokenURI(tokenId, _tokenURI);
-        
-        emit MintGen0(_to, _numClonesAllowed, tokenId, _cloner, _priceFinney, 0);
+        emit MintGen0(_to, _numClonesAllowed, tokenId, _priceFinney, 0);
 
     }
 
-    /// @dev mint(): Mint a new permissioned Gen0 Chievs.  These are the tokens that other Chievs will be "cloned from". and can only be cloned by cloner addr
+    /// @dev mintTokenPermissioned(): Mint a new permissioned Gen0 Chievs.  These are the tokens that other Chievs will be "cloned from". 
     /// @param _to Address to mint to.
     /// @param _permTokenId Address which can clone.
     /// @param _priceFinney Price of the Chievs in Finney.
     /// @param _numClonesAllowed Maximum number of times this Chievs is allowed to be cloned.
     /// @param _tokenURI A URL to the JSON file containing the metadata for the Chievs.  See metadata.json for an example.
     /// @return the tokenId of the Chievs that has been minted.  Note that in a transaction only the tx_hash is returned.
-    function mintTokenPermissioned(address _to, uint256 _permTokenId, uint256 _priceFinney, uint256 _numClonesAllowed, string memory _tokenURI) public mintable onlyOwnerOrRole returns (uint256 tokenId) {
+    function mintTokenPermissioned(address _to, uint256 _permTokenId, uint256 _permTokenMin,  uint256 _priceFinney, uint256 _numClonesAllowed, string memory _tokenURI) public mintable onlyOwnerOrRole returns (uint256 tokenId) {
 
         Chiev memory _chiev = Chiev({priceFinney: _priceFinney, numClonesAllowed: _numClonesAllowed,
-                                  numClonesInWild: 0, clonedFromId: 0, cloner: address(0), permTokenId: _permTokenId
+                                  numClonesInWild: 0, clonedFromId: 0,  permTokenId: _permTokenId,  permTokenMin: _permTokenMin
                                   });
         Chiev memory _gen0Chiev = chievs[_permTokenId];        
         require(
-            _gen0Chiev.numClonesInWild < _gen0Chiev.numClonesAllowed,
+            _gen0Chiev.numClonesInWild <= _gen0Chiev.numClonesAllowed,
             "Role token is not a valid Gen0.");
         require(
-            _gen0Chiev.cloner == address(0),
-            "Role Token already has cloner permissions.");
+            _permTokenMin > 0 ,
+            "Require at least 1 permission token");
+        // minus 1 to account for gen0
+        require(
+            _gen0Chiev.numClonesAllowed >=  _permTokenMin - 1 ,
+            "Not enough tokens for minimum");
         // The new chiev is pushed onto the array and minted
         // Note that Solidity uses 0 as a default value when an item is not found in a mapping.
 
@@ -128,7 +106,7 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         _mint(_to, tokenId);
         _setTokenURI(tokenId, _tokenURI);
         
-        emit MintGen0(_to, _numClonesAllowed, tokenId, address(0), _priceFinney, _permTokenId);
+        emit MintGen0(_to, _numClonesAllowed, tokenId, _priceFinney, _permTokenId);
 
     }
 
@@ -146,15 +124,16 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         address ownerAddr = owner();
         address payable ownedBy = address(uint160(ownerAddr));
 
+        if(_chiev.permTokenId != 0){
+            require(numTokenOfGen0(msg.sender, _chiev.permTokenId) >= _chiev.permTokenMin , "Only token holder can clone");
+        }
+
         require(
             _chiev.numClonesInWild + _numClonesRequested <= _chiev.numClonesAllowed,
-            "The number of Chievs clones requested exceeds the number of clones allowed.");
+            "The number of Chiev clones requested exceeds the number of clones allowed.");
         require(
             msg.value >= cloningCost,
             "Not enough Wei to pay for the Chievs clones.");
-        if(_chiev.permTokenId != 0){
-            require(hasCloneOfGen0(msg.sender, _chiev.permTokenId) , "Only token holder can clone");
-        }
 
         // Pay the contract owner the cloneFeePercentage amount
         uint256 contractOwnerFee = (cloningCost.mul(cloneFeePercentage)).div(100);
@@ -248,16 +227,6 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         emit SetPrice(_tokenId, _newPriceFinney);
     }
 
-    /// @dev setCloner(): Update the Chievs permissioned cloner.
-    /// @param _tokenId The Chievs Id.
-    /// @param _newCloner The new cloner of the Chievs.
-    function setCloner(uint256 _tokenId, address _newCloner) public onlyOwner {
-        Chiev memory _chiev = chievs[_tokenId];
-        _chiev.cloner = _newCloner;
-        chievs[_tokenId] = _chiev;
-        emit SetCloner(_tokenId, _newCloner);
-    }
-
     /// @dev setPermTokenId(): Update the Chievs permissioned perm Token.
     /// @param _tokenId The Chievs Id.
     /// @param _newPermTokenId The new PermToken of the Chievs.
@@ -283,7 +252,6 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
                                                                 uint256 numClonesAllowed,
                                                                 uint256 numClonesInWild,
                                                                 uint256 clonedFromId,
-                                                                address cloner,
                                                                 uint256 permTokenId
                                                                 )
     {
@@ -293,7 +261,6 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         numClonesAllowed = _chiev.numClonesAllowed;
         numClonesInWild = _chiev.numClonesInWild;
         clonedFromId = _chiev.clonedFromId;
-        cloner = _chiev.cloner;
         permTokenId = _chiev.permTokenId;
     }
 
@@ -318,24 +285,22 @@ contract Chievs is ERC721Full("ChievToken", "CHIEV"), Ownable {
         }
     }
     
-    /// @dev hasCloneOfGen0(): Returns if owner of clone of gen0
-    /// @return bool
-    function hasCloneOfGen0(address owner, uint256 gen0TokenId) view public returns (bool hasToken)
+    /// @dev numTokensOfGen0(): Returns count for owner of tokens of gen0
+    /// @return uint256
+    function numTokenOfGen0(address owner, uint256 gen0TokenId) view public returns (uint256 count)
     {
-
-            for(uint i = 0; i<balanceOf(owner); i++){
-                uint256 tid = tokenOfOwnerByIndex(owner, i);
-                if(chievs[tid].clonedFromId == gen0TokenId) {
-                    return true;
-                }
+        count = 0;
+        for(uint i = 0; i<balanceOf(owner); i++){
+            uint256 tid = tokenOfOwnerByIndex(owner, i);
+            if(chievs[tid].clonedFromId == gen0TokenId) {
+                count = count + 1;
             }
-            return false;
-
-        
+        }
+        return count;
     }
     
     modifier onlyOwnerOrRole() {
-        require(isOwner() || hasCloneOfGen0(msg.sender, minterTokenRole), "Only owner or role can mint");
+        require(isOwner() || numTokenOfGen0(msg.sender, minterTokenRole) > 0, "Only owner or role can mint");
         _;
     }
 

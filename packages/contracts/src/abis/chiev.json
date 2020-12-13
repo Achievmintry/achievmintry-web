@@ -120,12 +120,6 @@
 				"type": "uint256"
 			},
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "cloner",
-				"type": "address"
-			},
-			{
 				"indexed": false,
 				"internalType": "uint256",
 				"name": "priceFinney",
@@ -135,6 +129,12 @@
 				"indexed": false,
 				"internalType": "uint256",
 				"name": "permTokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "permTokenMin",
 				"type": "uint256"
 			}
 		],
@@ -171,27 +171,14 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "newCloner",
-				"type": "address"
-			}
-		],
-		"name": "SetCloner",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "newPermTokenId",
 				"type": "uint256"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "newPermTokenId",
+				"name": "newPermTokenMin",
 				"type": "uint256"
 			}
 		],
@@ -369,13 +356,13 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "address",
-				"name": "cloner",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "permTokenId",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "permTokenId",
+				"name": "permTokenMin",
 				"type": "uint256"
 			}
 		],
@@ -471,11 +458,6 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "address",
-				"name": "cloner",
-				"type": "address"
-			},
-			{
 				"internalType": "uint256",
 				"name": "permTokenId",
 				"type": "uint256"
@@ -515,32 +497,6 @@
 				"internalType": "uint256",
 				"name": "numClonesInWild",
 				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "gen0TokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "hasCloneOfGen0",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "hasToken",
-				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -648,49 +604,13 @@
 				"type": "address"
 			},
 			{
-				"internalType": "address",
-				"name": "_cloner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_priceFinney",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_numClonesAllowed",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			}
-		],
-		"name": "mintPermissioned",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_to",
-				"type": "address"
-			},
-			{
 				"internalType": "uint256",
 				"name": "_permTokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_permTokenMin",
 				"type": "uint256"
 			},
 			{
@@ -745,6 +665,32 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gen0TokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "numTokenOfGen0",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "count",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -890,26 +836,6 @@
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "_tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_newCloner",
-				"type": "address"
-			}
-		],
-		"name": "setCloner",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
 				"internalType": "bool",
 				"name": "_isMintable",
 				"type": "bool"
@@ -947,6 +873,11 @@
 			{
 				"internalType": "uint256",
 				"name": "_newPermTokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_newPermTokenMin",
 				"type": "uint256"
 			}
 		],
