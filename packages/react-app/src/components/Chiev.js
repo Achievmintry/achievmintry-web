@@ -15,7 +15,7 @@ import {
 import {
   useChainLogs,
   useEns,
-  useKudos,
+  useChievs,
   useTxProcessor,
   useUser,
 } from "../contexts/DappContext";
@@ -26,7 +26,7 @@ import { useTheme } from "../contexts/CustomThemeContext";
 import { NFTThemeService } from "../utils/NFTThemeService";
 
 const Chiev = ({ token }) => {
-  const [kudos] = useKudos();
+  const [chievs] = useChievs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
   const [user] = useUser();
   const [ens] = useEns();
@@ -47,40 +47,47 @@ const Chiev = ({ token }) => {
     const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
-      if (!currentOwner) {
+      const usersTokens = chainLogs.tokenData.usersTokens;
+
+      if (!currentOwner || !usersTokens) {
         setNftCounts({});
         setGen0Ownership({});
         return;
       }
-      // const currentOwnerAndToken = { [acct]: [token["Gen0 Id"]] };
-      // console.log("currentOwnerAndToken", currentOwnerAndToken);
-
-      const counts = await kudos.service.getOwnedForAccount(currentOwner, acct);
+      const userTokens = usersTokens.find(
+        (token) => token.address.toLowerCase() === acct
+      );
+      if (!userTokens) {
+        return;
+      }
+      const counts = {};
+      userTokens.tokens.forEach((item, idx) => {
+        counts[item.clonedFromId] = 1 + (counts[item.clonedFromId] || 0);
+      });
       setNftCounts({ ...counts });
 
-      const gen0Ownership = kudos.service.getGen0Owned(
-        currentOwner,
-        acct,
-        counts
-      );
+      const gen0Ownership = {};
+      userTokens.tokens
+        .filter((token) => token.type === "gen0")
+        .forEach((token) => (gen0Ownership[token.tokenId] = true))
 
       setGen0Ownership({ ...gen0Ownership });
+
     };
     if (user?.username && chainLogs?.tokenData) {
       getKudsDetails(user.username);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos, chainLogs, user]);
+  }, [chievs, chainLogs, user]);
 
   useEffect(() => {
     const getUri = async () => {
-      const uri = await kudos.service.getTokenUri(token["Gen0 Id"]);
-      console.log("URI", uri);
+      const uri = await chievs.service.getTokenUri(token["Gen0 Id"]);
       setUriJson(uri);
     };
 
     getUri();
-  }, [kudos, token]);
+  }, [chievs, token]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -109,11 +116,10 @@ const Chiev = ({ token }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.service.service.clone(
-        addr,
+      chievs.service.clone(
+        [addr],
         user.username,
         token["Gen0 Id"],
-        1,
         token["Price In Wei"],
         txCallBack
       );
@@ -135,16 +141,24 @@ const Chiev = ({ token }) => {
   };
 
   const displayPrice = (price) => {
-    if (!kudos.service) {
+    if (!chievs.service) {
       return "?";
     }
-    return kudos.service.displayPrice(price);
+    return chievs.service.displayPrice(price);
   };
 
   const handleClick = () => {
     const _theme = {};
-    _theme.bgImg = uriJson?.static_image || uriJson?.image;
-    console.log(uriJson);
+    //_theme.bgImg = uriJson?.static_image || uriJson?.image;
+    const bgImg = uriJson?.theme_attributes?.find(
+      (item) => item.trait_type === "bgImg"
+    );
+    if (bgImg) {
+      _theme.bgImg = uriJson?.theme_attributes.find(
+        (item) => item.trait_type === "bgImg"
+      ).value;
+    }
+    
     const primary = uriJson?.theme_attributes?.find(
       (item) => item.trait_type === "primary"
     );
@@ -216,10 +230,10 @@ const Chiev = ({ token }) => {
               src={
                 token["Display Thumb"]
                   ? token["Display Thumb"][0].thumbnails.large.url
-                  : token["Image (from Artist Submissions)"][0].thumbnails.large
+                  : token["Image (from Artist Submissions) 2"][0].thumbnails.large
                       .url
               }
-              alt={token["NFT Name (from Artist Submissions)"][0]}
+              alt={token["NFT Name (from Artist Submissions) 2"][0]}
               fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
               onMouseOver={(e) => {
                 if (!token["Display Thumb"]) {
@@ -227,7 +241,7 @@ const Chiev = ({ token }) => {
                 }
                 e.currentTarget.src =
                   token[
-                    "Image (from Artist Submissions)"
+                    "Image (from Artist Submissions) 2"
                   ][0].thumbnails.large.url;
               }}
               onMouseOut={(e) => {
@@ -249,18 +263,18 @@ const Chiev = ({ token }) => {
           fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
         >
           <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
-            {token["NFT Name (from Artist Submissions)"][0]}
+            {token["NFT Name (from Artist Submissions) 2"][0]}
           </Heading>
           <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
           <Text>
             {" "}
             Quantity:{" "}
-            {token["Max Quantity (from Artist Submissions)"][0] || "?"}
+            {token["Max Quantity (from Artist Submissions) 2"][0] || "?"}
           </Text>
 
           {user?.username && (
             <>
-              <Text>Owned: {nftCounts[token["Gen0 Id"]]}</Text>
+              <Text>Owned: {nftCounts[token["Gen0 Id"]] || 0}</Text>
               <Text>
                 Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
               </Text>

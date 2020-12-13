@@ -22,16 +22,16 @@ import {
   FormHelperText,
   useDisclosure,
   Input,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
-  useKudos,
+  useChievs,
   useTxProcessor,
   useUser,
   useNFTApi,
   useEns,
-  useChainLogs
+  useChainLogs,
 } from "../contexts/DappContext";
 import Web3SignIn from "./Web3SignIn";
 import { ChievCard } from ".";
@@ -79,47 +79,49 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [nftCounts, setNftCounts] = useState({});
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [ensAddr, setEnsAddr] = useState("");
-  const [kudos] = useKudos();
+  const [chievs] = useChievs();
   const [user] = useUser();
   const [nfts] = useNFTApi();
   const [ens] = useEns();
   const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
-  const [theme] = useTheme()
-
+  const [theme] = useTheme();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    const getKudsDetails = async acctAddr => {
+    const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
-      console.log("new", acctAddr);
+      const usersTokens = chainLogs.tokenData.usersTokens;
       if (!chainLogs.tokenData.currentOwners[acct]) {
         setNftCounts({});
         setGen0Ownership({});
         return;
       }
-
-      const counts = await kudos.service.getOwnedForAccount(
-        chainLogs.tokenData.currentOwners,
-        acct
+      const userTokens = usersTokens.find(
+        (token) => token.address.toLowerCase() === acct
       );
+      if (!userTokens) {
+        return;
+      }
+      const counts = {};
+      userTokens.tokens.forEach((item, idx) => {
+        counts[item.clonedFromId] = 1 + (counts[item.clonedFromId] || 0);
+      });
       setNftCounts({ ...counts });
 
-      const gen0Ownership = kudos.service.getGen0Owned(
-        chainLogs.tokenData.currentOwners,
-        acct,
-        counts
-      );
-
+      const gen0Ownership = {};
+      userTokens.tokens
+        .filter((token) => token.type === "gen0")
+        .forEach((token) => (gen0Ownership[token.tokenId] = true));
       setGen0Ownership({ ...gen0Ownership });
     };
     if (account && chainLogs?.tokenData) {
       getKudsDetails(account);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kudos, chainLogs, account]);
+  }, [chievs, chainLogs, account]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -136,7 +138,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     console.log(
       "clone",
       data.address,
@@ -149,11 +151,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
 
     const addr = ensAddr ? ensAddr : data.address;
     try {
-      kudos.service.clone(
-        addr,
+      chievs.service.clone(
+        [addr],
         user.username,
         selected["Gen0 Id"],
-        1,
         selected["Price In Wei"],
         txCallBack
       );
@@ -164,7 +165,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -174,30 +175,30 @@ const Chievs = ({ featured, account, dao, cols }) => {
     }
   };
 
-  const displayPrice = price => {
-    if (!kudos?.service) {
+  const displayPrice = (price) => {
+    if (!chievs?.service) {
       return "?";
     }
-    return kudos.service.displayPrice(price);
+    return chievs.service.displayPrice(price);
   };
 
   const renderList = () => {
     let filteredList = [];
     // TODO: data from airtable is gnarly
-    const metaList = nfts.map(item => item.fields);
+    const metaList = nfts.map((item) => item.fields);
     if (featured) {
-      filteredList = metaList.filter(item => item["Featured"]);
+      filteredList = metaList.filter((item) => item["Featured"]);
     } else {
       filteredList = metaList;
     }
     if (account) {
       filteredList = filteredList.filter(
-        item => nftCounts[item["Gen0 Id"]] > 0
+        (item) => nftCounts[item["Gen0 Id"]] > 0
       );
     }
     if (dao) {
       filteredList = filteredList.filter(
-        item => item["Community (from Artist Submissions)"][0] === dao
+        (item) => item["Community (from Artist Submissions) 2"][0] === dao
       );
     }
     if (!filteredList.length) {
@@ -248,7 +249,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
           columns={{ base: 1, sm: 2, lg: 4 }}
           spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
         >
-          {nfts && kudos && chainLogs && renderList()}
+          {nfts && chievs && chainLogs && renderList()}
           {featured && (
             <HoverBox
               as={Link}
@@ -262,7 +263,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               className="hoverbox__featured"
               p={{ base: 3, xl: 4, xxl: 6 }}
               _hover={{
-                themecolor: theme.colors.secondary[500]
+                themecolor: theme.colors.secondary[500],
               }}
             >
               <InfoBox className="info-box">
@@ -299,13 +300,13 @@ const Chievs = ({ featured, account, dao, cols }) => {
           minWidth={{ base: "33%", xxl: "33%" }}
         >
           <ModalHeader>
-            {selected["NFT Name (from Artist Submissions)"] ? (
+            {selected["NFT Name (from Artist Submissions) 2"] ? (
               <>
                 <Heading>
-                  {selected["NFT Name (from Artist Submissions)"][0]}
+                  {selected["NFT Name (from Artist Submissions) 2"][0]}
                 </Heading>
                 <Text>
-                  {selected["NFT Name (from Artist Submissions)"][0]} price:{" "}
+                  {selected["NFT Name (from Artist Submissions) 2"][0]} price:{" "}
                   {displayPrice(selected["Price In Wei"] || "0")} xDai{" "}
                 </Text>
               </>
@@ -315,26 +316,26 @@ const Chievs = ({ featured, account, dao, cols }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {selected["Image (from Artist Submissions)"] && (
+            {selected["Image (from Artist Submissions) 2"] && (
               <Image
                 src={
                   selected["Display Thumb"]
                     ? selected["Display Thumb"][0].thumbnails.large.url
-                    : selected["Image (from Artist Submissions)"][0].thumbnails
-                        .large.url
+                    : selected["Image (from Artist Submissions) 2"][0]
+                        .thumbnails.large.url
                 }
-                alt={selected["NFT Name (from Artist Submissions)"][0]}
+                alt={selected["NFT Name (from Artist Submissions) 2"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={e => {
+                onMouseOver={(e) => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
                   e.currentTarget.src =
                     selected[
-                      "Image (from Artist Submissions)"
+                      "Image (from Artist Submissions) 2"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={e => {
+                onMouseOut={(e) => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }

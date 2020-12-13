@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { NFTThemeService } from "../utils/NFTThemeService";
 import { useTheme } from "./CustomThemeContext";
 
-import { useChainLogs, useKudos, useNFTApi, useUser } from "./DappContext";
+import { useChainLogs, useChievs, useNFTApi, useUser } from "./DappContext";
 
 const ChainLogsInit = () => {
-  const [kudos] = useKudos();
+  const [chievs] = useChievs();
   const [nfts] = useNFTApi();
   const [user] = useUser();
   const [theme, setTheme] = useTheme();
@@ -13,16 +13,17 @@ const ChainLogsInit = () => {
 
   useEffect(() => {
     // get clones in wild
-    if (!kudos?.service || !nfts.length) {
+    if (!chievs?.service || !nfts.length) {
       return;
     }
 
     const getMintCount = async () => {
       var cloneInWild = {};
-      const tokenData = await kudos.service.getLogs();
+      const tokenData = await chievs.service.getLogs();
+      // TODO: update from logs instead of making more contract calls
       const cloneInWildCounts = await Promise.all(
         nfts.map((item, idx) =>
-          kudos.service.getNumClonesInWild(item.fields["Gen0 Id"])
+          chievs.service.getNumClonesInWild(item.fields["Gen0 Id"])
         )
       );
       cloneInWildCounts.forEach((item, idx) => {
@@ -34,13 +35,13 @@ const ChainLogsInit = () => {
 
     getMintCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nfts, kudos]);
+  }, [nfts, chievs]);
 
   useEffect(() => {
     if (!user?.username) {
       return;
     }
-    if (!kudos?.service) {
+    if (!chievs?.service) {
       return;
     }
     if (!chainLogs?.tokenData?.currentOwners) {
@@ -55,13 +56,20 @@ const ChainLogsInit = () => {
       const userTheme = themeNFTService.getUserTheme(user.username);
       if (userTheme?.themeAttributes) {
         const acct = user.username.toLowerCase();
-        const currentOwner = {
-          [acct]: chainLogs.tokenData.currentOwners[acct],
-        };
-        const counts = await kudos.service.getOwnedForAccount(
-          currentOwner,
-          acct
+        const _usersTokens = chainLogs.tokenData.usersTokens;
+
+        const userTokens = _usersTokens.find(
+          (token) => token.address.toLowerCase() === acct
         );
+
+        if (!userTokens) {
+          return;
+        }
+
+        const counts = {};
+        userTokens.tokens.forEach((item, idx) => {
+          counts[item.clonedFromId] = 1 + (counts[item.clonedFromId] || 0);
+        });
         if (counts[userTheme.id]) {
           setTheme(userTheme.themeAttributes);
         }
@@ -70,7 +78,7 @@ const ChainLogsInit = () => {
 
     loadNFTTheme();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [theme, user, nfts, kudos, chainLogs]);
+  }, [theme, user, nfts, chievs, chainLogs]);
 
   return <></>;
 };
