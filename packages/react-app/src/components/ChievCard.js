@@ -50,7 +50,7 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
         <Text> Price: {displayPrice} xDai</Text>
         <Text>
           {" "}
-          Quantity: {token["Max Quantity (from Artist Submissions) 2"][0] || "?"}
+          Quantity: {token["Max Quantity (from Artist Submissions) 2"][0] || "0"}
         </Text>
         {+token["Gen0 Id"] && chainLogs.cloneInWild && (
           <Text>

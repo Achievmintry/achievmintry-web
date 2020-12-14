@@ -182,9 +182,22 @@ const Chievs = ({ featured, account, dao, cols }) => {
     return chievs.service.displayPrice(price);
   };
 
+  const isNA = () => {
+    if (
+      !chainLogs.cloneInWild ||
+      !selected["Max Quantity (from Artist Submissions) 2"]
+    ) {
+      return false;
+    }
+    return (
+      +chainLogs.cloneInWild[selected["Gen0 Id"]] ===
+      selected["Max Quantity (from Artist Submissions) 2"][0]
+    );
+  };
+
   const renderList = () => {
     let filteredList = [];
-    // TODO: data from airtable is gnarly
+
     const metaList = nfts.map((item) => item.fields);
     if (featured) {
       filteredList = metaList.filter((item) => item["Featured"]);
@@ -348,46 +361,50 @@ const Chievs = ({ featured, account, dao, cols }) => {
             )}
             {loading && <Text>Check MetaMask</Text>}
 
-            <Box pt="20px">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl>
-                  <FormLabel htmlFor="address">Eth address</FormLabel>
-                  <Input
-                    ref={register}
-                    name="address"
-                    type="text"
-                    id="address"
-                    aria-describedby="address-helper-text"
-                    color="black"
-                    bg="primary.300"
-                    borderWidth="5px"
-                    borderColor="black.500"
-                    borderRadius="0"
-                    readOnly={loading}
-                    onChange={handleChange}
-                  />
-                  <FormHelperText p="1" id="address-helper-text">
-                    {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
-                  </FormHelperText>
-                </FormControl>
-                {user?.username ? (
-                  <Button
-                    isLoading={loading}
-                    loadingText="Gifting"
-                    bg="white"
-                    borderWidth="5px"
-                    borderColor="black.500"
-                    borderRadius="0"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    Mint and Send
-                  </Button>
-                ) : (
-                  <Web3SignIn />
-                )}
-              </form>
-            </Box>
+            {chainLogs?.cloneInWild ? (
+              <Box pt="20px">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <FormControl>
+                    <FormLabel htmlFor="address">Eth address</FormLabel>
+                    <Input
+                      ref={register}
+                      name="address"
+                      type="text"
+                      id="address"
+                      aria-describedby="address-helper-text"
+                      color="black"
+                      bg="primary.300"
+                      borderWidth="5px"
+                      borderColor="black.500"
+                      borderRadius="0"
+                      readOnly={loading}
+                      onChange={handleChange}
+                    />
+                    <FormHelperText p="1" id="address-helper-text">
+                      {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                    </FormHelperText>
+                  </FormControl>
+                  {user?.username ? (
+                    <Button
+                      isLoading={loading}
+                      loadingText="Gifting"
+                      bg="white"
+                      borderWidth="5px"
+                      borderColor="black.500"
+                      borderRadius="0"
+                      type="submit"
+                      disabled={loading || isNA()}
+                    >
+                      {isNA() ? "SOLD OUT" : "Mint and Send"}
+                    </Button>
+                  ) : (
+                    <Web3SignIn />
+                  )}
+                </form>
+              </Box>
+            ) : (
+              <Text>Loading...</Text>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
