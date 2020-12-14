@@ -313,7 +313,7 @@ const Chiev = ({ token }) => {
               <Text>
                 <strong>external_url:</strong> {uriJson?.external_url || ""}
               </Text>
-              <Text>
+              {/* <Text>
                 <strong>image:</strong> {uriJson?.image || ""}
               </Text>
               <Text>
@@ -334,7 +334,7 @@ const Chiev = ({ token }) => {
                   <Text key={idx}>
                     {attr.trait_type}:{attr.value}
                   </Text>
-                ))}
+                ))} */}
               {nftCounts[token["Gen0 Id"]] && (
                 <Button
                   bg="white"
