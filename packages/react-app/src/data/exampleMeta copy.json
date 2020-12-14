@@ -1,22 +1,22 @@
 {
-  "name": "The Golden Shovel",
-  "description": "Genesis. Awarded to the first 10 members of the DAOhaus Foundations Program. Feedback farming FTW!",
-  "image": "https://gateway.pinata.cloud/ipfs/QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx",
-  "external_url": "https://daohaus.club",
+  "name": "Chiev Bot Role",
+  "description": "Bot flame",
+  "image": "https://gateway.pinata.cloud/ipfs/QmYgfCZbhJWrhSpxQPopcB2dGjfso4HPGEYdLV8zRaNBe2",
+  "external_url": "https://app.chiev.net/",
   "youtube_video": "",
   "attributes": [
-    { "trait_type": "Base", "value": "Theme" },
-    { "trait_type": "Artist", "value": "Kerp" }
+    { "trait_type": "Base", "value": "Bot" },
+    { "trait_type": "Artist", "value": "Dekan" }
   ],
   "theme_attributes": [
-    { "trait_type": "primary", "value": "#c8cfd0" },
-    { "trait_type": "secondary", "value": "#d6d496" },
+    { "trait_type": "primary", "value": "#fff0be" },
+    { "trait_type": "secondary", "value": "#ffcc00" },
     { "trait_type": "tertiary", "value": "#000000" },
-    { "trait_type": "bg", "value": "#a4a39d" },
-    { "trait_type": "bgSize", "value": "tile" },
+    { "trait_type": "bg", "value": "#fff0be" },
+    { "trait_type": "bgSize", "value": "cover" },
     {
       "trait_type": "bgImg",
-      "value": "https://gateway.pinata.cloud/ipfs/QmfQRbtwVfwSiZoNunJGGpzF8Rmw1bNx1DKiGSvpGt7a2Q"
+      "value": "https://gateway.pinata.cloud/ipfs/QmS9i6qiFGApFst6uc16y4mmVehbAy1e8Z7Gg57yRg2u7o"
     },
     { "trait_type": "icon", "value": "" }
   ]

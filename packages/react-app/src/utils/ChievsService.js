@@ -103,6 +103,7 @@ export class ChievsService {
     const transferLogs = allEvents.filter((e) => e.event === "Transfer");
     const gen0Logs = allEvents.filter((e) => e.event === "MintGen0");
     const cloneLogs = allEvents.filter((e) => e.event === "Clone");
+    // TODO: index other events
 
     // sort log oldest to newest so latest transfer is owner
     const sortedTransfers = transferLogs.sort(function(a, b) {
