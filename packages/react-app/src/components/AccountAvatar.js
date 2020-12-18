@@ -8,7 +8,7 @@ import { FaTwitter } from "react-icons/fa";
 import EthAddressDisplay from "./EthAddressDisplay";
 import { useLocation } from "react-router-dom";
 
-const AccountAvatar = ({ addr }) => {
+const AccountAvatar = ({ addr, hideTweet }) => {
   const location = useLocation();
   const [user, setUser] = useState();
   useEffect(() => {
@@ -37,7 +37,7 @@ const AccountAvatar = ({ addr }) => {
           <EthAddressDisplay address={user.username} />
           <Text ml={2}>{user.profile.emoji || ""} </Text>
         </Flex>
-        {user.username && (
+        {user.username && !hideTweet && (
           <Link
             colorScheme="twitter"
             href={`https://twitter.com/intent/tweet?text=We%20Be%20Chievn%20https://chiev.netlify.app${location.pathname}`}
