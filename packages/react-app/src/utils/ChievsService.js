@@ -184,7 +184,8 @@ export class ChievsService {
     return {
       origOwners,
       currentOwners,
-      usersTokens
+      usersTokens,
+      allTokens
     };
   }
 
