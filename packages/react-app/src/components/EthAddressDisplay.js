@@ -12,7 +12,6 @@ const EthAddressDisplay = ({ address }) => {
       return;
     }
     const getDisplayAddress = async (addr) => {
-      console.log(addr);
       try {
         const name = await ens.provider.lookupAddress(addr);
         setCurrentAddress(name ? truncateAddr(name) : truncateAddr(addr));
@@ -20,7 +19,6 @@ const EthAddressDisplay = ({ address }) => {
         setCurrentAddress(truncateAddr(addr));
       }
     };
-    console.log(address);
     getDisplayAddress(address);
   }, [ens, address]);
 
