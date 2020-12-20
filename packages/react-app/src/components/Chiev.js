@@ -13,6 +13,8 @@ import {
   AspectRatio,
   Flex,
   Spacer,
+  Textarea,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import {
   useChainLogs,
@@ -43,7 +45,7 @@ const Chiev = ({ token }) => {
   // const theme = useTheme();
   const [, setTheme] = useTheme();
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   const themeNFTService = new NFTThemeService();
 
@@ -124,14 +126,6 @@ const Chiev = ({ token }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(
-      "clone",
-      data.address,
-      user.username,
-      token["Gen0 Id"],
-      1,
-      token["Price In Wei"]
-    );
     setLoading(true);
 
     const addr = ensAddr ? ensAddr : data.address;
@@ -141,7 +135,8 @@ const Chiev = ({ token }) => {
         user.username,
         token["Gen0 Id"],
         token["Price In Wei"],
-        txCallBack
+        txCallBack,
+        data.details
       );
     } catch (err) {
       setLoading(false);
@@ -395,7 +390,7 @@ const Chiev = ({ token }) => {
               <FormControl>
                 <FormLabel htmlFor="address">Eth address</FormLabel>
                 <Input
-                  ref={register}
+                  ref={register({ required: true })}
                   name="address"
                   type="text"
                   id="address"
@@ -410,6 +405,35 @@ const Chiev = ({ token }) => {
                 />
                 <FormHelperText p="1" id="address-helper-text">
                   {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                </FormHelperText>
+                {errors.address === "required" && (
+                  <FormErrorMessage>
+                    Required
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="detail">Reason</FormLabel>
+                <Textarea
+                  ref={register({ maxLength: 128 })}
+                  name="detail"
+                  aria-describedby="detail-helper-text"
+                  color="black"
+                  bg="primary.300"
+                  borderWidth="5px"
+                  borderColor="black.500"
+                  borderRadius="0"
+                  readOnly={loading}
+                />
+
+                {errors.detail === "maxLength" && (
+                  <FormErrorMessage>
+                    Your input exceed maxLength
+                  </FormErrorMessage>
+                )}
+
+                <FormHelperText p="1" id="detail-helper-text">
+                  Short reason for the Chiev ( up to 128 chars)
                 </FormHelperText>
               </FormControl>
               {user?.username ? (
