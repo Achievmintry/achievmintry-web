@@ -23,6 +23,8 @@ import {
   useDisclosure,
   Input,
   Heading,
+  Textarea,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import {
@@ -88,7 +90,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [theme] = useTheme();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
     const getKudsDetails = async (acctAddr) => {
@@ -380,8 +382,32 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       readOnly={loading}
                       onChange={handleChange}
                     />
-                    <FormHelperText p="1" id="address-helper-text">
+                    <FormHelperText p="1" m="0" id="address-helper-text">
                       {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
+                    </FormHelperText>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="detail">Reason</FormLabel>
+                    <Textarea
+                      ref={register({ maxLength: 128 })}
+                      name="detail"
+                      aria-describedby="detail-helper-text"
+                      color="black"
+                      bg="primary.300"
+                      borderWidth="5px"
+                      borderColor="black.500"
+                      borderRadius="0"
+                      readOnly={loading}
+                    />
+
+                    {errors.detail === "maxLength" && (
+                      <FormErrorMessage>
+                        Your input exceed maxLength
+                      </FormErrorMessage>
+                    )}
+
+                    <FormHelperText p="1" m="0" id="detail-helper-text">
+                      Short reason for the Chiev ( up to 128 chars)
                     </FormHelperText>
                   </FormControl>
                   {user?.username ? (

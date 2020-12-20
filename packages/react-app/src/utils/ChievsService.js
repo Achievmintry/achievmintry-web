@@ -129,7 +129,7 @@ export class ChievsService {
       currentOwners[account] = currentOwners[account] || [];
       currentOwners[account].push(item.returnValues.tokenId);
     });
-    
+
     // get all clone token info
     const clones = cloneLogs.map((token) => {
       return {
@@ -180,15 +180,13 @@ export class ChievsService {
       usersTokens.push(item);
     });
 
-
     return {
       origOwners,
       currentOwners,
       usersTokens,
-      allTokens
+      allTokens,
     };
   }
-
 }
 
 export class Web3ChievsService extends ChievsService {
@@ -215,31 +213,15 @@ export class Web3ChievsService extends ChievsService {
     await this.contract.methods.burn(owner, tokenId);
   }
 
-  // public
-  // async clone(to, from, tokenId, numClonesRequested, value, callback) {
-  //   console.log("clone", from);
-  //   const newTx = this.contract.methods.clone(to, tokenId, numClonesRequested);
-  //   const txReceipt = this.sendTx(
-  //     "clone",
-  //     newTx,
-  //     callback,
-  //     from,
-  //     value,
-  //     callback
-  //   );
-  //   return txReceipt.transactionHash;
-  // }
-  async clone(to, from, tokenId, value, callback) {
+  async clone(to, from, tokenId, value, callback, details = "") {
     // to is an array
-    console.log("clone", from);
-    const newTx = this.contract.methods.clone(to, tokenId);
+    const newTx = this.contract.methods.clone(to, tokenId, details);
     const txReceipt = this.sendTx(
       "clone",
       newTx,
       callback,
       from,
-      value,
-      callback
+      value
     );
     return txReceipt.transactionHash;
   }

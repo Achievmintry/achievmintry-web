@@ -84,15 +84,9 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenOwnerFee",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "contractOwnerFee",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "details",
+				"type": "string"
 			}
 		],
 		"name": "Clone",
@@ -135,6 +129,12 @@
 				"indexed": false,
 				"internalType": "uint256",
 				"name": "permTokenMin",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "typeCode",
 				"type": "uint256"
 			}
 		],
@@ -216,11 +216,55 @@
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "_tokenURI",
+				"name": "tokenURI",
 				"type": "string"
 			}
 		],
 		"name": "SetTokenUri",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "typeCode",
+				"type": "uint256"
+			}
+		],
+		"name": "SetTypeCode",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "contractOwnerFee",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenOwnerFee",
+				"type": "uint256"
+			}
+		],
+		"name": "SplitPayment",
 		"type": "event"
 	},
 	{
@@ -282,6 +326,32 @@
 			{
 				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gen0TokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "balanceOfByGen0",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "count",
 				"type": "uint256"
 			}
 		],
@@ -364,6 +434,16 @@
 				"internalType": "uint256",
 				"name": "permTokenMin",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "typeCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "details",
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -382,6 +462,11 @@
 				"internalType": "uint256",
 				"name": "_tokenId",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_details",
+				"type": "string"
 			}
 		],
 		"name": "clone",
@@ -461,6 +546,21 @@
 				"internalType": "uint256",
 				"name": "permTokenId",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "permTokenMin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "typeCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "details",
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -581,6 +681,11 @@
 				"internalType": "string",
 				"name": "_tokenURI",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_typeCode",
+				"type": "uint256"
 			}
 		],
 		"name": "mint",
@@ -627,6 +732,11 @@
 				"internalType": "string",
 				"name": "_tokenURI",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_typeCode",
+				"type": "uint256"
 			}
 		],
 		"name": "mintTokenPermissioned",
@@ -665,32 +775,6 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "gen0TokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "numTokenOfGen0",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "count",
-				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -902,6 +986,26 @@
 			}
 		],
 		"name": "setPrice",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_typeCode",
+				"type": "uint256"
+			}
+		],
+		"name": "setTokenType",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
