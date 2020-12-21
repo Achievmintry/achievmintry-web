@@ -361,10 +361,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 height="auto"
               />
             )}
-            {loading && <Text>Check MetaMask</Text>}
 
             {chainLogs?.cloneInWild ? (
               <Box pt="20px">
+                {loading && <Text>Check MetaMask</Text>}
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <FormControl>
                     <FormLabel htmlFor="address">Eth address</FormLabel>
