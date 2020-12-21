@@ -138,8 +138,7 @@ export class ChievsService {
         reciever: token.returnValues.receiver,
         tokenId: token.returnValues.tokenId,
         clonedFromId: token.returnValues.clonedFromId,
-        tokenOwnerFee: token.returnValues.tokenOwnerFee,
-        contractOwnerFee: token.returnValues.contractOwnerFee,
+        details: token.returnValues.details,
         ownedBy: Object.keys(currentOwners).find(
           (owner) =>
             currentOwners[owner].indexOf(token.returnValues.tokenId) > -1
@@ -215,6 +214,7 @@ export class Web3ChievsService extends ChievsService {
 
   async clone(to, from, tokenId, value, callback, details = "") {
     // to is an array
+
     const newTx = this.contract.methods.clone(to, tokenId, details);
     const txReceipt = this.sendTx(
       "clone",

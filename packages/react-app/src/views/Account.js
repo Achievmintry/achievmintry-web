@@ -9,7 +9,7 @@ import {
   FormLabel,
   Input,
   Spinner,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
@@ -50,7 +50,7 @@ const Account = () => {
     // eslint-disable-next-line
   }, [user, addr]);
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     const _addr = ensAddr ? ensAddr : data.address;
     console.log("foo");
     if (
@@ -72,7 +72,7 @@ const Account = () => {
     setCurrentAccount(_addr);
   };
 
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       setEnsAddr(address);
@@ -140,9 +140,10 @@ const Account = () => {
               <Button
                 isLoading={loading}
                 loadingText="Gifting"
-                bg="black"
-                color="secondary.500"
-                border="0"
+                bg="primary.500"
+                borderWidth="5px"
+                borderColor="black.500"
+                borderRadius="0"
                 onClick={loadMyAccount}
               >
                 Load My Account

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useToast } from "@chakra-ui/react";
+import { Link, useToast, Box } from "@chakra-ui/react";
 
 import { getProfile } from "3box/lib/api";
 
@@ -9,6 +9,7 @@ import { createWeb3User, w3connect } from "../utils/Auth";
 import { USER_TYPE } from "../utils/Auth";
 import { useUserWallet, useUser, useWeb3Connect } from "./DappContext";
 import { TokenService } from "../utils/TokenService";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 const UserInit = () => {
   const toast = useToast();
@@ -58,7 +59,17 @@ const UserInit = () => {
               toast({
                 title: "Wrong Network",
                 position: "top-right",
-                description: err.msg,
+                render: () => (
+                  <Box  color="black" p={3} bg="orange.500">
+                    {err.msg}.{" "}
+                    <Link
+                      href="https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup"
+                      isExternal
+                    >
+                      What's xDai <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  </Box>
+                ),
                 status: "warning",
                 duration: 9000,
                 isClosable: true,

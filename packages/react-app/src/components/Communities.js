@@ -54,7 +54,6 @@ const Communities = ({ featured }) => {
 
   const renderList = () => {
     let filteredList = [];
-    // TODO: data from airtable is gnarly
     const metaList = communities.map((item) => item.fields);
     if (featured) {
       filteredList = metaList.filter((item) => item["Featured"]);

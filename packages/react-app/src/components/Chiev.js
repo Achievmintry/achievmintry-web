@@ -29,6 +29,7 @@ import Web3SignIn from "./Web3SignIn";
 import { useTheme } from "../contexts/CustomThemeContext";
 import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
+import UpDoot from "./UpDoot";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -40,6 +41,7 @@ const Chiev = ({ token }) => {
   const [gen0Ownership, setGen0Ownership] = useState({});
   const [uriJson, setUriJson] = useState();
   const [leaderBoard, setLeaderBoard] = useState();
+  const [ownedBy, setOwnedBy] = useState();
   const [loading, setLoading] = useState(false);
   const [ensAddr, setEnsAddr] = useState("");
   // const theme = useTheme();
@@ -110,6 +112,16 @@ const Chiev = ({ token }) => {
 
     getUri();
   }, [chievs, token]);
+
+  useEffect(() => {
+    if (!chainLogs?.tokenData?.allTokens) {
+      return;
+    }
+    const g0Token = chainLogs.tokenData.allTokens.find(
+      (_token) => +_token.tokenId === +token["Gen0 Id"]
+    );
+    setOwnedBy(g0Token.ownedBy);
+  }, [chainLogs, token]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -285,7 +297,8 @@ const Chiev = ({ token }) => {
           fontSize={{ base: "sm", lg: "lg", xl: "xl" }}
         >
           <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
-            {token["NFT Name (from Artist Submissions) 2"][0]}
+            {token["NFT Name (from Artist Submissions) 2"][0]}{" "}
+            <UpDoot ownedBy={ownedBy} tokenId={token["Gen0 Id"]} />
           </Heading>
           <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
           <Text>
@@ -297,13 +310,12 @@ const Chiev = ({ token }) => {
           {user?.username && (
             <>
               <Text>Owned: {nftCounts[token["Gen0 Id"]] || 0}</Text>
-              <Text>
-                Gen0 owned: {gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
-              </Text>
+              {gen0Ownership[token["Gen0 Id"]] && <Text>you own the Gen0</Text>}
+              <AccountAvatar addr={ownedBy} hideTweet={true} />
             </>
           )}
         </Box>
-        {loading && <Text>Check MetaMask</Text>}
+
         {uriJson && (
           <Box
             p={{ base: 6, xl: 2, xxl: 6 }}
@@ -376,6 +388,7 @@ const Chiev = ({ token }) => {
         w={{ base: "100%", lg: "33%" }}
         boxShadow="0 0 15px rgba(0,0,0,0.5)"
       >
+        {loading && <Text>Check MetaMask</Text>}
         {token["Perm Token Id"] === 0 ? (
           <>
             <Heading
@@ -407,9 +420,7 @@ const Chiev = ({ token }) => {
                   {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                 </FormHelperText>
                 {errors.address === "required" && (
-                  <FormErrorMessage>
-                    Required
-                  </FormErrorMessage>
+                  <FormErrorMessage>Required</FormErrorMessage>
                 )}
               </FormControl>
               <FormControl>
