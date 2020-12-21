@@ -200,9 +200,13 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const renderList = () => {
     let filteredList = [];
 
-    const metaList = nfts.map((item) => item.fields);
+    const metaList = nfts
+      .map((item) => item.fields)
+      .filter((item) => !item["Hide"]);
     if (featured) {
-      filteredList = metaList.filter((item) => item["Featured"]);
+      filteredList = metaList.filter(
+        (item) => item["Featured"] && !item["Hide"]
+      );
     } else {
       filteredList = metaList;
     }
