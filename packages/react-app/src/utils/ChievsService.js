@@ -134,8 +134,9 @@ export class ChievsService {
     const clones = cloneLogs.map((token) => {
       return {
         type: "clone",
+        blockNumber: token.blockNumber,
         sender: token.returnValues.sender,
-        reciever: token.returnValues.receiver,
+        receiver: token.returnValues.receiver,
         tokenId: token.returnValues.tokenId,
         clonedFromId: token.returnValues.clonedFromId,
         details: token.returnValues.details,
@@ -150,8 +151,9 @@ export class ChievsService {
     const gen0s = gen0Logs.map((token) => {
       return {
         type: "gen0",
+        blockNumber: token.blockNumber,
         sender: null,
-        reciever: token.returnValues.to,
+        receiver: token.returnValues.to,
         tokenId: token.returnValues.tokenId,
         clonedFromId: token.returnValues.tokenId,
         numClonesAllowed: token.returnValues.numClonesAllowed,

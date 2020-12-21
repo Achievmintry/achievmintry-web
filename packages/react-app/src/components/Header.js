@@ -119,7 +119,7 @@ const Header = props => {
         justifyContent={{ base: "unset", lg: "space-around" }}
       >
         <MenuItems>
-          <Link to="/account">My Awards</Link>
+          <Link to="/chievs">All Awards</Link>
         </MenuItems>
         <MenuItems>
           <Link to="/submissions">Submit Art</Link>
