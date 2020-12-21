@@ -1,53 +1,26 @@
 {
-  "name": "Chiev!",
-  "description": "Don't let your memes be dreams.",
-  "image": "https://gateway.pinata.cloud/ipfs/QmaWfJcpjamVkQSDU7tXmgucPvwZPsTZ5e5LjSAYnrMnNc",
-  "external_url": "https://raidguild.org/",
-  "youtube_video": "https://youtu.be/1wR8x5b_ExM",
+  "name": "Merry xDai",
+  "description": "Merry xDai from the chievmint team",
+  "image": "https://gateway.pinata.cloud/ipfs/QmYoGMFd2tgB69ohCmX2zqaGhT1G95nmMV5d31nvqUttAm",
+  "external_url": "https://app.chiev.net/",
+  "youtube_video": "",
   "attributes": [
-    { "trait_type": "Base", "value": "Chiev" },
+    { "trait_type": "Base", "value": "Theme" },
     { "trait_type": "Artist", "value": "Dekan" }
   ],
   "theme_attributes": [
-    { "trait_type": "primary", "value": "#CC4B09" },
-    { "trait_type": "secondary", "value": "#5D94FB" },
-    { "trait_type": "tertiary", "value": "#127C22" },
-    { "trait_type": "bg", "value": "#DBFCFF" },
+    { "trait_type": "primary", "value": "#b60d1d" },
+    { "trait_type": "secondary", "value": "#dbccc9" },
+    { "trait_type": "tertiary", "value": "#b47953" },
+    { "trait_type": "bg", "value": "#d6a9b3" },
     { "trait_type": "bgSize", "value": "cover" },
-    { "trait_type": "bgImg", "value": "https://gateway.pinata.cloud/ipfs/QmbZip5aJnRfYBvDGMP1YmwWApC2qKhXWWKjpFiRS9xT7o" },
-    { "trait_type": "icon", "value": "https://gateway.pinata.cloud/ipfs/QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF" }
+    {
+      "trait_type": "bgImg",
+      "value": "https://gateway.pinata.cloud/ipfs/QmWrrcGSCbApTmxCke8hixwjB3rLLuYpjj4a9Y7rr6oVCC"
+    },
+    {
+      "trait_type": "icon",
+      "value": "https://gateway.pinata.cloud/ipfs/QmavU5ByQrrokDBfe1BEBLboeDnQ2mFu9PJETbP4aAp3pM"
+    }
   ]
-}
-
-
-{
-  "name": "Chiev!",
-  "description": "Don't let your memes be dreams.",
-  "image": "QmaWfJcpjamVkQSDU7tXmgucPvwZPsTZ5e5LjSAYnrMnNc",
-  "external_url": "https:\/\/raidguild.org",
-  "youtube_video": "QmbZip5aJnRfYBvDGMP1YmwWApC2qKhXWWKjpFiRS9xT7o",
-  "animation_url": "https:\/\/s3.amazonaws.com\/your-bucket\/images\/{id}.mp4",
-  "background_color": "#DBFCFF",
-  "ipfs": "https:\/\/gateway.pinata.cloud\/ipfs\/",
-  "properties": {
-      "base": "Talisman|Premier",
-      "artist": "Dekan",
-      "artist_address": "0x...",
-      "rich_property": {
-          "name": "Theme",
-          "value": "Mario",
-          "display_value": "Mario Theme",
-          "properties": {
-              "primary": "#CC4B09",
-              "secondary": "#5D94FB",
-              "tertiary": "#127C22",
-              "bg": "#DBFCFF",
-              "bgSize": "cover",
-              "bgImg": "QmbZip5aJnRfYBvDGMP1YmwWApC2qKhXWWKjpFiRS9xT7o",
-              "icon": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
-              "primaryFont": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
-              "dataFont": "QmXCmYqmgjbQAkBJbQhNy4D1PnuNGecqkqpzW4shCpkzjF",
-          }
-      }
-  }
 }

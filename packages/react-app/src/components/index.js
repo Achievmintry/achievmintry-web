@@ -12,3 +12,4 @@ export { default as Iframe } from "./Iframe";
 export { default as EthAddressDisplay } from "./EthAddressDisplay";
 export { default as Footer } from "./Footer";
 export { default as Layout } from "./Layout";
+export { default as UpDoot } from "./UpDoot";

@@ -1,10 +1,11 @@
 import React from "react";
 import Web3Modal from "web3modal";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, Link, useToast, Box } from "@chakra-ui/react";
 
 import { getChainData } from "../utils/Chains";
 import { w3connect, providerOptions } from "../utils/Auth";
 import { useWeb3Connect } from "../contexts/DappContext";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 // export const logoutOfWeb3Modal = async function() {
 //   const [Web3Connect, updateWeb3Connect] = useWeb3Connect();
@@ -48,7 +49,18 @@ const Web3SignIn = (props) => {
             toast({
               title: "Wrong Network",
               position: "top-right",
-              description: err.msg,
+              render: () => (
+                <Box color="black" p={3} bg="orange.500">
+                  {err.msg}.{" "}
+                  <Link
+                    href="https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup"
+                    isExternal
+                  >
+                    What's xDai <ExternalLinkIcon mx="2px" />
+                  </Link>
+                </Box>
+              ),
+              description: `${err.msg}, `,
               status: "warning",
               duration: 9000,
               isClosable: true,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useToast } from "@chakra-ui/react";
+import { Link, useToast } from "@chakra-ui/react";
 
 import {
   Text,
@@ -10,12 +10,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Box
 } from "@chakra-ui/react";
 
 import { TxProcessorService } from "../utils/TxProcessorService";
 import { useTxProcessor, useUser, useWeb3Connect } from "./DappContext";
 import { truncateAddr } from "../utils/Helpers";
 import { ExplorerLink } from "../components";
+import { LinkIcon } from "@chakra-ui/icons";
 
 const TxProcessorInit = () => {
   const [user] = useUser();
@@ -103,10 +105,27 @@ const TxProcessorInit = () => {
               />
             )}
             {!loading && (
-              <Text>
-                <span role="img" aria-label="party">🎉</span> Success{" "}
-                <span role="img" aria-label="party">🎉</span>
-              </Text>
+              <>
+                <Box>
+                  <Text>
+                    <span role="img" aria-label="party">
+                      🎉
+                    </span>{" "}
+                    Success{" "}
+                    <span role="img" aria-label="party">
+                      🎉
+                    </span>
+                  </Text>
+                </Box>
+                <Box>
+                <Link
+                      href="https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup"
+                      isExternal
+                    >
+                      Explore other Chievs <LinkIcon href="/chievs" mx="2px" />
+                    </Link>
+                </Box>
+              </>
             )}
           </ModalBody>
         </ModalContent>

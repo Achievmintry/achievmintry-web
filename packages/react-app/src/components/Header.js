@@ -141,7 +141,9 @@ const Header = props => {
         zIndex={300}
       >
         {user ? (
+          <Link to={`/account/${user.username}`}>
           <UserAvatar user={user} open={show} />
+          </Link>
         ) : (
           <Web3SignIn marginRight={{ base: "10px", lg: "0" }} />
         )}
