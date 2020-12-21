@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
-import { Chievs, AccountAvatar } from "../components";
+import { Chievs, AccountAvatar, ProfileStatus } from "../components";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
@@ -101,7 +101,7 @@ const Account = () => {
           mb="1"
           textTransform="uppercase"
         >
-          Address lookup
+          Lookup Another Account
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl color="black">
@@ -152,14 +152,25 @@ const Account = () => {
           </Flex>
         </form>
       </Box>
-      <Box w="100%" p={4} color="black">
+      <Box
+        bg="secondary.500"
+        border="10px solid black"
+        color="black"
+        w="100%"
+        mx="auto"
+        p={4}
+        m={4}
+      >
         <Flex>
           {!loading && currentAccount ? (
-            <AccountAvatar addr={currentAccount} />
+            <>
+              <AccountAvatar addr={currentAccount} />
+            </>
           ) : loading && !currentAccount ? (
             <Spinner />
           ) : null}
         </Flex>
+        <ProfileStatus addr={currentAccount} />
       </Box>
       {currentAccount && <Chievs account={currentAccount} />}
     </Box>
