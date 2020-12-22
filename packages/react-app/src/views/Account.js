@@ -10,10 +10,12 @@ import {
   Input,
   Spinner,
   Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
-import { Chievs, AccountAvatar, ProfileStatus } from "../components";
+import { Chievs, AccountAvatar, ProfileStatus, UpDoot } from "../components";
+import { RiUserFollowLine } from "react-icons/ri";
 
 const Account = () => {
   const { register, handleSubmit } = useForm();
@@ -164,13 +166,23 @@ const Account = () => {
         <Flex>
           {!loading && currentAccount ? (
             <>
-              <AccountAvatar addr={currentAccount} />
+              <AccountAvatar addr={currentAccount} size={"xl"} />
             </>
           ) : loading && !currentAccount ? (
             <Spinner />
           ) : null}
         </Flex>
         <ProfileStatus addr={currentAccount} />
+        {user?.username && currentAccount !== user.username && (
+          <UpDoot dooter={currentAccount} />
+        )}
+        {user?.username && currentAccount !== user.username && (
+          <Tooltip label="Follow (coming Soon)" aria-label="update status button">
+            <Button>
+              <RiUserFollowLine />
+            </Button>
+          </Tooltip>
+        )}
       </Box>
       {currentAccount && <Chievs account={currentAccount} />}
     </Box>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button } from "@chakra-ui/react";
+import { Badge, Button, Tooltip } from "@chakra-ui/react";
 import {
   useChainLogs,
   useChievs,
@@ -10,7 +10,7 @@ import { FaThumbsUp } from "react-icons/fa";
 
 const UPDOOT_TOKEN = { id: "17", price: "100000000000000000" };
 
-const UpDoot = ({ tokenId, addr }) => {
+const UpDoot = ({ dooter }) => {
   const [loading, setLoading] = useState(false);
   const [dootCount, setDootCount] = useState(0);
   const [user] = useUser();
@@ -19,11 +19,18 @@ const UpDoot = ({ tokenId, addr }) => {
   const [chainLogs] = useChainLogs();
 
   useEffect(() => {
-    const _dootCount = chainLogs.tokenData.allTokens.filter(
-      (t) => +t.details === +tokenId
-    );
+    let _dootCount = [];
+    if (!chainLogs.tokenData) {
+      return;
+    }
+    if (dooter) {
+      _dootCount = chainLogs.tokenData.allTokens.filter(
+        (t) => t.details === "" + dooter
+      );
+    }
+
     setDootCount(_dootCount.length || 0);
-  }, [chainLogs, tokenId]);
+  }, [chainLogs.tokenData, dooter]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -49,7 +56,7 @@ const UpDoot = ({ tokenId, addr }) => {
         UPDOOT_TOKEN.id,
         UPDOOT_TOKEN.price,
         txCallBack,
-        "" + tokenId
+        "" + dooter
       );
     } catch (err) {
       setLoading(false);
@@ -57,10 +64,12 @@ const UpDoot = ({ tokenId, addr }) => {
     }
   };
   return (
-    <Button onClick={handleClick} isLoading={loading}>
-      {dootCount > 0 && <Badge>{dootCount}</Badge>}
-      <FaThumbsUp />
-    </Button>
+    <Tooltip label="Like This" aria-label="like button">
+      <Button onClick={handleClick} isLoading={loading}>
+        {dootCount > 0 && <Badge>{dootCount}</Badge>}
+        <FaThumbsUp />
+      </Button>
+    </Tooltip>
   );
 };
 
