@@ -298,7 +298,7 @@ const Chiev = ({ token }) => {
         >
           <Heading as="h2" fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}>
             {token["NFT Name (from Artist Submissions) 2"][0]}{" "}
-            <UpDoot ownedBy={ownedBy} tokenId={token["Gen0 Id"]} />
+            <UpDoot dooter={token["Gen0 Id"]} />
           </Heading>
           <Text> Price: {displayPrice(token["Price In Wei"] || "0")} xDai</Text>
           <Text>
