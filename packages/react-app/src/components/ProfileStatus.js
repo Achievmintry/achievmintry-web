@@ -9,6 +9,7 @@ import {
   Text,
   Box,
   Heading,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   useChainLogs,
@@ -23,7 +24,7 @@ const STATUS_TOKEN = { id: "25", price: "100000000000000000" };
 
 const ProfileStatus = ({ addr }) => {
   const [loading, setLoading] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState(0);
+  const [currentStatus, setCurrentStatus] = useState();
   const [showStatusForm, setShowStatusForm] = useState(false);
   const [user] = useUser();
   const [chievs] = useChievs();
@@ -33,7 +34,7 @@ const ProfileStatus = ({ addr }) => {
   const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
-    if (!chainLogs?.tokenData?.allTokens) {
+    if (!chainLogs?.tokenData) {
       return;
     }
     const _currentStatus = chainLogs.tokenData.allTokens
@@ -41,8 +42,11 @@ const ProfileStatus = ({ addr }) => {
         (t) =>
           +t.clonedFromId === +STATUS_TOKEN.id &&
           t.type === "clone" &&
-          t.receiver === addr &&
-          t.sender === addr
+          t.receiver &&
+          t.sender &&
+          addr &&
+          t.receiver.toLowerCase() === addr.toLowerCase() &&
+          t.sender.toLowerCase() === addr.toLowerCase()
       )
       .sort((a, b) => b.blockNumber - a.blockNumber);
     if (_currentStatus[0]) {
@@ -51,7 +55,7 @@ const ProfileStatus = ({ addr }) => {
       setCurrentStatus(null);
       setShowStatusForm(false);
     }
-  }, [chainLogs, addr]);
+  }, [chainLogs, addr, user]);
 
   const txCallBack = (txHash, details) => {
     if (txProcessor && txHash) {
@@ -97,9 +101,11 @@ const ProfileStatus = ({ addr }) => {
           <Text>No Status Set</Text>
         )}
         {user?.username === addr && !showStatusForm && (
-          <Button onClick={() => setShowStatusForm(true)}>
-            <FaPencilAlt />
-          </Button>
+          <Tooltip label="Update your status" aria-label="update status button">
+            <Button onClick={() => setShowStatusForm(true)}>
+              <FaPencilAlt />
+            </Button>
+          </Tooltip>
         )}
       </Box>
 

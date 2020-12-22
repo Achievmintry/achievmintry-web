@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link as ReactLink } from "react-router-dom";
 import makeBlockie from "ethereum-blockies-base64";
 import { Flex, Avatar, Link, Text } from "@chakra-ui/react";
 
@@ -8,7 +9,7 @@ import { FaTwitter } from "react-icons/fa";
 import EthAddressDisplay from "./EthAddressDisplay";
 import { useLocation } from "react-router-dom";
 
-const AccountAvatar = ({ addr, hideTweet }) => {
+const AccountAvatar = ({ addr, hideTweet, size, link }) => {
   const location = useLocation();
   const [user, setUser] = useState();
   useEffect(() => {
@@ -23,14 +24,24 @@ const AccountAvatar = ({ addr, hideTweet }) => {
   return user ? (
     <Flex direction="row" alignItems="center">
       {user?.profile && user.profile.image && user.profile.image[0] ? (
-        <Avatar
-          name={user.profile.username}
-          src={`${"https://ipfs.infura.io/ipfs/" +
-            user.profile.image[0].contentUrl["/"]}`}
-          mr={3}
-        />
+        <Link as={ReactLink} to={`/account/${user.username}`}>
+          <Avatar
+            name={user.profile.username}
+            src={`${"https://ipfs.infura.io/ipfs/" +
+              user.profile.image[0].contentUrl["/"]}`}
+            mr={3}
+            size={size || "md"}
+          />
+        </Link>
       ) : (
-        <Avatar name={user.username} src={makeBlockie(user.username)} mr={3} />
+        <Link as={ReactLink} to={`/account/${user.username}`}>
+          <Avatar
+            name={user.username}
+            src={makeBlockie(user.username)}
+            mr={3}
+            size={size || "md"}
+          />
+        </Link>
       )}
       <h3>
         <Flex>
