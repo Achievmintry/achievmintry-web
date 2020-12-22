@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import Lottie from "react-lottie";
 
 import {
-  Text,
+  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -10,14 +11,15 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Box
 } from "@chakra-ui/react";
 
 import { TxProcessorService } from "../utils/TxProcessorService";
 import { useTxProcessor, useUser, useWeb3Connect } from "./DappContext";
 import { truncateAddr } from "../utils/Helpers";
 import { ExplorerLink } from "../components";
-import { LinkIcon } from "@chakra-ui/icons";
+
+import rainbowLoader from "../data/lotties/40796-rainbow-loading.json";
+import rainbowLove from "../data/lotties/439-love-explosion.json";
 
 const TxProcessorInit = () => {
   const [user] = useUser();
@@ -27,6 +29,23 @@ const TxProcessorInit = () => {
   const [latestTx, setLatestTx] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+
+  const loaderOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: rainbowLoader,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const loveOptions = {
+    loop: false,
+    autoplay: true,
+    animationData: rainbowLove,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     if (!user || Object.keys(txProcessor).length === 0) {
@@ -104,28 +123,24 @@ const TxProcessorInit = () => {
                 linkText={`${truncateAddr(latestTx.tx)} view`}
               />
             )}
-            {!loading && (
+            {!loading ? (
               <>
-                <Box>
-                  <Text>
-                    <span role="img" aria-label="party">
-                      🎉
-                    </span>{" "}
-                    Success{" "}
-                    <span role="img" aria-label="party">
-                      🎉
-                    </span>
-                  </Text>
-                </Box>
-                <Box>
-                <Link
-                      href="https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup"
-                      isExternal
-                    >
-                      Explore other Chievs <LinkIcon href="/chievs" mx="2px" />
-                    </Link>
-                </Box>
+                <Lottie options={loveOptions} height={400} width={400} />
+                <Heading
+                  as="h2"
+                  fontSize={{ base: "xl", xl: "2xl", xxl: "4xl" }}
+                >
+                  <span role="img" aria-label="party">
+                    🎉
+                  </span>{" "}
+                  Success{" "}
+                  <span role="img" aria-label="party">
+                    🎉
+                  </span>
+                </Heading>
               </>
+            ) : (
+              <Lottie options={loaderOptions} height={400} width={400} />
             )}
           </ModalBody>
         </ModalContent>
