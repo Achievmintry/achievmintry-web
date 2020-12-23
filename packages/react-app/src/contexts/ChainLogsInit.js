@@ -51,6 +51,7 @@ const ChainLogsInit = () => {
       // gets stuck in a rerender loop with out this
       return;
     }
+    console.log('running update');
     const loadNFTTheme = async () => {
       const themeNFTService = new NFTThemeService();
       const userTheme = themeNFTService.getUserTheme(user.username);

@@ -8,15 +8,15 @@ import {
   ChievDetail,
   Community,
   Home,
-  SnapShot,
   Submissions,
 } from "./views";
+import About from "./views/About";
 const Routes = () => {
   return (
     <>
       <Switch>
         <Route path="/submissions" component={Submissions} />
-        <Route path="/snapshot" component={SnapShot} />
+        <Route path="/about" component={About} />
         <Route path="/account/:addr" component={Account} />
         <Route path="/account" component={Account} />
         <Route path="/chievs" component={AllChievs} />

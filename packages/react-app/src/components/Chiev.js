@@ -47,7 +47,7 @@ const Chiev = ({ token }) => {
   // const theme = useTheme();
   const [, setTheme] = useTheme();
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, reset } = useForm();
 
   const themeNFTService = new NFTThemeService();
 
@@ -127,7 +127,8 @@ const Chiev = ({ token }) => {
     if (txProcessor && txHash) {
       txProcessor.setTx(txHash, user.username, details, true, false);
       txProcessor.forceUpdate = true;
-
+      setLoading(false);
+      reset();
       updateTxProcessor(txProcessor);
     }
     if (!txHash) {
