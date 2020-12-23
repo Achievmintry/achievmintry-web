@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
-import { Chievs, AccountAvatar, ProfileStatus, UpDoot } from "../components";
+import { Chievs, AccountAvatar, ProfileStatus, UpDoot, ChievStream } from "../components";
 import { RiUserFollowLine } from "react-icons/ri";
 
 const Account = () => {
@@ -204,7 +204,7 @@ const Account = () => {
           <Tab
             _selected={{
               borderColor: "primary.900",
-              color: "primary.900",
+              color: "black",
               fontWeight: "bold",
             }}
           >
@@ -213,7 +213,7 @@ const Account = () => {
           <Tab
             _selected={{
               borderColor: "primary.900",
-              color: "primary.900",
+              color: "black",
               fontWeight: "bold",
             }}
           >
@@ -226,7 +226,7 @@ const Account = () => {
             {currentAccount && <Chievs account={currentAccount} />}
           </TabPanel>
           <TabPanel>
-            <p>Coming Soon</p>
+            {currentAccount && <ChievStream addr={currentAccount} />}
           </TabPanel>
         </TabPanels>
       </Tabs>
