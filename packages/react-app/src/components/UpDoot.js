@@ -64,8 +64,8 @@ const UpDoot = ({ dooter }) => {
     }
   };
   return (
-    <Tooltip label="Like This" aria-label="like button">
-      <Button onClick={handleClick} isLoading={loading}>
+    <Tooltip label={!user?.username ? "You must be connected to Like" : "Like This"} aria-label="like button">
+      <Button onClick={handleClick} isLoading={loading} disabled={!user?.username}>
         {dootCount > 0 && <Badge>{dootCount}</Badge>}
         <FaThumbsUp />
       </Button>
