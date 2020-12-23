@@ -14,3 +14,4 @@ export { default as Footer } from "./Footer";
 export { default as Layout } from "./Layout";
 export { default as UpDoot } from "./UpDoot";
 export { default as ProfileStatus } from "./ProfileStatus";
+export { default as ChievStream } from "./ChievStream";

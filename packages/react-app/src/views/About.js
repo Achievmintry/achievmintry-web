@@ -141,9 +141,15 @@ const About = () => {
           For Premier awards the DAO doesn't pick the winners, the community
           will pick the winners.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2} pl={4}>
-          <em>A token drop ($CHIEV) was initially made to all gitcoin donators. They
-          are the givers, the dream/meme enablers.</em>
+        <Text
+          fontSize={{ base: "md", xl: "xl", xxl: "2xl" }}
+          padding={2}
+          pl={4}
+        >
+          <em>
+            A token drop ($CHIEV) was initially made to all gitcoin donators.
+            They are the givers, the dream/meme enablers.
+          </em>
         </Text>
 
         <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
@@ -273,8 +279,16 @@ const About = () => {
           something that interests you.
         </Text>
         <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+          <strong>xDai FTW:</strong> The cheap, fast and reliable transactions
+          are making xDai the premier place for NFTs. Need xDai or more info
+          check out our Discord.
+        </Text>
+        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
           <strong>Special Thanks:</strong> Special thanks to RaidGuild and xDai
           StakeHaus.
+        </Text>
+        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+          <strong>Alpha:</strong> This app is in alpha and can change.
         </Text>
       </Box>
       <Box
@@ -301,7 +315,7 @@ const About = () => {
           Landing Page
         </Link>
         <Link href={`https://discord.gg/sqRssB3PBD`} isExternal={true} ml={2}>
-          Blog
+          Discord
         </Link>
         <Link
           href={`https://twitter.com/ChievNetwork`}
