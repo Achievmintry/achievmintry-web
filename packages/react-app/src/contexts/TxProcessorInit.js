@@ -14,17 +14,25 @@ import {
 } from "@chakra-ui/react";
 
 import { TxProcessorService } from "../utils/TxProcessorService";
-import { useTxProcessor, useUser, useWeb3Connect } from "./DappContext";
+import {
+  useChievs,
+  useTxProcessor,
+  useUser,
+  useWeb3Connect,
+} from "./DappContext";
 import { truncateAddr } from "../utils/Helpers";
 import { ExplorerLink } from "../components";
 
 import rainbowLoader from "../data/lotties/40796-rainbow-loading.json";
 import rainbowLove from "../data/lotties/439-love-explosion.json";
+import { addresses } from "@project/contracts";
+import { Web3ChievsService } from "../utils/ChievsService";
 
 const TxProcessorInit = () => {
   const [user] = useUser();
   const [web3Connect] = useWeb3Connect();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
+  const [chievs, updateChievs] = useChievs();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [latestTx, setLatestTx] = useState();
   const [loading, setLoading] = useState(false);
@@ -69,6 +77,18 @@ const TxProcessorInit = () => {
         duration: 9000,
         isClosable: true,
       });
+
+      //** reload the chievService and refetch the logs */
+      let chievsService = new Web3ChievsService(
+        addresses.chievs,
+        web3Connect.web3
+      );
+
+      try {
+        updateChievs({ ...chievs, service: chievsService });
+      } catch (e) {
+        console.error(`Could not get chievs`, e);
+      }
     }
     // eslint-disable-next-line
   }, [user, txProcessor.forceUpdate]);

@@ -228,7 +228,6 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <HoverBox
           key={token.id}
           onClick={() => {
-            console.log("clicked");
             setSelected(token);
             onOpen();
           }}
@@ -253,17 +252,21 @@ const Chievs = ({ featured, account, dao, cols }) => {
   return (
     <>
       <Box p={[2, 4, 6]}>
-        <Heading
-          as="h2"
-          fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
-          mb="1"
-          textTransform="uppercase"
-        >
-          {dao && dao} Talisman
-        </Heading>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
-          Give a talisman of your appreciation
-        </Text>
+        {!account && (
+          <>
+            <Heading
+              as="h2"
+              fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
+              mb="1"
+              textTransform="uppercase"
+            >
+              {dao && dao} Talisman
+            </Heading>
+            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
+              Give a talisman of your appreciation
+            </Text>
+          </>
+        )}
         <SimpleGrid
           columns={{ base: 1, sm: 2, lg: 4 }}
           spacing={{ base: 10, sm: 10, lg: 10, xxl: 20 }}
