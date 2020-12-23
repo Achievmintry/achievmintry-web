@@ -11,6 +11,11 @@ import {
   Spinner,
   Heading,
   Tooltip,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEns, useUser } from "../contexts/DappContext";
@@ -177,14 +182,54 @@ const Account = () => {
           <UpDoot dooter={currentAccount} />
         )}
         {user?.username && currentAccount !== user.username && (
-          <Tooltip label="Follow (coming Soon)" aria-label="update status button">
+          <Tooltip
+            label="Follow (coming Soon)"
+            aria-label="update status button"
+          >
             <Button>
               <RiUserFollowLine />
             </Button>
           </Tooltip>
         )}
       </Box>
-      {currentAccount && <Chievs account={currentAccount} />}
+      <Tabs isFitted>
+        <TabList
+          border="10px solid black"
+          color="black"
+          bg="secondary.500"
+          w="100%"
+          mx="auto"
+          m={4}
+        >
+          <Tab
+            _selected={{
+              borderColor: "primary.900",
+              color: "primary.900",
+              fontWeight: "bold",
+            }}
+          >
+            Talismans
+          </Tab>
+          <Tab
+            _selected={{
+              borderColor: "primary.900",
+              color: "primary.900",
+              fontWeight: "bold",
+            }}
+          >
+            Chiev Stream
+          </Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            {currentAccount && <Chievs account={currentAccount} />}
+          </TabPanel>
+          <TabPanel>
+            <p>Coming Soon</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };
