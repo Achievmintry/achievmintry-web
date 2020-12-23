@@ -125,10 +125,7 @@ const Header = props => {
           <Link to="/submissions">Submit Art</Link>
         </MenuItems>
         <MenuItems>
-          <Link to="/snapshot">SnapShot</Link>
-        </MenuItems>
-        <MenuItems>
-          <a href="https://chiev.net">About</a>
+          <a href="/about">About</a>
         </MenuItems>
       </Box>
 
