@@ -1,22 +1,22 @@
 {
-  "name": "The Golden Shovel",
-  "description": "Genesis. Awarded to the first 10 members of the DAOhaus Foundations Program. Feedback farming FTW!",
-  "image": "https://gateway.pinata.cloud/ipfs/QmcXx4CLyMuSjJZFaF2Gu8hjj9JDKRbwL9orpv5AsWLfwx",
-  "external_url": "https://daohaus.club",
+  "name": "DaoHaus Xmas Special",
+  "description": "Merry Holidays to all!",
+  "image": "QmZAdTPWgkstGhSbp5uT8bvLD9nH7VYGmUNYhvbVLz2LPF",
+  "external_url": "https://daohaus.club/",
   "youtube_video": "",
   "attributes": [
-    { "trait_type": "Base", "value": "Theme" },
-    { "trait_type": "Artist", "value": "Kerp" }
+    { "trait_type": "Base", "value": "Chiev" },
+    { "trait_type": "Artist", "value": "charingane" }
   ],
   "theme_attributes": [
-    { "trait_type": "primary", "value": "#c8cfd0" },
-    { "trait_type": "secondary", "value": "#d6d496" },
-    { "trait_type": "tertiary", "value": "#000000" },
-    { "trait_type": "bg", "value": "#a4a39d" },
-    { "trait_type": "bgSize", "value": "tile" },
+    { "trait_type": "primary", "value": "#b60d1d" },
+    { "trait_type": "secondary", "value": "#dbccc9" },
+    { "trait_type": "tertiary", "value": "#b47953" },
+    { "trait_type": "bg", "value": "#d6a9b3" },
+    { "trait_type": "bgSize", "value": "cover" },
     {
       "trait_type": "bgImg",
-      "value": "https://gateway.pinata.cloud/ipfs/QmfQRbtwVfwSiZoNunJGGpzF8Rmw1bNx1DKiGSvpGt7a2Q"
+      "value": "QmZAdTPWgkstGhSbp5uT8bvLD9nH7VYGmUNYhvbVLz2LPF"
     },
     {
       "trait_type": "icon",
