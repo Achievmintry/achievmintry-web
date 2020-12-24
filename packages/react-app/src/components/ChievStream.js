@@ -81,12 +81,13 @@ const ChievStream = ({ addr, limit }) => {
                     bg="secondary.200"
                     border="10px solid black"
                     color="black"
-                    w={{ base: "100%", lg: "50%" }}
+                    w="80%"
                     mx="auto"
                     p={4}
                     mb={4}
                   >
                     <Flex>
+                      <AccountAvatar addr={token.sender} hideTweet={true} />
                       <FaThumbsUp /> Like
                       {token.details.indexOf("0x") === 0 ? (
                         <AccountAvatar addr={token.details} hideTweet={true} />
@@ -104,7 +105,7 @@ const ChievStream = ({ addr, limit }) => {
                     bg="secondary.200"
                     border="10px solid black"
                     color="black"
-                    w={{ base: "100%", lg: "50%" }}
+                    w="80%"
                     mx="auto"
                     p={4}
                     mb={4}
@@ -122,7 +123,7 @@ const ChievStream = ({ addr, limit }) => {
                     bg="secondary.200"
                     border="10px solid black"
                     color="black"
-                    w={{ base: "100%", lg: "50%" }}
+                    w="80%"
                     mx="auto"
                     p={4}
                     mb={4}
