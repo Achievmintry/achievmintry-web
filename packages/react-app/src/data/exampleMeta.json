@@ -1,8 +1,8 @@
 {
-  "name": "DaoHaus Xmas Special",
-  "description": "Merry Holidays to all!",
-  "image": "QmZAdTPWgkstGhSbp5uT8bvLD9nH7VYGmUNYhvbVLz2LPF",
-  "external_url": "https://daohaus.club/",
+  "name": "Hail Santa",
+  "description": "Santa Works in any condition",
+  "image": "https://gateway.pinata.cloud/ipfs/Qmc7bdaV1fgRLTUoMRJhqrtkDeq1LKCBDy1twtZFsuejeH",
+  "external_url": "https://raidguild.org/",
   "youtube_video": "",
   "attributes": [
     { "trait_type": "Base", "value": "Chiev" },
@@ -13,14 +13,8 @@
     { "trait_type": "secondary", "value": "#dbccc9" },
     { "trait_type": "tertiary", "value": "#b47953" },
     { "trait_type": "bg", "value": "#d6a9b3" },
-    { "trait_type": "bgSize", "value": "cover" },
-    {
-      "trait_type": "bgImg",
-      "value": "QmZAdTPWgkstGhSbp5uT8bvLD9nH7VYGmUNYhvbVLz2LPF"
-    },
-    {
-      "trait_type": "icon",
-      "value": ""
-    }
+    { "trait_type": "bgSize", "value": "tile" },
+    { "trait_type": "bgImg", "value": "https://gateway.pinata.cloud/ipfs/Qmc7bdaV1fgRLTUoMRJhqrtkDeq1LKCBDy1twtZFsuejeH" },
+    { "trait_type": "icon", "value": "https://gateway.pinata.cloud/ipfs/QmavU5ByQrrokDBfe1BEBLboeDnQ2mFu9PJETbP4aAp3pM" }
   ]
 }

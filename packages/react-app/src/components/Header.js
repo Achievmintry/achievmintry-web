@@ -125,6 +125,9 @@ const Header = props => {
           <Link to="/submissions">Submit Art</Link>
         </MenuItems>
         <MenuItems>
+          <Link to="/stream">Chiev Stream</Link>
+        </MenuItems>
+        <MenuItems>
           <a href="/about">About</a>
         </MenuItems>
       </Box>

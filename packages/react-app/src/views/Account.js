@@ -226,7 +226,7 @@ const Account = () => {
             {currentAccount && <Chievs account={currentAccount} />}
           </TabPanel>
           <TabPanel>
-            {currentAccount && <ChievStream addr={currentAccount} />}
+            {currentAccount && <ChievStream addr={currentAccount} limit={20} />}
           </TabPanel>
         </TabPanels>
       </Tabs>
