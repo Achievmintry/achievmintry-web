@@ -64,7 +64,8 @@ const Chiev = ({ token }) => {
       .map((_owner) => {
         return { owner: _owner, count: counts[_owner] };
       })
-      .sort((a, b) => b.count - a.count);
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
     setLeaderBoard([...counts]);
   }, [chainLogs, token]);
 
@@ -491,7 +492,7 @@ const Chiev = ({ token }) => {
             mb="1"
             textTransform="uppercase"
           >
-            LeaderBoard
+            Top 10 LeaderBoard
           </Heading>
           {leaderBoard.map((_owner) => {
             return (

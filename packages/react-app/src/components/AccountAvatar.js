@@ -17,10 +17,10 @@ const AccountAvatar = ({ addr, hideTweet, size, link }) => {
       const profile = await getProfile(addr);
       setUser({ username: addr, profile: profile });
     };
-    if (addr) {
+    if (addr && !user?.profile) {
       getAccountProfile(addr);
     }
-  }, [addr]);
+  }, [addr, user]);
   return user ? (
     <Flex direction="row" alignItems="center">
       {user?.profile && user.profile.image && user.profile.image[0] ? (
