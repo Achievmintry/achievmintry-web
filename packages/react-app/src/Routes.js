@@ -7,6 +7,7 @@ import {
   AllCommunities,
   ChievDetail,
   Community,
+  FullStream,
   Home,
   Submissions,
 } from "./views";
@@ -23,6 +24,7 @@ const Routes = () => {
         <Route path="/chiev/:tokenId" component={ChievDetail} />
         <Route path="/communities" component={AllCommunities} />
         <Route path="/community/:addr" component={Community} />
+        <Route path="/stream" component={FullStream} />
         <Route path="/" component={Home} />
         <Route path="*" component={Home} />
       </Switch>
