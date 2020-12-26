@@ -1,6 +1,9 @@
 import { abis } from "@project/contracts";
 import Web3 from "web3";
 
+import logData from "../data/chain-logs/0-13722094.json"
+
+const fromBlock = 13722095;
 export class ChievsService {
   web3;
   contract;
@@ -95,10 +98,13 @@ export class ChievsService {
   }
 
   async getLogs() {
-    const allEvents = await this.contract.getPastEvents("AllEvents", {
-      fromBlock: 0,
+    const pastEvents = logData
+    const curentEvents = await this.contract.getPastEvents("AllEvents", {
+      fromBlock: fromBlock,
       toBlock: "latest",
     });
+
+    const allEvents = [...pastEvents, ...curentEvents];
 
     const transferLogs = allEvents.filter((e) => e.event === "Transfer");
     const gen0Logs = allEvents.filter((e) => e.event === "MintGen0");

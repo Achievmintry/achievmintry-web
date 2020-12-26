@@ -141,7 +141,7 @@ const Chiev = ({ token }) => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-
+    console.log(data);
     const addr = ensAddr ? ensAddr : data.address;
     try {
       chievs.service.clone(
@@ -150,7 +150,7 @@ const Chiev = ({ token }) => {
         token["Gen0 Id"],
         token["Price In Wei"],
         txCallBack,
-        data.details
+        data.detail
       );
     } catch (err) {
       setLoading(false);

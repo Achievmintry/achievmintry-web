@@ -20,7 +20,7 @@ const ChievStream = ({ addr, limit }) => {
       return;
     }
     let _stream = [];
-    console.log("addr", addr);
+    // console.log("addr", addr);
     if (addr) {
       _stream = chainLogs.tokenData.allTokens
         .filter(
@@ -40,7 +40,6 @@ const ChievStream = ({ addr, limit }) => {
         .sort((a, b) => b.blockNumber - a.blockNumber)
         .slice(0, limit || 40);
     }
-    console.log("_stream", _stream);
     if (_stream[0]) {
       setCurrentStream(_stream);
     } else {
@@ -71,6 +70,7 @@ const ChievStream = ({ addr, limit }) => {
         mb={4}
       >
         <Heading as="h4">Current Events</Heading>
+        <Link as={ReactLink} to={`/top`}>Top Chievers</Link>
         {currentStream ? (
           <Box>
             {currentStream.map((token) => {
