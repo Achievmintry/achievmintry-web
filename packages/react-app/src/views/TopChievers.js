@@ -48,7 +48,7 @@ const TopChievers = () => {
             mb="1"
             textTransform="uppercase"
           >
-            Top 10 LeaderBoard
+            Top 10 Givers LeaderBoard
           </Heading>
           {leaderBoard.map((_owner) => {
             return (
