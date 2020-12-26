@@ -143,12 +143,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const onSubmit = async (data) => {
     console.log(
       "clone",
-      data.address,
-      user.username,
-      selected["Gen0 Id"],
-      1,
-      selected["Price In Wei"]
-    );
+      data );
     setLoading(true);
 
     const addr = ensAddr ? ensAddr : data.address;
@@ -158,7 +153,8 @@ const Chievs = ({ featured, account, dao, cols }) => {
         user.username,
         selected["Gen0 Id"],
         selected["Price In Wei"],
-        txCallBack
+        txCallBack,
+        data.detail
       );
     } catch (err) {
       setLoading(false);
