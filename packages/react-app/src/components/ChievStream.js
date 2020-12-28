@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link as ReactLink } from "react-router-dom";
 
-import { Text, Box, Heading, Link, Avatar, Flex } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  Heading,
+  Link,
+  Avatar,
+  Flex,
+  Stack,
+} from "@chakra-ui/react";
 import { useChainLogs, useNFTApi, useUser } from "../contexts/DappContext";
-import { FaPencilAlt, FaThumbsUp } from "react-icons/fa";
+import { FaArrowRight, FaReply, FaThumbsUp, FaTrophy } from "react-icons/fa";
+import { RiChat4Fill } from "react-icons/ri";
 import AccountAvatar from "./AccountAvatar";
 
 const UPDOOT_TOKEN = { id: "17", price: "100000000000000000" };
@@ -70,25 +79,40 @@ const ChievStream = ({ addr, limit }) => {
         mb={4}
       >
         <Heading as="h4">Current Events</Heading>
-        <Link as={ReactLink} to={`/top`}>Top Chievers</Link>
+        <Link as={ReactLink} to={`/top`}>
+          Top Chievers
+        </Link>
         {currentStream ? (
-          <Box>
+          <Stack spacing={2}>
             {currentStream.map((token) => {
               if (+token.clonedFromId === +UPDOOT_TOKEN.id) {
                 return (
-                  <Box
-                    key={token.tokenId}
+                  <Stack
+                    spacing={2}
                     bg="secondary.200"
                     border="10px solid black"
-                    color="black"
-                    w="80%"
-                    mx="auto"
-                    p={4}
-                    mb={4}
+                    key={token.tokenId}
                   >
-                    <Flex>
-                      <AccountAvatar addr={token.sender} hideTweet={true} />
-                      <FaThumbsUp /> Like
+                    <Flex
+                      justifyContent="space-between"
+                      alignItems="center"
+                      p={1}
+                    >
+                      <FaThumbsUp p={0} />
+                      <Flex
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        p={1}
+                        width="30%"
+                      >
+                        <AccountAvatar
+                          size="xs"
+                          addr={token.sender}
+                          hideTweet={true}
+                        />
+                      </Flex>
+                    </Flex>
+                    <Flex pl={2}>
                       {token.details.indexOf("0x") === 0 ? (
                         <AccountAvatar addr={token.details} hideTweet={true} />
                       ) : (
@@ -97,107 +121,121 @@ const ChievStream = ({ addr, limit }) => {
                         </Link>
                       )}
                     </Flex>
-                  </Box>
+                    <Flex
+                      p={0}
+                      pl={1}
+                      pr={1}
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Text>Block: {token.blockNumber}</Text>
+
+                      <FaThumbsUp p={1} />
+                      <FaReply p={1} />
+                    </Flex>
+                  </Stack>
                 );
               } else if (+token.clonedFromId === +STATUS_TOKEN.id) {
                 return (
-                  <Box
+                  <Stack
+                    spacing={2}
                     bg="secondary.200"
                     border="10px solid black"
-                    color="black"
-                    w="80%"
-                    mx="auto"
-                    p={4}
-                    mb={4}
                     key={token.tokenId}
                   >
-                    <Flex>
-                      <AccountAvatar addr={token.sender} hideTweet={true} />
-                      <FaPencilAlt /> Update status: {token.details}
+                    <Flex
+                      justifyContent="space-between"
+                      alignItems="center"
+                      p={1}
+                    >
+                      <RiChat4Fill p={0} />
+                      <Flex
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        p={0}
+                        width="30%"
+                      >
+                        <AccountAvatar
+                          size="xs"
+                          addr={token.sender}
+                          hideTweet={true}
+                        />
+                      </Flex>
                     </Flex>
-                  </Box>
+                    <Flex pl={2}>
+                      <AccountAvatar addr={token.sender} hideTweet={true} />
+                      <Text pl={6}>{token.details}</Text>
+                    </Flex>
+                    <Flex
+                      p={0}
+                      pl={1}
+                      pr={1}
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Text>Block: {token.blockNumber}</Text>
+
+                      <FaThumbsUp p={1} />
+                      <FaReply p={1} />
+                    </Flex>
+                  </Stack>
                 );
               } else {
                 return (
-                  <Box
+                  <Stack
+                    spacing={2}
                     bg="secondary.200"
                     border="10px solid black"
-                    color="black"
-                    w="80%"
-                    mx="auto"
-                    p={4}
-                    mb={4}
                     key={token.tokenId}
                   >
-                    <Flex>
-                      {addr &&
-                        token.receiver.toLowerCase() === addr.toLowerCase() &&
-                        token.sender.toLowerCase() !== addr.toLowerCase && (
-                          <>
-                            receive:{" "}
-                            <Link
-                              as={ReactLink}
-                              to={`/chiev/${token.clonedFromId}`}
-                            >
-                              <Avatar
-                                src={getTokenImageUrl(token.clonedFromId)}
-                              />
-                            </Link>{" "}
-                            from{" "}
-                            <AccountAvatar
-                              addr={token.sender}
-                              hideTweet={true}
-                            />
-                            {token.details}
-                          </>
-                        )}
-                      {addr &&
-                        token.sender.toLowerCase() === addr.toLowerCase() &&
-                        token.receiver.toLowerCase() !== addr.toLowerCase && (
-                          <>
-                            send:{" "}
-                            <Link
-                              as={ReactLink}
-                              to={`/chiev/${token.clonedFromId}`}
-                            >
-                              <Avatar
-                                src={getTokenImageUrl(token.clonedFromId)}
-                              />
-                            </Link>{" "}
-                            to{" "}
-                            <AccountAvatar
-                              addr={token.receiver}
-                              hideTweet={true}
-                            />
-                            {token.details}
-                          </>
-                        )}
-                      {!addr && (
-                        <>
-                          <AccountAvatar addr={token.sender} hideTweet={true} />
-                          send{" "}
-                          <Link
-                            as={ReactLink}
-                            to={`/chiev/${token.clonedFromId}`}
-                          >
-                            <Avatar
-                              src={getTokenImageUrl(token.clonedFromId)}
-                            />
-                          </Link>{" "}
-                          to{" "}
-                          <AccountAvatar
-                            addr={token.receiver}
-                            hideTweet={true}
-                          />
-                          {token.details}
-                        </>
-                      )}
+                    <Flex
+                      justifyContent="space-between"
+                      alignItems="center"
+                      p={1}
+                    >
+                      <FaTrophy p={0} />
+                      <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        p={0}
+                      >
+                        <AccountAvatar
+                          size="xs"
+                          addr={token.sender}
+                          hideTweet={true}
+                        />
+                        <FaArrowRight pl={2} pr={2} />
+                        <AccountAvatar
+                          size="xs"
+                          addr={token.receiver}
+                          hideTweet={true}
+                        />
+                      </Flex>
                     </Flex>
-                  </Box>
+                    <Flex pl={2}>
+                      <Link as={ReactLink} to={`/chiev/${token.clonedFromId}`}>
+                        <Avatar src={getTokenImageUrl(token.clonedFromId)} />
+                      </Link>
+
+                      <Text pl={6}>{token.details}</Text>
+                    </Flex>
+                    <Flex
+                      p={0}
+                      pl={1}
+                      pr={1}
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Text>Block: {token.blockNumber}</Text>
+
+                      <FaThumbsUp p={1} />
+                      <FaReply p={1} />
+                    </Flex>
+                  </Stack>
                 );
               }
             })}
-          </Box>
+          </Stack>
         ) : (
           <Text>No Stream</Text>
         )}
