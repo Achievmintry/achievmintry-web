@@ -21,7 +21,7 @@ const Home = () => {
           mb="1"
           textTransform="uppercase"
         >
-          First annual community awards
+          First ChievMint Community Awards
         </Heading>
         <Text>
           <span role="img" aria-label="holiday">
