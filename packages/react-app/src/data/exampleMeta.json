@@ -1,12 +1,12 @@
 {
-  "name": "Hail Santa",
-  "description": "Santa Works in any condition",
-  "image": "https://gateway.pinata.cloud/ipfs/Qmc7bdaV1fgRLTUoMRJhqrtkDeq1LKCBDy1twtZFsuejeH",
-  "external_url": "https://raidguild.org/",
+  "name": "MetaCartel not even Once",
+  "description": "GG You made it through 2020",
+  "image": "https://gateway.pinata.cloud/ipfs/QmP5FNxEmyqBgwY1oism2k6RqjUoYaPzh2yk8ZigRRFGnr",
+  "external_url": "https://www.metacartel.org/",
   "youtube_video": "",
   "attributes": [
     { "trait_type": "Base", "value": "Chiev" },
-    { "trait_type": "Artist", "value": "charingane" }
+    { "trait_type": "Artist", "value": "Dekan" }
   ],
   "theme_attributes": [
     { "trait_type": "primary", "value": "#b60d1d" },
@@ -14,7 +14,10 @@
     { "trait_type": "tertiary", "value": "#b47953" },
     { "trait_type": "bg", "value": "#d6a9b3" },
     { "trait_type": "bgSize", "value": "tile" },
-    { "trait_type": "bgImg", "value": "https://gateway.pinata.cloud/ipfs/Qmc7bdaV1fgRLTUoMRJhqrtkDeq1LKCBDy1twtZFsuejeH" },
-    { "trait_type": "icon", "value": "https://gateway.pinata.cloud/ipfs/QmavU5ByQrrokDBfe1BEBLboeDnQ2mFu9PJETbP4aAp3pM" }
+    {
+      "trait_type": "bgImg",
+      "value": "https://gateway.pinata.cloud/ipfs/QmVV2RLNUvfNwUL1mWRrypagxu9in8rVXjQDjswVqZaM6m"
+    },
+    { "trait_type": "icon", "value": "" }
   ]
 }
