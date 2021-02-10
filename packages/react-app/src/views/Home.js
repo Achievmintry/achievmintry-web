@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Box, Button, Heading, Text, SimpleGrid } from "@chakra-ui/react";
+
+import { Box, Button, Heading, Text, SimpleGrid, Link } from "@chakra-ui/react";
 import { Chievs, Communities } from "../components";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 const Home = () => {
   return (
@@ -20,45 +21,59 @@ const Home = () => {
           mb="1"
           textTransform="uppercase"
         >
-          The Holoday Special
+          First annual community awards
         </Heading>
         <Text>
           <span role="img" aria-label="holiday">
-            🎄
+            🏆
           </span>{" "}
-          Special Holiday NFT gift cards will be dropped over the next week.
-          <span role="img" aria-label="holiday">
-            🎄
+          All represented orgs have submitted their nominations
+          <span role="img" aria-label="dao-awards">
+            🏆
+          </span>
+        </Text>
+        
+        <Text>
+          <span role="img" aria-label="dao-awards">
+            🎉
+          </span>{" "}
+          We will recognise the winners with an everlasting Non Fungible Token.
+          <span role="img" aria-label="dao-awards">
+            🎉
           </span>
         </Text>
         <Text>
-          <span role="img" aria-label="holiday">
-            🍾
+          <span role="img" aria-label="dao-awards">
+            💎
           </span>
-          Artwork done by community members for members.
-          <span role="img" aria-label="holiday">
-            🍾
-          </span>
-        </Text>
-        <Text>
-          <span role="img" aria-label="holiday">
-            🕎
-          </span>{" "}
-          Give the gift of an everlasting Non Fungible Token to your loved ones.
-          <span role="img" aria-label="holiday">
-            🕎
+          Vote now on snapshot in the 3 categories.
+          <span role="img" aria-label="dao-awards">
+            💎
           </span>
         </Text>
-        <Link to={`/chievs`}>
-          {" "}
-          <span role="img" aria-label="holiday">
-            ☀️
-          </span>{" "}
-          Check them all out here{" "}
-          <span role="img" aria-label="holiday">
-            ☀️
-          </span>
-        </Link>
+        <Box>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/QmdSBniGYcx5fm5jCeKZ6HQrLADjUnwQbWYybKJBHTyNFB`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Buidler Award <ExternalLinkIcon mx="2px" />
+          </Link>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/QmP2vz7e1YpmbjLshe9UddpUvTEmvRHufpkFwLwRuDAW9G`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Slaying Moloch Award <ExternalLinkIcon mx="2px" />
+          </Link>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/QmRJy66nWwbdiNR3ZTLNKWBN8gzf453yzyeij8ANNibMLG`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Community Ops Award <ExternalLinkIcon mx="2px" />
+          </Link>
+        </Box>
       </Box>
       <Box
         mx="auto"
