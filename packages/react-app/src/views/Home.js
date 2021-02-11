@@ -53,21 +53,21 @@ const Home = () => {
         </Text>
         <Box>
           <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmdSBniGYcx5fm5jCeKZ6HQrLADjUnwQbWYybKJBHTyNFB`}
+            href={`https://snapshot.page/#/achievmintry/proposal/QmVS5Medt9y62UAKUeBAiYDGZ9Do5JtTyQQcBrUC4YLaJ4`}
             isExternal={true}
             style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
           >
             Buidler Award <ExternalLinkIcon mx="2px" />
           </Link>
           <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmP2vz7e1YpmbjLshe9UddpUvTEmvRHufpkFwLwRuDAW9G`}
+            href={`https://snapshot.page/#/achievmintry/proposal/Qmcwjf3q8gyjPKm2iF6J4XKagU3Bb19FWFUuXyHrN94H47`}
             isExternal={true}
             style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
           >
             Slaying Moloch Award <ExternalLinkIcon mx="2px" />
           </Link>
           <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmRJy66nWwbdiNR3ZTLNKWBN8gzf453yzyeij8ANNibMLG`}
+            href={`https://snapshot.page/#/achievmintry/proposal/QmTLhcCu5Q1PvLyx1vaBKqD6m7PuS7rRkS9V8WSpvAqXd7`}
             isExternal={true}
             style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
           >
