@@ -332,7 +332,11 @@ const Chiev = ({ token }) => {
                 onOpen();
                 setLoading(true);
               }}
-              marginTop={3}
+              bg="white"
+              borderWidth="5px"
+              borderColor="black.500"
+              borderRadius="0"
+              mt={5}
             >
               Watch video
             </Button>

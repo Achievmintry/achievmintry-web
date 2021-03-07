@@ -10,10 +10,7 @@ import UserAvatar from "./UserAvatar";
 import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
-  <Box
-    _hover={{ backgroundColor: "secondary.500", color: "black" }}
-    transition="color 0.1s ease-in"
-  >
+  <Box a={{ color: "red" }}>
     <Text
       mt={{ base: 4, lg: 0 }}
       display="block"
