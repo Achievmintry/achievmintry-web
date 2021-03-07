@@ -15,6 +15,13 @@ import {
   Spacer,
   Textarea,
   FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
 } from "@chakra-ui/react";
 import {
   useChainLogs,
@@ -30,6 +37,8 @@ import { useTheme } from "../contexts/CustomThemeContext";
 import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
+import { VideoPlayer } from "./VideoPlayer";
+
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -44,6 +53,7 @@ const Chiev = ({ token }) => {
   const [ownedBy, setOwnedBy] = useState();
   const [loading, setLoading] = useState(false);
   const [ensAddr, setEnsAddr] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const theme = useTheme();
   const [, setTheme] = useTheme();
 
@@ -271,7 +281,7 @@ const Chiev = ({ token }) => {
               }
               alt={token["NFT Name (from Artist Submissions) 2"][0]}
               fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-              onMouseOver={(e) => {
+              onMouseOver={e => {
                 if (!token["Display Thumb"]) {
                   return;
                 }
@@ -280,7 +290,7 @@ const Chiev = ({ token }) => {
                     "Image (from Artist Submissions) 2"
                   ][0].thumbnails.large.url;
               }}
-              onMouseOut={(e) => {
+              onMouseOut={e => {
                 if (!token["Display Thumb"]) {
                   return;
                 }
@@ -316,6 +326,40 @@ const Chiev = ({ token }) => {
               <AccountAvatar addr={ownedBy} hideTweet={true} />
             </>
           )}
+          <Box flex={{ base: "0 0 66%" }} justifySelf={{ base: "right" }}>
+            <Button
+              onClick={() => {
+                onOpen();
+                setLoading(true);
+              }}
+              marginTop={3}
+            >
+              Watch video
+            </Button>
+            <Modal
+              isOpen={isOpen}
+              onClose={() => {
+                setLoading(false);
+                onClose();
+              }}
+            >
+              <ModalOverlay zIndex={400} />
+              <ModalContent
+                zIndex={500}
+                p={{ base: 10, xl: 25 }}
+                bg="primary.900"
+                border="10px solid black"
+                borderRadius="0"
+                minWidth={{ base: "100%", xxl: "40%" }}
+                textAlign="center"
+              >
+                <ModalCloseButton />
+                <ModalBody textAlign="center">
+                  <VideoPlayer url={`https://youtu.be/9VbmyPvZS7g`} />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          </Box>
         </Box>
 
         {uriJson && (
@@ -361,6 +405,7 @@ const Chiev = ({ token }) => {
                     {attr.trait_type}:{attr.value}
                   </Text>
                 ))} */}
+
             {nftCounts[token["Gen0 Id"]] && (
               <Button
                 bg="white"
@@ -485,6 +530,7 @@ const Chiev = ({ token }) => {
           mx="auto"
           boxShadow="0 0 15px rgba(0,0,0,0.5)"
           mt={6}
+          p={{ base: 6, xl: 2, xxl: 6 }}
         >
           <Heading
             as="h4"
@@ -494,7 +540,7 @@ const Chiev = ({ token }) => {
           >
             Top 10 LeaderBoard
           </Heading>
-          {leaderBoard.map((_owner) => {
+          {leaderBoard.map(_owner => {
             return (
               <Flex key={_owner.owner}>
                 <Box p="4">
