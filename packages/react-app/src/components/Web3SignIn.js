@@ -20,22 +20,24 @@ const Web3SignIn = (props) => {
   return (
     <>
       <Button
-        bg="transparent"
-        border="1px"
-        size={{ base: "sm", lg: "md" }}
-        fontSize={{ base: "12px", lg: "14px" }}
+        bg="white"
+        borderWidth="5px"
+        borderColor="black.500"
+        borderRadius="0"
+        // size={{ base: "sm", lg: "md" }}
+        // fontSize={{ base: "12px", lg: "14px" }}
         padding="8px 10px"
         _hover={{
           background: "black",
-          color: "secondary.500",
+          color: "secondary.500"
         }}
         onClick={async () => {
           const _web3Connect = {
             w3c: new Web3Modal({
               network: getChainData(+process.env.REACT_APP_NETWORK_ID).network,
               providerOptions,
-              cacheProvider: true,
-            }),
+              cacheProvider: true
+            })
           };
 
           try {
@@ -50,7 +52,7 @@ const Web3SignIn = (props) => {
               title: "Wrong Network",
               position: "top-right",
               render: () => (
-                <Box color="black" p={3} bg="orange.500">
+                <Box color="black" p={3}>
                   {err.msg}.{" "}
                   <Link
                     href="https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup"
@@ -63,7 +65,7 @@ const Web3SignIn = (props) => {
               description: `${err.msg}, `,
               status: "warning",
               duration: 9000,
-              isClosable: true,
+              isClosable: true
             });
           }
         }}
