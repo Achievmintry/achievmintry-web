@@ -18,9 +18,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
-  ModalCloseButton,
   useDisclosure
 } from "@chakra-ui/react";
 import {
@@ -38,7 +36,6 @@ import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
 import { VideoPlayer } from "./VideoPlayer";
-import { UniqueVariableNamesRule } from "graphql";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -62,7 +59,7 @@ const Chiev = ({ token }) => {
   const themeNFTService = new NFTThemeService();
 
   useEffect(() => {
-    console.log(token, uriJson);
+    // console.log(token, uriJson);
     let counts = {};
     // eslint-disable-next-line
     const c = chainLogs.tokenData?.allTokens
@@ -78,7 +75,7 @@ const Chiev = ({ token }) => {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
     setLeaderBoard([...counts]);
-  }, [chainLogs, token]);
+  }, [chainLogs, token ]);
 
   useEffect(() => {
     const getKudsDetails = async acctAddr => {
@@ -401,7 +398,7 @@ const Chiev = ({ token }) => {
                   >
                     Close
                   </Button>
-                  {!uriJson.video ? (
+                  {!uriJson?.video ? (
                     <p>Loading...</p>
                   ) : (
                     <VideoPlayer

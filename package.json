@@ -27,8 +27,5 @@
     "packages": [
       "packages/*"
     ]
-  },
-  "dependencies": {
-    "react-player": "^2.9.0"
   }
 }
