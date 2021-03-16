@@ -324,23 +324,22 @@ const Chiev = ({ token }) => {
               <AccountAvatar addr={ownedBy} hideTweet={true} />
             </>
           )}
-                  <Box flex={{ base: "0 0 66%" }} justifySelf={{ base: "right" }}>
-                      {uriJson?.video && (
-                            <Button
-                            onClick={() => {
-                                onOpen();
-                                setLoading(true);
-                            }}
-                            bg="white"
-                            borderWidth="5px"
-                            borderColor="black.500"
-                            borderRadius="0"
-                            mt={5}
-                            >
-                            Watch video
-                            </Button>
-
-                      )}
+          <Box flex={{ base: "0 0 66%" }} justifySelf={{ base: "right" }}>
+            {uriJson?.video && (
+              <Button
+                onClick={() => {
+                  onOpen();
+                  setLoading(true);
+                }}
+                bg="white"
+                borderWidth="5px"
+                borderColor="black.500"
+                borderRadius="0"
+                mt={5}
+              >
+                Watch video
+              </Button>
+            )}
             <Modal
               display="flex"
               alignContent="center"
@@ -362,7 +361,7 @@ const Chiev = ({ token }) => {
                 p={0}
                 bg="primary.900"
                 borderRadius="0"
-                maxWidth={{ base: "100%", xs: "640px" }}
+                maxWidth={{ base: "100%", xs: "1150px" }}
                 width="100%"
                 textAlign="center"
                 boxShadow="0 0 30px rgba(0,0,0,0.8)"
@@ -375,9 +374,24 @@ const Chiev = ({ token }) => {
                   pb="0"
                   height="0"
                   width="100%"
-                  maxW="640px"
+                  maxW="1150px"
                   sx={{
-                    "& > div": { position: `absolute`, top: 0, left: 0, p: 0 }
+                    "& > div": {
+                        position: `absolute`,
+                        top: 0,
+                        left: 0,
+                        p: 0,
+                        maxW: `1150px`,
+                          width: `100% !important`,
+                          minH: `100%`,
+                        height: `auto !important`
+                      },
+                      "video": {
+                          width: `auto !important`,
+                          height: `auto !important`,
+                          minW: `100%`,
+                          minH: `100%`
+                      }
                   }}
                 >
                   <Button
@@ -405,6 +419,8 @@ const Chiev = ({ token }) => {
                       url={uriJson?.video && uriJson.video}
                       playing
                       loop
+                                              width="100%"
+                                              height="100%"
                     />
                   )}
                 </ModalBody>

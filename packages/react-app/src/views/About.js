@@ -61,17 +61,17 @@ const About = () => {
           </ListItem>
         </List>
 
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           Every year there are groups and individuals that stand out as note
           worthy contributors. Many times doing their good work out of pure
           passion.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           We think the greater community would like to recognize these
           extraordinary contributions with a talisman of appreciation, a premier
           award.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           Besides that, individuals should be able to easily recognize members
           of their own communities and teams.
         </Text>
@@ -93,11 +93,11 @@ const About = () => {
         >
           The Ministry of Achievement
         </Heading>
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           A single organization should not be in charge of issuing these awards
           so our solution is a 'dao of daos' comity.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           We have 2 types of achievement awards
         </Text>
         <List spacing={2}>
@@ -138,12 +138,11 @@ const About = () => {
         >
           Snapshot Link
         </Link>
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           For Premier awards the DAO doesn't pick the winners, the community
           will pick the winners.
         </Text>
         <Text
-          fontSize={{ base: "md", xl: "xl" }}
           padding={2}
           pl={4}
         >
@@ -153,7 +152,7 @@ const About = () => {
           </em>
         </Text>
 
-        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
+        <Text padding={2}>
           Further token drops will be made to members of joining DAOs, award
           winners, NFT artists, and contributors to the Ministry. TBD by DAO
         </Text>
@@ -217,7 +216,7 @@ const About = () => {
         >
           Awards - The Wei, The Shannon and 1ups
         </Heading>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           super dope fresh art NFTs/ Artists will get royalties / Dao will take
           a cut to sustain
         </Text>
@@ -265,30 +264,30 @@ const About = () => {
         >
           Github Link
         </Link>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>Everything is an NFT:</strong> everything on the site is an
           nft, Likes, Status, Follows, Roles, Themes, Awards. We want to
           experiment with the utility hidden in these little nuggets.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>Bots:</strong> Every community has a discord bot that can
           issue NFTs based on emoji reactions.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>React Hooks:</strong> We have a library of react hooks that
           allow you to bring in NFT data to any react app. Reach out if this is
           something that interests you.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>xDai FTW:</strong> The cheap, fast and reliable transactions
           are making xDai the premier place for NFTs. Need xDai or more info
           check out our Discord.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>Special Thanks:</strong> Special thanks to RaidGuild and xDai
           StakeHaus.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text padding={2}>
           <strong>Alpha:</strong> This app is in alpha and can change.
         </Text>
       </Box>
