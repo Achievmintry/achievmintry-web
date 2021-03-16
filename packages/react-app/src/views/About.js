@@ -44,6 +44,7 @@ const About = () => {
         mx="auto"
         p={4}
         mb={4}
+        fontSize={{ base: "1.2rem" }}
       >
         <List spacing={2}>
           <ListItem>
@@ -60,17 +61,17 @@ const About = () => {
           </ListItem>
         </List>
 
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           Every year there are groups and individuals that stand out as note
           worthy contributors. Many times doing their good work out of pure
           passion.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           We think the greater community would like to recognize these
           extraordinary contributions with a talisman of appreciation, a premier
           award.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           Besides that, individuals should be able to easily recognize members
           of their own communities and teams.
         </Text>
@@ -92,11 +93,11 @@ const About = () => {
         >
           The Ministry of Achievement
         </Heading>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           A single organization should not be in charge of issuing these awards
           so our solution is a 'dao of daos' comity.
         </Text>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           We have 2 types of achievement awards
         </Text>
         <List spacing={2}>
@@ -137,12 +138,12 @@ const About = () => {
         >
           Snapshot Link
         </Link>
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           For Premier awards the DAO doesn't pick the winners, the community
           will pick the winners.
         </Text>
         <Text
-          fontSize={{ base: "md", xl: "xl", xxl: "2xl" }}
+          fontSize={{ base: "md", xl: "xl" }}
           padding={2}
           pl={4}
         >
@@ -152,7 +153,7 @@ const About = () => {
           </em>
         </Text>
 
-        <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} padding={2}>
+        <Text fontSize={{ base: "md", xl: "xl" }} padding={2}>
           Further token drops will be made to members of joining DAOs, award
           winners, NFT artists, and contributors to the Ministry. TBD by DAO
         </Text>

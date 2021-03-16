@@ -108,6 +108,12 @@ export const setTheme = nftTheme => {
         a: {
           transition: "all 0.15s linear",
           _hover: { textDecoration: "none", color: "secondary.500" }
+        },
+        li: {
+          fontSize: { base: "md", xl: "xl" }
+        },
+        p: {
+          fontSize: `1vw`
         }
       }
     },

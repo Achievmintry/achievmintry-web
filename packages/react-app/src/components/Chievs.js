@@ -44,7 +44,13 @@ const HoverBox = styled(Box)`
   cursor: pointer;
   z-index: 0;
   transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  align-items: stretch;
+  flex-flow: column nowrap;
 
+  .info-box {
+      flex: 1 0 auto;
+  }
   &:hover {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
   }
@@ -56,7 +62,7 @@ const HoverBox = styled(Box)`
       display: block;
       /* background: black; */
       border-right: 10px solid;
-      background-color: ${(props) => {
+      background-color: ${props => {
         return props._hover?.themecolor;
       }};
       width: 200%;
@@ -281,7 +287,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               className="hoverbox__featured"
               p={{ base: 3, xl: 4, xxl: 6 }}
               _hover={{
-                themecolor: theme.colors.secondary[500],
+                themecolor: theme.colors.secondary[500]
               }}
             >
               <InfoBox className="info-box">
@@ -344,7 +350,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions) 2"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={(e) => {
+                onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -353,7 +359,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       "Image (from Artist Submissions) 2"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={(e) => {
+                onMouseOut={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }

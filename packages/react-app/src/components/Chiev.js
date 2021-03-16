@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import {
   Box,
@@ -28,7 +28,7 @@ import {
   useEns,
   useChievs,
   useTxProcessor,
-  useUser,
+  useUser
 } from "../contexts/DappContext";
 import { useForm } from "react-hook-form";
 import Web3SignIn from "./Web3SignIn";
@@ -38,7 +38,7 @@ import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
 import { VideoPlayer } from "./VideoPlayer";
-
+import { UniqueVariableNamesRule } from "graphql";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -56,22 +56,23 @@ const Chiev = ({ token }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const theme = useTheme();
   const [, setTheme] = useTheme();
-
+  const finalRef = useRef();
   const { register, handleSubmit, errors, reset } = useForm();
 
   const themeNFTService = new NFTThemeService();
 
   useEffect(() => {
+    console.log(token, uriJson);
     let counts = {};
     // eslint-disable-next-line
     const c = chainLogs.tokenData?.allTokens
-      .filter((_token) => +_token.clonedFromId === +token["Gen0 Id"])
-      .forEach((_token) => {
+      .filter(_token => +_token.clonedFromId === +token["Gen0 Id"])
+      .forEach(_token => {
         counts[_token.ownedBy] = 1 + counts[_token.ownedBy] || 1;
       });
 
     counts = Object.keys(counts)
-      .map((_owner) => {
+      .map(_owner => {
         return { owner: _owner, count: counts[_owner] };
       })
       .sort((a, b) => b.count - a.count)
@@ -80,7 +81,7 @@ const Chiev = ({ token }) => {
   }, [chainLogs, token]);
 
   useEffect(() => {
-    const getKudsDetails = async (acctAddr) => {
+    const getKudsDetails = async acctAddr => {
       const acct = acctAddr.toLowerCase();
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
       const usersTokens = chainLogs.tokenData.usersTokens;
@@ -91,7 +92,7 @@ const Chiev = ({ token }) => {
         return;
       }
       const userTokens = usersTokens.find(
-        (token) => token.address.toLowerCase() === acct
+        token => token.address.toLowerCase() === acct
       );
       if (!userTokens) {
         return;
@@ -104,8 +105,8 @@ const Chiev = ({ token }) => {
 
       const gen0Ownership = {};
       userTokens.tokens
-        .filter((token) => token.type === "gen0")
-        .forEach((token) => (gen0Ownership[token.tokenId] = true));
+        .filter(token => token.type === "gen0")
+        .forEach(token => (gen0Ownership[token.tokenId] = true));
 
       setGen0Ownership({ ...gen0Ownership });
     };
@@ -129,7 +130,7 @@ const Chiev = ({ token }) => {
       return;
     }
     const g0Token = chainLogs.tokenData.allTokens.find(
-      (_token) => +_token.tokenId === +token["Gen0 Id"]
+      _token => +_token.tokenId === +token["Gen0 Id"]
     );
     setOwnedBy(g0Token.ownedBy);
   }, [chainLogs, token]);
@@ -149,7 +150,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setLoading(true);
     console.log(data);
     const addr = ensAddr ? ensAddr : data.address;
@@ -169,7 +170,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async e => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -179,7 +180,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const displayPrice = (price) => {
+  const displayPrice = price => {
     if (!chievs.service) {
       return "?";
     }
@@ -197,47 +198,47 @@ const Chiev = ({ token }) => {
     const _theme = {};
     //_theme.bgImg = uriJson?.static_image || uriJson?.image;
     const bgImg = uriJson?.theme_attributes?.find(
-      (item) => item.trait_type === "bgImg"
+      item => item.trait_type === "bgImg"
     );
     if (bgImg) {
       _theme.bgImg = uriJson?.theme_attributes.find(
-        (item) => item.trait_type === "bgImg"
+        item => item.trait_type === "bgImg"
       ).value;
     }
 
     const primary = uriJson?.theme_attributes?.find(
-      (item) => item.trait_type === "primary"
+      item => item.trait_type === "primary"
     );
     if (primary) {
       _theme.primary500 = uriJson?.theme_attributes.find(
-        (item) => item.trait_type === "primary"
+        item => item.trait_type === "primary"
       ).value;
     }
 
     const secondary = uriJson?.theme_attributes?.find(
-      (item) => item.trait_type === "secondary"
+      item => item.trait_type === "secondary"
     );
     if (secondary) {
       _theme.secondary500 = uriJson?.theme_attributes.find(
-        (item) => item.trait_type === "secondary"
+        item => item.trait_type === "secondary"
       ).value;
     }
     console.log(_theme);
 
     const bg = uriJson?.theme_attributes?.find(
-      (item) => item.trait_type === "bg"
+      item => item.trait_type === "bg"
     );
     if (bg) {
       _theme.bg500 = uriJson?.theme_attributes.find(
-        (item) => item.trait_type === "bg"
+        item => item.trait_type === "bg"
       ).value;
     }
     const bgSize = uriJson?.theme_attributes?.find(
-      (item) => item.trait_type === "bgSize"
+      item => item.trait_type === "bgSize"
     );
     if (bgSize) {
       _theme.bgSize = uriJson?.theme_attributes.find(
-        (item) => item.trait_type === "bgSize"
+        item => item.trait_type === "bgSize"
       ).value;
     }
     themeNFTService.setUserTheme(
@@ -341,25 +342,70 @@ const Chiev = ({ token }) => {
               Watch video
             </Button>
             <Modal
+              display="flex"
+              alignContent="center"
               isOpen={isOpen}
+              finalFocusRef={finalRef}
+              isCentered
               onClose={() => {
                 setLoading(false);
                 onClose();
               }}
+                          sx={{
+                              "[class^='chakra-modal']": {
+                                  bgColor: `rgba(0,0,0,0.8)`
+                              }
+                          }}
             >
-              <ModalOverlay zIndex={400} />
+              <ModalOverlay />
               <ModalContent
-                zIndex={500}
-                p={{ base: 10, xl: 25 }}
+                p={0}
                 bg="primary.900"
-                border="10px solid black"
                 borderRadius="0"
-                minWidth={{ base: "100%", xxl: "40%" }}
-                textAlign="center"
+                maxWidth={{ base: "100%", xs: "640px" }}
+                width="100%"
+                              textAlign="center"
+                              boxShadow="0 0 30px rgba(0,0,0,0.8)"
+
               >
-                <ModalCloseButton />
-                <ModalBody textAlign="center">
-                  <VideoPlayer url={`https://youtu.be/9VbmyPvZS7g`} />
+                <ModalBody
+                  textAlign="center"
+                  pt={`56.25%`}
+                  pl="0"
+                  pr="0"
+                  pb="0"
+                  height="0"
+                  width="100%"
+                  maxW="640px"
+                  sx={{
+                    "& > div": { position: `absolute`, top: 0, left: 0, p: 0 }
+                  }}
+                >
+                  {" "}
+                  <Button
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top="-40px"
+                                      right=""
+                                      sx={{
+                                          "&:focus, &:active": {
+                                              boxShadow: `0 0 10px rgba(0,0,0,0.8)`
+                                          }
+                                      }
+                                      }
+                    onClick={onClose}
+                  >
+                    Close
+                  </Button>
+                  {!uriJson.video ? (
+                    <p>Loading...</p>
+                  ) : (
+                    <VideoPlayer url={uriJson.video} playing loop />
+                  )}
                 </ModalBody>
               </ModalContent>
             </Modal>
