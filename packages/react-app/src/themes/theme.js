@@ -105,6 +105,10 @@ export const setTheme = nftTheme => {
             color: "blackAlpha.900",
             lineHeight: "tall"
           },
+          body: {
+            maxW: `100%`,
+            overflowX: `hidden`
+          },
           a: {
             transition: "all 0.15s linear",
             _hover: { textDecoration: "none", color: "secondary.500" }
