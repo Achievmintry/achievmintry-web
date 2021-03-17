@@ -665,7 +665,7 @@ const Chiev = ({ token }) => {
                   readOnly={loading}
                   onChange={handleChange}
                 />
-                <FormHelperText p="1" id="address-helper-text">
+                <FormHelperText p="1" id="address-helper-text" color="black">
                   {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                 </FormHelperText>
                 {errors.address === "required" && (
@@ -692,7 +692,7 @@ const Chiev = ({ token }) => {
                   </FormErrorMessage>
                 )}
 
-                <FormHelperText p="1" id="detail-helper-text">
+                <FormHelperText p="1" id="detail-helper-text" color="black">
                   Short reason for the Chiev ( up to 128 chars)
                 </FormHelperText>
               </FormControl>

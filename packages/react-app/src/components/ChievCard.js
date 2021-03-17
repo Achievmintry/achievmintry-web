@@ -57,9 +57,9 @@ const Chiev = ({
           fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
           textTransform="uppercase"
           color="black.500"
-                  pos="relative"
-                  display="inline-flex"
-                  alignItems="center"
+          pos="relative"
+          display="inline-flex"
+          alignItems="center"
         >
           <span>{token["NFT Name (from Artist Submissions) 2"][0]}</span>
 
@@ -69,12 +69,12 @@ const Chiev = ({
               fontSize={{ base: "xs", sm: "md", xl: "sm", xxl: "sm" }}
               backgroundColor="white"
               border="5px solid black"
-                          p="3px 8px"
-                          ml="25px"
+              p="3px 8px"
+              ml="25px"
               transform="rotate(-7deg)"
               sx={{ span: { padding: `` } }}
             >
-              <span>i haz video</span>
+              <span>i haz a video</span>
             </Box>
           )}
         </Heading>

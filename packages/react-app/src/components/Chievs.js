@@ -275,7 +275,20 @@ const Chievs = ({ featured, account, dao, cols }) => {
     <>
       <Box p={[2, 4, 6]}>
         {!account && (
-          <>
+          <Box
+
+               bgColor="primary.300"
+               border="10px solid black"
+
+                  color="black.900"
+
+            p="25px"
+
+               display="inline-block"
+
+                  mb={8}
+
+          >
             <Heading
               as="h2"
               fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
@@ -284,10 +297,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
             >
               {dao && dao} Talisman
             </Heading>
-            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
+            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="0">
               Give a talisman of your appreciation
             </Text>
-          </>
+          </Box>
         )}
         <SimpleGrid
           columns={{ base: 1, sm: 2, lg: 4 }}
@@ -338,7 +351,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="primary.900"
+          bg="secondary.500"
           border="10px solid black"
           borderRadius="0"
           minWidth={{ base: "33%", xxl: "33%" }}
@@ -411,7 +424,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       readOnly={loading}
                       onChange={handleChange}
                     />
-                    <FormHelperText p="1" m="0" id="address-helper-text">
+                    <FormHelperText p="1" m="0" id="address-helper-text" color="black">
                       {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                     </FormHelperText>
                   </FormControl>
@@ -435,7 +448,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       </FormErrorMessage>
                     )}
 
-                    <FormHelperText p="1" m="0" id="detail-helper-text">
+                    <FormHelperText p="1" m="0" id="detail-helper-text" color="black">
                       Short reason for the Chiev ( up to 128 chars)
                     </FormHelperText>
                   </FormControl>
