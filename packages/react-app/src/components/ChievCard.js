@@ -66,13 +66,12 @@ const Chiev = ({
           {hasMedia && (
             <Box
               fontFamily="Quicksand"
-              fontSize={{ base: "xs", sm: "md", xl: "sm", xxl: "sm" }}
+              fontSize={{ base: "9px", sm: "10px", xl: "sm", xxl: "sm" }}
               backgroundColor="white"
               border="5px solid black"
               p="3px 8px"
               ml="25px"
               transform="rotate(-7deg)"
-              sx={{ span: { padding: `` } }}
             >
               <span>i haz a video</span>
             </Box>
