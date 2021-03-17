@@ -72,6 +72,7 @@ const Chiev = ({
               p="3px 8px"
               ml="25px"
               transform="rotate(-7deg)"
+              textAlign="center"
             >
               <span>i haz a video</span>
             </Box>
