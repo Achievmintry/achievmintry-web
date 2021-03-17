@@ -93,7 +93,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [ens] = useEns();
   const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
-  const [theme] = useTheme();
+    const [theme] = useTheme();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, errors } = useForm();
@@ -203,53 +203,73 @@ const Chievs = ({ featured, account, dao, cols }) => {
     let filteredList = [];
 
     const metaList = nfts
-      .map((item) => item.fields)
-      .filter((item) => !item["Hide"]);
+    .map(item => item.fields)
+    .filter(item => !item["Hide"]);
     if (featured) {
-      filteredList = metaList.filter(
-        (item) => item["Featured"] && !item["Hide"]
-      );
+    filteredList = metaList.filter(
+        item => item["Featured"] && !item["Hide"]
+    );
     } else {
-      filteredList = metaList;
+    filteredList = metaList;
     }
     if (account) {
-      filteredList = filteredList.filter(
-        (item) => nftCounts[item["Gen0 Id"]] > 0
-      );
+    filteredList = filteredList.filter(
+        item => nftCounts[item["Gen0 Id"]] > 0
+    );
     }
     if (dao) {
-      filteredList = filteredList.filter(
-        (item) => item["Community (from Artist Submissions) 2"][0] === dao
-      );
+    filteredList = filteredList.filter(
+        item =>
+        item[
+            "Community (from Artist Submissions) 2"
+        ][0] === dao
+    );
     }
     if (!filteredList.length) {
-      return <Text>Nothing here</Text>;
+    return <Text>Nothing here</Text>;
     }
     return filteredList.map((token, i) => {
-      return (
+
+    return (
         <HoverBox
-          key={token.id}
-          onClick={() => {
+        key={token.id}
+        onClick={() => {
             setSelected(token);
             onOpen();
-          }}
-          borderWidth="10px"
-          overflow="hidden"
-          bg="black.500"
-          borderColor="black.500"
-          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+        }}
+        borderWidth="10px"
+        overflow="hidden"
+        bg="black.500"
+        borderColor="black.500"
+        boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
         >
-          <ChievCard
+        <ChievCard
             token={token}
             owned={nftCounts[token["Gen0 Id"]]}
-            gen0Ownership={gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
+            gen0Ownership={
+            gen0Ownership[token["Gen0 Id"]]
+                ? "yes"
+                : "no"
+            }
             account={account}
-            displayPrice={displayPrice(token["Price In Wei"] || "0")}
-          />
+            displayPrice={displayPrice(
+            token["Price In Wei"] || "0"
+            )}
+            hasMedia={
+            token[
+                "video (from Artist Submissions) 2"
+            ] &&
+            token[
+                "video (from Artist Submissions) 2"
+            ][0].length > 0
+                ? true
+                : false
+            }
+        />
         </HoverBox>
-      );
+    );
     });
-  };
+};
 
   return (
     <>

@@ -107,7 +107,11 @@ export const setTheme = nftTheme => {
           },
           body: {
             maxW: `100%`,
-            overflowX: `hidden`
+            overflow: `auto`,
+            overflowX: `hidden`,
+            "&.modal-open": {
+              overflow: `hidden`
+            }
           },
           a: {
             transition: "all 0.15s linear",
@@ -118,6 +122,9 @@ export const setTheme = nftTheme => {
           },
           p: {
             fontSize: { base: `12px`, md: `14px`, lg: `1vw` }
+            },
+            ".chakra-modal__content-container": {
+                overflow: `hidden !important`,
           }
         }
       },

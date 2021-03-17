@@ -1,9 +1,17 @@
 import React from "react";
 import { Link as ReactLink } from "react-router-dom";
 import { Box, Image, Text, Heading, AspectRatio, Link } from "@chakra-ui/react";
+import { FaVideo } from "react-icons/fa";
 import { useChainLogs } from "../contexts/DappContext";
 
-const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
+const Chiev = ({
+  token,
+  owned,
+  gen0Ownership,
+  account,
+  displayPrice,
+  hasMedia
+}) => {
   const [chainLogs] = useChainLogs();
 
   return (
@@ -42,14 +50,33 @@ const Chiev = ({ token, owned, gen0Ownership, account, displayPrice }) => {
         bg="secondary.500"
         fontSize={{ base: "xs", xl: "xs", xxl: "lg" }}
         flex="1 0 auto"
+        overflow="hidden"
       >
         <Heading
           as="h3"
           fontSize={{ base: "md", xl: "lg", xxl: "2xl" }}
           textTransform="uppercase"
           color="black.500"
+                  pos="relative"
+                  display="inline-flex"
+                  alignItems="center"
         >
-          {token["NFT Name (from Artist Submissions) 2"][0]}
+          <span>{token["NFT Name (from Artist Submissions) 2"][0]}</span>
+
+          {hasMedia && (
+            <Box
+              fontFamily="Quicksand"
+              fontSize={{ base: "xs", sm: "md", xl: "sm", xxl: "sm" }}
+              backgroundColor="white"
+              border="5px solid black"
+                          p="3px 8px"
+                          ml="25px"
+              transform="rotate(-7deg)"
+              sx={{ span: { padding: `` } }}
+            >
+              <span>i haz video</span>
+            </Box>
+          )}
         </Heading>
         <Text> Price: {displayPrice} xDai</Text>
         <Text>

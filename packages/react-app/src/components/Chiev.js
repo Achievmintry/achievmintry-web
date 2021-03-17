@@ -22,7 +22,13 @@ import {
   useDisclosure,
   IconButton
 } from "@chakra-ui/react";
-import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
+import {
+  FaPlay,
+  FaPause,
+  FaVolumeMute,
+  FaVolumeUp,
+  FaExpand
+} from "react-icons/fa";
 import {
   useChainLogs,
   useEns,
@@ -60,7 +66,7 @@ const Chiev = ({ token }) => {
   const { register, handleSubmit, errors, reset } = useForm();
   const [muted, setMuted] = useState(true);
   const [play, setPlay] = useState(true);
-
+  const [fullScreen, setFullScreen] = useState(false);
   const themeNFTService = new NFTThemeService();
 
   useEffect(() => {
@@ -256,6 +262,16 @@ const Chiev = ({ token }) => {
     const togglePlay = () => {
       return setPlay(!play);
     };
+    const toggleFullScreen = () => {
+      return setFullScreen(!fullScreen);
+    };
+
+    useEffect(() => {
+      const body = document.querySelector("body");
+      fullScreen
+        ? body.classList.add("modal-open")
+        : body.classList.remove("modal-open");
+    }, [fullScreen]);
 
   return chainLogs?.cloneInWild ? (
     <>
@@ -363,20 +379,66 @@ const Chiev = ({ token }) => {
                 onClose();
               }}
               sx={{
-                "[class^='chakra-modal']": {
-                  bgColor: `rgba(0,0,0,0.8)`
+                "[class='chakra-modal__overlay']": {
+                  bgColor: fullScreen ? `black !important` : `rgba(0,0,0,0.8)`,
+                  transition: `background-color 0.2s ease`,
+                  overflow: fullScreen ? `hidden` : `auto`
                 }
               }}
             >
-              <ModalOverlay />
+                                                    <ModalOverlay
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                                                        sx={{
+                                                        backgroundColor: fullScreen && `black !important`
+                                                                                            }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              />
               <ModalContent
                 p={0}
-                bg="primary.900"
+                bg={fullScreen ? `black` : `primary.900`}
                 borderRadius="0"
-                maxWidth={{ base: "100%", xs: "1150px" }}
+                maxWidth={{ base: "100%", xs: fullScreen ? "100%" : "1150px" }}
                 width="100%"
                 textAlign="center"
                 boxShadow="0 0 30px rgba(0,0,0,0.8)"
+                transition="all 0.2s ease-in"
+                height={fullScreen ? `100vh` : `auto`}
               >
                 <ModalBody
                   textAlign="center"
@@ -386,21 +448,24 @@ const Chiev = ({ token }) => {
                   pb="0"
                   height="0"
                   width="100%"
-                  maxW="1150px"
+                  maxW={fullScreen ? "100%" : "1150px"}
                   sx={{
                     "& > div": {
                       position: `absolute`,
                       top: 0,
                       left: 0,
                       p: 0,
-                      maxW: `1150px`,
+                      maxW: fullScreen ? `100%` : `1150px`,
                       width: `100% !important`,
                       minH: `100%`,
-                      height: `auto !important`
+                      height: `auto !important`,
+                      zIndex: 400
                     },
                     video: {
                       width: `auto !important`,
-                      height: `auto !important`,
+                      height: fullScreen
+                        ? `100vh !important`
+                        : `auto !important`,
                       minW: `100%`,
                       minH: `100%`
                     }
@@ -413,7 +478,7 @@ const Chiev = ({ token }) => {
                     borderRadius="0"
                     mr={3}
                     pos="absolute"
-                    top="-40px"
+                    top={fullScreen ? "25px" : "-40px"}
                     right="-13px"
                     sx={{
                       "&:focus, &:active": {
@@ -421,6 +486,7 @@ const Chiev = ({ token }) => {
                       }
                     }}
                     onClick={onClose}
+                    zIndex="500"
                   >
                     Close
                   </Button>
@@ -431,7 +497,7 @@ const Chiev = ({ token }) => {
                     borderRadius="0"
                     mr={3}
                     pos="absolute"
-                    top="-40px"
+                    top={fullScreen ? "25px" : "-40px"}
                     right="71px"
                     sx={{
                       "&:focus, &:active": {
@@ -440,6 +506,7 @@ const Chiev = ({ token }) => {
                     }}
                     onClick={toggleMuted}
                     icon={muted ? <FaVolumeMute /> : <FaVolumeUp />}
+                    zIndex="500"
                   />
                   <IconButton
                     bg="white"
@@ -448,7 +515,7 @@ const Chiev = ({ token }) => {
                     borderRadius="0"
                     mr={3}
                     pos="absolute"
-                    top="-40px"
+                    top={fullScreen ? "25px" : "-40px"}
                     right="111px"
                     sx={{
                       "&:focus, &:active": {
@@ -457,17 +524,38 @@ const Chiev = ({ token }) => {
                     }}
                     onClick={togglePlay}
                     icon={play ? <FaPause /> : <FaPlay />}
+                    zIndex="500"
                   />
-
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top={fullScreen ? "25px" : "-40px"}
+                    right="151px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
+                      }
+                    }}
+                    onClick={toggleFullScreen}
+                    icon={<FaExpand />}
+                    zIndex="500"
+                  />
                   {!uriJson?.video ? (
-                    <p>Loading...</p>
+                    <Box zIndex="300">
+                      <p>Loading...</p>
+                    </Box>
                   ) : (
                     <VideoPlayer
-                        url={uriJson?.video && uriJson.video}
-                        width="100%"
-                        height="100%"
-                        mute={muted}
-                        play={play}
+                      url={uriJson?.video && uriJson.video}
+                      width={fullScreen ? `100vw` : `100%`}
+                      height={fullScreen ? `100vh` : `100%`}
+                      mute={muted}
+                      play={play}
+                      style={{ zIndex: 300 }}
                     />
                   )}
                 </ModalBody>
