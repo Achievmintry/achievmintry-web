@@ -19,8 +19,10 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
-  useDisclosure
+  useDisclosure,
+  IconButton
 } from "@chakra-ui/react";
+import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import {
   useChainLogs,
   useEns,
@@ -36,6 +38,7 @@ import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
 import { VideoPlayer } from "./VideoPlayer";
+import { FaVolleyballBall } from "react-icons/fa";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -55,6 +58,8 @@ const Chiev = ({ token }) => {
   const [, setTheme] = useTheme();
   const finalRef = useRef();
   const { register, handleSubmit, errors, reset } = useForm();
+  const [muted, setMuted] = useState(true);
+  const [play, setPlay] = useState(true);
 
   const themeNFTService = new NFTThemeService();
 
@@ -245,6 +250,13 @@ const Chiev = ({ token }) => {
     setTheme(_theme);
   };
 
+    const toggleMuted = () => {
+      return setMuted(!muted);
+    };
+    const togglePlay = () => {
+      return setPlay(!play);
+    };
+
   return chainLogs?.cloneInWild ? (
     <>
       <Box
@@ -377,21 +389,21 @@ const Chiev = ({ token }) => {
                   maxW="1150px"
                   sx={{
                     "& > div": {
-                        position: `absolute`,
-                        top: 0,
-                        left: 0,
-                        p: 0,
-                        maxW: `1150px`,
-                          width: `100% !important`,
-                          minH: `100%`,
-                        height: `auto !important`
-                      },
-                      "video": {
-                          width: `auto !important`,
-                          height: `auto !important`,
-                          minW: `100%`,
-                          minH: `100%`
-                      }
+                      position: `absolute`,
+                      top: 0,
+                      left: 0,
+                      p: 0,
+                      maxW: `1150px`,
+                      width: `100% !important`,
+                      minH: `100%`,
+                      height: `auto !important`
+                    },
+                    video: {
+                      width: `auto !important`,
+                      height: `auto !important`,
+                      minW: `100%`,
+                      minH: `100%`
+                    }
                   }}
                 >
                   <Button
@@ -402,7 +414,7 @@ const Chiev = ({ token }) => {
                     mr={3}
                     pos="absolute"
                     top="-40px"
-                    right=""
+                    right="-13px"
                     sx={{
                       "&:focus, &:active": {
                         boxShadow: `0 0 10px rgba(0,0,0,0.8)`
@@ -412,15 +424,50 @@ const Chiev = ({ token }) => {
                   >
                     Close
                   </Button>
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top="-40px"
+                    right="71px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
+                      }
+                    }}
+                    onClick={toggleMuted}
+                    icon={muted ? <FaVolumeMute /> : <FaVolumeUp />}
+                  />
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top="-40px"
+                    right="111px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
+                      }
+                    }}
+                    onClick={togglePlay}
+                    icon={play ? <FaPause /> : <FaPlay />}
+                  />
+
                   {!uriJson?.video ? (
                     <p>Loading...</p>
                   ) : (
                     <VideoPlayer
-                      url={uriJson?.video && uriJson.video}
-                      playing
-                      loop
-                                              width="100%"
-                                              height="100%"
+                        url={uriJson?.video && uriJson.video}
+                        width="100%"
+                        height="100%"
+                        mute={muted}
+                        play={play}
                     />
                   )}
                 </ModalBody>
