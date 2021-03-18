@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box, Button, Heading, Text, SimpleGrid, Link } from "@chakra-ui/react";
 import { Chievs, Communities } from "../components";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 const Home = () => {
   return (
@@ -27,64 +26,24 @@ const Home = () => {
           <span role="img" aria-label="holiday">
             🏆
           </span>{" "}
-          All represented orgs have submitted their nominations
+          Season 1 votes are in and the winners have been selected
           <span role="img" aria-label="dao-awards">
             🏆
           </span>
         </Text>
-
-        <Text>
-          <span role="img" aria-label="dao-awards">
-            🎉
-          </span>{" "}
-          We will recognise the winners with an everlasting Non Fungible Token.
-          <span role="img" aria-label="dao-awards">
-            🎉
-          </span>
-        </Text>
-        <Text>
-          <span role="img" aria-label="dao-awards">
-            💎
-          </span>
-          Vote now on snapshot in the 3 categories.
-          <span role="img" aria-label="dao-awards">
-            💎
-          </span>
-        </Text>
         <Box>
           <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmVS5Medt9y62UAKUeBAiYDGZ9Do5JtTyQQcBrUC4YLaJ4`}
-            isExternal={true}
+            href={`/community/0xc71cf78d98dcd155559b9bf77a6b5cde44b7d881`}
+
             style={{
               color: "blue",
               textDecoration: "underline",
               marginLeft: "5px",
             }}
           >
-            Buidler Award <ExternalLinkIcon mx="2px" />
+            View The Awards 
           </Link>
-          <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/Qmcwjf3q8gyjPKm2iF6J4XKagU3Bb19FWFUuXyHrN94H47`}
-            isExternal={true}
-            style={{
-              color: "blue",
-              textDecoration: "underline",
-              marginLeft: "5px",
-            }}
-          >
-            Slaying Moloch Award <ExternalLinkIcon mx="2px" />
-          </Link>
-          <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmTLhcCu5Q1PvLyx1vaBKqD6m7PuS7rRkS9V8WSpvAqXd7`}
-            isExternal={true}
-            style={{
-              color: "blue",
-              textDecoration: "underline",
-              marginLeft: "5px",
-            }}
-          >
-            Community Ops Award <ExternalLinkIcon mx="2px" />
-          </Link>
+          
         </Box>
       </Box>
       <Box
