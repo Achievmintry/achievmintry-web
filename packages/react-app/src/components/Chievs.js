@@ -44,7 +44,13 @@ const HoverBox = styled(Box)`
   cursor: pointer;
   z-index: 0;
   transition: box-shadow 0.3s ease-in-out;
+  display: flex;
+  align-items: stretch;
+  flex-flow: column nowrap;
 
+  .info-box {
+      flex: 1 0 auto;
+  }
   &:hover {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
   }
@@ -56,7 +62,7 @@ const HoverBox = styled(Box)`
       display: block;
       /* background: black; */
       border-right: 10px solid;
-      background-color: ${(props) => {
+      background-color: ${props => {
         return props._hover?.themecolor;
       }};
       width: 200%;
@@ -87,7 +93,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
   const [ens] = useEns();
   const [chainLogs] = useChainLogs();
   const [txProcessor, updateTxProcessor] = useTxProcessor();
-  const [theme] = useTheme();
+    const [theme] = useTheme();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, errors } = useForm();
@@ -197,59 +203,92 @@ const Chievs = ({ featured, account, dao, cols }) => {
     let filteredList = [];
 
     const metaList = nfts
-      .map((item) => item.fields)
-      .filter((item) => !item["Hide"]);
+    .map(item => item.fields)
+    .filter(item => !item["Hide"]);
     if (featured) {
-      filteredList = metaList.filter(
-        (item) => item["Featured"] && !item["Hide"]
-      );
+    filteredList = metaList.filter(
+        item => item["Featured"] && !item["Hide"]
+    );
     } else {
-      filteredList = metaList;
+    filteredList = metaList;
     }
     if (account) {
-      filteredList = filteredList.filter(
-        (item) => nftCounts[item["Gen0 Id"]] > 0
-      );
+    filteredList = filteredList.filter(
+        item => nftCounts[item["Gen0 Id"]] > 0
+    );
     }
     if (dao) {
-      filteredList = filteredList.filter(
-        (item) => item["Community (from Artist Submissions) 2"][0] === dao
-      );
+    filteredList = filteredList.filter(
+        item =>
+        item[
+            "Community (from Artist Submissions) 2"
+        ][0] === dao
+    );
     }
     if (!filteredList.length) {
-      return <Text>Nothing here</Text>;
+    return <Text>Nothing here</Text>;
     }
     return filteredList.map((token, i) => {
-      return (
+
+    return (
         <HoverBox
-          key={token.id}
-          onClick={() => {
+        key={token.id}
+        onClick={() => {
             setSelected(token);
             onOpen();
-          }}
-          borderWidth="10px"
-          overflow="hidden"
-          bg="black.500"
-          borderColor="black.500"
-          boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
+        }}
+        borderWidth="10px"
+        overflow="hidden"
+        bg="black.500"
+        borderColor="black.500"
+        boxShadow="0 0 15px 0 rgba(0,0,0,0.5)"
         >
-          <ChievCard
+        <ChievCard
             token={token}
             owned={nftCounts[token["Gen0 Id"]]}
-            gen0Ownership={gen0Ownership[token["Gen0 Id"]] ? "yes" : "no"}
+            gen0Ownership={
+            gen0Ownership[token["Gen0 Id"]]
+                ? "yes"
+                : "no"
+            }
             account={account}
-            displayPrice={displayPrice(token["Price In Wei"] || "0")}
-          />
+            displayPrice={displayPrice(
+            token["Price In Wei"] || "0"
+            )}
+            hasMedia={
+            token[
+                "video (from Artist Submissions) 2"
+            ] &&
+            token[
+                "video (from Artist Submissions) 2"
+            ][0].length > 0
+                ? true
+                : false
+            }
+        />
         </HoverBox>
-      );
+    );
     });
-  };
+};
 
   return (
     <>
       <Box p={[2, 4, 6]}>
         {!account && (
-          <>
+          <Box
+
+               bgColor="primary.300"
+               border="10px solid black"
+
+                  color="black.900"
+
+            p="25px"
+
+               display="inline-block"
+
+                  mb={8}
+
+          >
             <Heading
               as="h2"
               fontSize={{ base: "xl", md: "2xl", xxl: "4xl" }}
@@ -258,10 +297,10 @@ const Chievs = ({ featured, account, dao, cols }) => {
             >
               {dao && dao} Talisman
             </Heading>
-            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
+            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="0">
               Give a talisman of your appreciation
             </Text>
-          </>
+          </Box>
         )}
         <SimpleGrid
           columns={{ base: 1, sm: 2, lg: 4 }}
@@ -281,7 +320,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
               className="hoverbox__featured"
               p={{ base: 3, xl: 4, xxl: 6 }}
               _hover={{
-                themecolor: theme.colors.secondary[500],
+                themecolor: theme.colors.secondary[500]
               }}
             >
               <InfoBox className="info-box">
@@ -312,7 +351,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
         <ModalContent
           zIndex={500}
           p={{ base: 10, xl: 25 }}
-          bg="primary.900"
+          bg="secondary.500"
           border="10px solid black"
           borderRadius="0"
           minWidth={{ base: "33%", xxl: "33%" }}
@@ -344,7 +383,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                 }
                 alt={selected["NFT Name (from Artist Submissions) 2"][0]}
                 fallbackSrc="https://via.placeholder.com/300/cc3385/000000?text=Loading..."
-                onMouseOver={(e) => {
+                onMouseOver={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -353,7 +392,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       "Image (from Artist Submissions) 2"
                     ][0].thumbnails.large.url;
                 }}
-                onMouseOut={(e) => {
+                onMouseOut={e => {
                   if (!selected["Display Thumb"]) {
                     return;
                   }
@@ -385,7 +424,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       readOnly={loading}
                       onChange={handleChange}
                     />
-                    <FormHelperText p="1" m="0" id="address-helper-text">
+                    <FormHelperText p="1" m="0" id="address-helper-text" color="black">
                       {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                     </FormHelperText>
                   </FormControl>
@@ -409,7 +448,7 @@ const Chievs = ({ featured, account, dao, cols }) => {
                       </FormErrorMessage>
                     )}
 
-                    <FormHelperText p="1" m="0" id="detail-helper-text">
+                    <FormHelperText p="1" m="0" id="detail-helper-text" color="black">
                       Short reason for the Chiev ( up to 128 chars)
                     </FormHelperText>
                   </FormControl>

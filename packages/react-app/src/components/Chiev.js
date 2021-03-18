@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import {
   Box,
@@ -15,7 +15,20 @@ import {
   Spacer,
   Textarea,
   FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  useDisclosure,
+  IconButton,
 } from "@chakra-ui/react";
+import {
+  FaPlay,
+  FaPause,
+  FaVolumeMute,
+  FaVolumeUp,
+  FaExpand,
+} from "react-icons/fa";
 import {
   useChainLogs,
   useEns,
@@ -30,6 +43,7 @@ import { useTheme } from "../contexts/CustomThemeContext";
 import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
+import { VideoPlayer } from "./VideoPlayer";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -44,14 +58,18 @@ const Chiev = ({ token }) => {
   const [ownedBy, setOwnedBy] = useState();
   const [loading, setLoading] = useState(false);
   const [ensAddr, setEnsAddr] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const theme = useTheme();
   const [, setTheme] = useTheme();
-
+  const finalRef = useRef();
   const { register, handleSubmit, errors, reset } = useForm();
-
+  const [muted, setMuted] = useState(true);
+  const [play, setPlay] = useState(true);
+  const [fullScreen, setFullScreen] = useState(false);
   const themeNFTService = new NFTThemeService();
 
   useEffect(() => {
+    // console.log(token, uriJson);
     let counts = {};
     // eslint-disable-next-line
     const c = chainLogs.tokenData?.allTokens
@@ -237,6 +255,23 @@ const Chiev = ({ token }) => {
     setTheme(_theme);
   };
 
+  const toggleMuted = () => {
+    return setMuted(!muted);
+  };
+  const togglePlay = () => {
+    return setPlay(!play);
+  };
+  const toggleFullScreen = () => {
+    return setFullScreen(!fullScreen);
+  };
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    fullScreen
+      ? body.classList.add("modal-open")
+      : body.classList.remove("modal-open");
+  }, [fullScreen]);
+
   return chainLogs?.cloneInWild ? (
     <>
       <Box
@@ -316,6 +351,178 @@ const Chiev = ({ token }) => {
               <AccountAvatar addr={ownedBy} hideTweet={true} />
             </>
           )}
+          <Box flex={{ base: "0 0 66%" }} justifySelf={{ base: "right" }}>
+            {uriJson?.video && (
+              <Button
+                onClick={() => {
+                  onOpen();
+                  setLoading(true);
+                }}
+                bg="white"
+                borderWidth="5px"
+                borderColor="black.500"
+                borderRadius="0"
+                mt={5}
+              >
+                Watch video
+              </Button>
+            )}
+            <Modal
+              display="flex"
+              alignContent="center"
+              isOpen={isOpen}
+              finalFocusRef={finalRef}
+              isCentered
+              onClose={() => {
+                setLoading(false);
+                onClose();
+              }}
+              sx={{
+                "[class='chakra-modal__overlay']": {
+                  bgColor: fullScreen ? `black !important` : `rgba(0,0,0,0.8)`,
+                  transition: `background-color 0.2s ease`,
+                  overflow: fullScreen ? `hidden` : `auto`,
+                },
+              }}
+            >
+              <ModalOverlay
+                sx={{
+                  backgroundColor: fullScreen && `black !important`,
+                }}
+              />
+              <ModalContent
+                p={0}
+                bg={fullScreen ? `black` : `primary.900`}
+                borderRadius="0"
+                maxWidth={{ base: "100%", xs: fullScreen ? "100%" : "1150px" }}
+                width="100%"
+                textAlign="center"
+                boxShadow="0 0 30px rgba(0,0,0,0.8)"
+                transition="all 0.2s ease-in"
+                height={fullScreen ? `100vh` : `auto`}
+              >
+                <ModalBody
+                  textAlign="center"
+                  pt={`56.25%`}
+                  pl="0"
+                  pr="0"
+                  pb="0"
+                  height="0"
+                  width="100%"
+                  maxW={fullScreen ? "100%" : "1150px"}
+                  sx={{
+                    "& > div": {
+                      position: `absolute`,
+                      top: 0,
+                      left: 0,
+                      p: 0,
+                      maxW: fullScreen ? `100%` : `1150px`,
+                      width: `100% !important`,
+                      minH: `100%`,
+                      height: `auto !important`,
+                      zIndex: 400,
+                    },
+                    video: {
+                      width: `auto !important`,
+                      height: fullScreen
+                        ? `100vh !important`
+                        : `auto !important`,
+                      minW: `100%`,
+                      minH: `100%`,
+                    },
+                  }}
+                >
+                  <Button
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top={fullScreen ? "25px" : "-40px"}
+                    right="-13px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
+                    }}
+                    onClick={onClose}
+                    zIndex="500"
+                  >
+                    Close
+                  </Button>
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top={fullScreen ? "25px" : "-40px"}
+                    right="71px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
+                    }}
+                    onClick={toggleMuted}
+                    icon={muted ? <FaVolumeMute /> : <FaVolumeUp />}
+                    zIndex="500"
+                  />
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top={fullScreen ? "25px" : "-40px"}
+                    right="111px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
+                    }}
+                    onClick={togglePlay}
+                    icon={play ? <FaPause /> : <FaPlay />}
+                    zIndex="500"
+                  />
+                  <IconButton
+                    bg="white"
+                    borderWidth="5px"
+                    borderColor="black.500"
+                    borderRadius="0"
+                    mr={3}
+                    pos="absolute"
+                    top={fullScreen ? "25px" : "-40px"}
+                    right="151px"
+                    sx={{
+                      "&:focus, &:active": {
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
+                    }}
+                    onClick={toggleFullScreen}
+                    icon={<FaExpand />}
+                    zIndex="500"
+                  />
+                  {!uriJson?.video ? (
+                    <Box zIndex="300">
+                      <p>Loading...</p>
+                    </Box>
+                  ) : (
+                    <VideoPlayer
+                      url={uriJson?.video && uriJson.video}
+                      width={fullScreen ? `100vw` : `100%`}
+                      height={fullScreen ? `100vh` : `100%`}
+                      mute={muted}
+                      play={play}
+                      style={{ zIndex: 300 }}
+                    />
+                  )}
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          </Box>
         </Box>
 
         {uriJson && (
@@ -361,6 +568,7 @@ const Chiev = ({ token }) => {
                     {attr.trait_type}:{attr.value}
                   </Text>
                 ))} */}
+
             {nftCounts[token["Gen0 Id"]] && (
               <Button
                 bg="white"
@@ -418,7 +626,7 @@ const Chiev = ({ token }) => {
                   readOnly={loading}
                   onChange={handleChange}
                 />
-                <FormHelperText p="1" id="address-helper-text">
+                <FormHelperText p="1" id="address-helper-text" color="black">
                   {ensAddr ? `ENS: ${ensAddr}` : "Use ETH address or ENS"}
                 </FormHelperText>
                 {errors.address === "required" && (
@@ -445,7 +653,7 @@ const Chiev = ({ token }) => {
                   </FormErrorMessage>
                 )}
 
-                <FormHelperText p="1" id="detail-helper-text">
+                <FormHelperText p="1" id="detail-helper-text" color="black">
                   Short reason for the Chiev ( up to 128 chars)
                 </FormHelperText>
               </FormControl>
@@ -485,6 +693,7 @@ const Chiev = ({ token }) => {
           mx="auto"
           boxShadow="0 0 15px rgba(0,0,0,0.5)"
           mt={6}
+          p={{ base: 6, xl: 2, xxl: 6 }}
         >
           <Heading
             as="h4"

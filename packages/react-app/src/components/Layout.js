@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
           pointerEvents: "none",
           top: "0",
           right: "0",
-          zIndex: "-1",
+          zIndex: "-1"
         }}
       ></Box>
       <Box minH="100vh" w="100%" textAlign="center">
