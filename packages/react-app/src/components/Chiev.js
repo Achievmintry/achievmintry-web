@@ -20,21 +20,21 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import {
   FaPlay,
   FaPause,
   FaVolumeMute,
   FaVolumeUp,
-  FaExpand
+  FaExpand,
 } from "react-icons/fa";
 import {
   useChainLogs,
   useEns,
   useChievs,
   useTxProcessor,
-  useUser
+  useUser,
 } from "../contexts/DappContext";
 import { useForm } from "react-hook-form";
 import Web3SignIn from "./Web3SignIn";
@@ -44,7 +44,6 @@ import { NFTThemeService } from "../utils/NFTThemeService";
 import AccountAvatar from "./AccountAvatar";
 import UpDoot from "./UpDoot";
 import { VideoPlayer } from "./VideoPlayer";
-import { FaVolleyballBall } from "react-icons/fa";
 
 const Chiev = ({ token }) => {
   const [chievs] = useChievs();
@@ -74,22 +73,22 @@ const Chiev = ({ token }) => {
     let counts = {};
     // eslint-disable-next-line
     const c = chainLogs.tokenData?.allTokens
-      .filter(_token => +_token.clonedFromId === +token["Gen0 Id"])
-      .forEach(_token => {
+      .filter((_token) => +_token.clonedFromId === +token["Gen0 Id"])
+      .forEach((_token) => {
         counts[_token.ownedBy] = 1 + counts[_token.ownedBy] || 1;
       });
 
     counts = Object.keys(counts)
-      .map(_owner => {
+      .map((_owner) => {
         return { owner: _owner, count: counts[_owner] };
       })
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
     setLeaderBoard([...counts]);
-  }, [chainLogs, token ]);
+  }, [chainLogs, token]);
 
   useEffect(() => {
-    const getKudsDetails = async acctAddr => {
+    const getKudsDetails = async (acctAddr) => {
       const acct = acctAddr.toLowerCase();
       const currentOwner = { [acct]: chainLogs.tokenData.currentOwners[acct] };
       const usersTokens = chainLogs.tokenData.usersTokens;
@@ -100,7 +99,7 @@ const Chiev = ({ token }) => {
         return;
       }
       const userTokens = usersTokens.find(
-        token => token.address.toLowerCase() === acct
+        (token) => token.address.toLowerCase() === acct
       );
       if (!userTokens) {
         return;
@@ -113,8 +112,8 @@ const Chiev = ({ token }) => {
 
       const gen0Ownership = {};
       userTokens.tokens
-        .filter(token => token.type === "gen0")
-        .forEach(token => (gen0Ownership[token.tokenId] = true));
+        .filter((token) => token.type === "gen0")
+        .forEach((token) => (gen0Ownership[token.tokenId] = true));
 
       setGen0Ownership({ ...gen0Ownership });
     };
@@ -138,7 +137,7 @@ const Chiev = ({ token }) => {
       return;
     }
     const g0Token = chainLogs.tokenData.allTokens.find(
-      _token => +_token.tokenId === +token["Gen0 Id"]
+      (_token) => +_token.tokenId === +token["Gen0 Id"]
     );
     setOwnedBy(g0Token.ownedBy);
   }, [chainLogs, token]);
@@ -158,7 +157,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     setLoading(true);
     console.log(data);
     const addr = ensAddr ? ensAddr : data.address;
@@ -178,7 +177,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     if (e.target.value.indexOf(".eth") >= 0) {
       const address = await ens.provider.resolveName(e.target.value);
       console.log(address);
@@ -188,7 +187,7 @@ const Chiev = ({ token }) => {
     }
   };
 
-  const displayPrice = price => {
+  const displayPrice = (price) => {
     if (!chievs.service) {
       return "?";
     }
@@ -206,47 +205,47 @@ const Chiev = ({ token }) => {
     const _theme = {};
     //_theme.bgImg = uriJson?.static_image || uriJson?.image;
     const bgImg = uriJson?.theme_attributes?.find(
-      item => item.trait_type === "bgImg"
+      (item) => item.trait_type === "bgImg"
     );
     if (bgImg) {
       _theme.bgImg = uriJson?.theme_attributes.find(
-        item => item.trait_type === "bgImg"
+        (item) => item.trait_type === "bgImg"
       ).value;
     }
 
     const primary = uriJson?.theme_attributes?.find(
-      item => item.trait_type === "primary"
+      (item) => item.trait_type === "primary"
     );
     if (primary) {
       _theme.primary500 = uriJson?.theme_attributes.find(
-        item => item.trait_type === "primary"
+        (item) => item.trait_type === "primary"
       ).value;
     }
 
     const secondary = uriJson?.theme_attributes?.find(
-      item => item.trait_type === "secondary"
+      (item) => item.trait_type === "secondary"
     );
     if (secondary) {
       _theme.secondary500 = uriJson?.theme_attributes.find(
-        item => item.trait_type === "secondary"
+        (item) => item.trait_type === "secondary"
       ).value;
     }
     console.log(_theme);
 
     const bg = uriJson?.theme_attributes?.find(
-      item => item.trait_type === "bg"
+      (item) => item.trait_type === "bg"
     );
     if (bg) {
       _theme.bg500 = uriJson?.theme_attributes.find(
-        item => item.trait_type === "bg"
+        (item) => item.trait_type === "bg"
       ).value;
     }
     const bgSize = uriJson?.theme_attributes?.find(
-      item => item.trait_type === "bgSize"
+      (item) => item.trait_type === "bgSize"
     );
     if (bgSize) {
       _theme.bgSize = uriJson?.theme_attributes.find(
-        item => item.trait_type === "bgSize"
+        (item) => item.trait_type === "bgSize"
       ).value;
     }
     themeNFTService.setUserTheme(
@@ -256,22 +255,22 @@ const Chiev = ({ token }) => {
     setTheme(_theme);
   };
 
-    const toggleMuted = () => {
-      return setMuted(!muted);
-    };
-    const togglePlay = () => {
-      return setPlay(!play);
-    };
-    const toggleFullScreen = () => {
-      return setFullScreen(!fullScreen);
-    };
+  const toggleMuted = () => {
+    return setMuted(!muted);
+  };
+  const togglePlay = () => {
+    return setPlay(!play);
+  };
+  const toggleFullScreen = () => {
+    return setFullScreen(!fullScreen);
+  };
 
-    useEffect(() => {
-      const body = document.querySelector("body");
-      fullScreen
-        ? body.classList.add("modal-open")
-        : body.classList.remove("modal-open");
-    }, [fullScreen]);
+  useEffect(() => {
+    const body = document.querySelector("body");
+    fullScreen
+      ? body.classList.add("modal-open")
+      : body.classList.remove("modal-open");
+  }, [fullScreen]);
 
   return chainLogs?.cloneInWild ? (
     <>
@@ -307,7 +306,7 @@ const Chiev = ({ token }) => {
               }
               alt={token["NFT Name (from Artist Submissions) 2"][0]}
               fallbackSrc="https://via.placeholder.com/300/000000/ffcc00?text=Loading..."
-              onMouseOver={e => {
+              onMouseOver={(e) => {
                 if (!token["Display Thumb"]) {
                   return;
                 }
@@ -316,7 +315,7 @@ const Chiev = ({ token }) => {
                     "Image (from Artist Submissions) 2"
                   ][0].thumbnails.large.url;
               }}
-              onMouseOut={e => {
+              onMouseOut={(e) => {
                 if (!token["Display Thumb"]) {
                   return;
                 }
@@ -382,52 +381,14 @@ const Chiev = ({ token }) => {
                 "[class='chakra-modal__overlay']": {
                   bgColor: fullScreen ? `black !important` : `rgba(0,0,0,0.8)`,
                   transition: `background-color 0.2s ease`,
-                  overflow: fullScreen ? `hidden` : `auto`
-                }
+                  overflow: fullScreen ? `hidden` : `auto`,
+                },
               }}
             >
-                                                    <ModalOverlay
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                                                                                                                                        sx={{
-                                                        backgroundColor: fullScreen && `black !important`
-                                                                                            }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+              <ModalOverlay
+                sx={{
+                  backgroundColor: fullScreen && `black !important`,
+                }}
               />
               <ModalContent
                 p={0}
@@ -459,7 +420,7 @@ const Chiev = ({ token }) => {
                       width: `100% !important`,
                       minH: `100%`,
                       height: `auto !important`,
-                      zIndex: 400
+                      zIndex: 400,
                     },
                     video: {
                       width: `auto !important`,
@@ -467,8 +428,8 @@ const Chiev = ({ token }) => {
                         ? `100vh !important`
                         : `auto !important`,
                       minW: `100%`,
-                      minH: `100%`
-                    }
+                      minH: `100%`,
+                    },
                   }}
                 >
                   <Button
@@ -482,8 +443,8 @@ const Chiev = ({ token }) => {
                     right="-13px"
                     sx={{
                       "&:focus, &:active": {
-                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
-                      }
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
                     }}
                     onClick={onClose}
                     zIndex="500"
@@ -501,8 +462,8 @@ const Chiev = ({ token }) => {
                     right="71px"
                     sx={{
                       "&:focus, &:active": {
-                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
-                      }
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
                     }}
                     onClick={toggleMuted}
                     icon={muted ? <FaVolumeMute /> : <FaVolumeUp />}
@@ -519,8 +480,8 @@ const Chiev = ({ token }) => {
                     right="111px"
                     sx={{
                       "&:focus, &:active": {
-                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
-                      }
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
                     }}
                     onClick={togglePlay}
                     icon={play ? <FaPause /> : <FaPlay />}
@@ -537,8 +498,8 @@ const Chiev = ({ token }) => {
                     right="151px"
                     sx={{
                       "&:focus, &:active": {
-                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`
-                      }
+                        boxShadow: `0 0 10px rgba(0,0,0,0.8)`,
+                      },
                     }}
                     onClick={toggleFullScreen}
                     icon={<FaExpand />}
@@ -742,7 +703,7 @@ const Chiev = ({ token }) => {
           >
             Top 10 LeaderBoard
           </Heading>
-          {leaderBoard.map(_owner => {
+          {leaderBoard.map((_owner) => {
             return (
               <Flex key={_owner.owner}>
                 <Box p="4">

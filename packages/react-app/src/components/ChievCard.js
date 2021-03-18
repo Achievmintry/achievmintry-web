@@ -1,7 +1,6 @@
 import React from "react";
 import { Link as ReactLink } from "react-router-dom";
 import { Box, Image, Text, Heading, AspectRatio, Link } from "@chakra-ui/react";
-import { FaVideo } from "react-icons/fa";
 import { useChainLogs } from "../contexts/DappContext";
 
 const Chiev = ({

@@ -58,7 +58,7 @@ const Home = () => {
             style={{
               color: "blue",
               textDecoration: "underline",
-              marginLeft: "5px"
+              marginLeft: "5px",
             }}
           >
             Buidler Award <ExternalLinkIcon mx="2px" />
@@ -69,7 +69,7 @@ const Home = () => {
             style={{
               color: "blue",
               textDecoration: "underline",
-              marginLeft: "5px"
+              marginLeft: "5px",
             }}
           >
             Slaying Moloch Award <ExternalLinkIcon mx="2px" />
@@ -80,7 +80,7 @@ const Home = () => {
             style={{
               color: "blue",
               textDecoration: "underline",
-              marginLeft: "5px"
+              marginLeft: "5px",
             }}
           >
             Community Ops Award <ExternalLinkIcon mx="2px" />
@@ -127,7 +127,7 @@ const Home = () => {
               bgColor="primary.300"
               border="10px solid black"
               color="black.900"
-              p="25px"
+
             >
               <Heading
                 as="h2"
@@ -158,7 +158,6 @@ const Home = () => {
               bgColor="primary.300"
               border="10px solid black"
               color="black.900"
-              p="25px"
             >
               <Heading
                 as="h2"
