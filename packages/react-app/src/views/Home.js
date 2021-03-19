@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box, Button, Heading, Text, SimpleGrid, Link } from "@chakra-ui/react";
 import { Chievs, Communities } from "../components";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 const Home = () => {
   return (
@@ -27,52 +26,24 @@ const Home = () => {
           <span role="img" aria-label="holiday">
             🏆
           </span>{" "}
-          All represented orgs have submitted their nominations
+          Season 1 votes are in and the winners have been selected
           <span role="img" aria-label="dao-awards">
             🏆
           </span>
         </Text>
-        
-        <Text>
-          <span role="img" aria-label="dao-awards">
-            🎉
-          </span>{" "}
-          We will recognise the winners with an everlasting Non Fungible Token.
-          <span role="img" aria-label="dao-awards">
-            🎉
-          </span>
-        </Text>
-        <Text>
-          <span role="img" aria-label="dao-awards">
-            💎
-          </span>
-          Vote now on snapshot in the 3 categories.
-          <span role="img" aria-label="dao-awards">
-            💎
-          </span>
-        </Text>
         <Box>
           <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmVS5Medt9y62UAKUeBAiYDGZ9Do5JtTyQQcBrUC4YLaJ4`}
-            isExternal={true}
-            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+            href={`/community/0xc71cf78d98dcd155559b9bf77a6b5cde44b7d881`}
+
+            style={{
+              color: "blue",
+              textDecoration: "underline",
+              marginLeft: "5px",
+            }}
           >
-            Buidler Award <ExternalLinkIcon mx="2px" />
+            View The Awards 
           </Link>
-          <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/Qmcwjf3q8gyjPKm2iF6J4XKagU3Bb19FWFUuXyHrN94H47`}
-            isExternal={true}
-            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
-          >
-            Slaying Moloch Award <ExternalLinkIcon mx="2px" />
-          </Link>
-          <Link
-            href={`https://snapshot.page/#/achievmintry/proposal/QmTLhcCu5Q1PvLyx1vaBKqD6m7PuS7rRkS9V8WSpvAqXd7`}
-            isExternal={true}
-            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
-          >
-            Community Ops Award <ExternalLinkIcon mx="2px" />
-          </Link>
+          
         </Box>
       </Box>
       <Box
@@ -83,24 +54,40 @@ const Home = () => {
       >
         <Chievs featured={true} />
         <Box p={[2, 4, 6]} mt={6}>
-          <Heading
-            as="h2"
-            fontSize={{ base: "2xl", xxl: "4xl" }}
-            mb="1"
-            textTransform="uppercase"
+          <Box
+            display="inline-block"
+            bgColor="primary.300"
+            border="10px solid black"
+            color="black.900"
+            p="25px"
+            my={8}
           >
-            Communities
-          </Heading>
-          <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="8">
-            Find your community specific talisman
-          </Text>
+            <Heading
+              as="h2"
+              fontSize={{ base: "2xl", xxl: "4xl" }}
+              mb="1"
+              textTransform="uppercase"
+            >
+              Communities
+            </Heading>
+            <Text fontSize={{ base: "md", xl: "xl", xxl: "2xl" }} mb="0">
+              Find your community specific talisman
+            </Text>
+          </Box>
           <Communities featured={true} />
           <SimpleGrid
             columns={{ sm: 1, md: 2, xl: 3 }}
             spacingX={{ sm: 0, md: "20px", xl: "50px" }}
             mt="50px"
           >
-            <Box p={{ sm: 2, md: 4, xl: 6 }} mb="5">
+            <Box
+              p={{ sm: 2, md: 4, xl: 6 }}
+              mb="5"
+              bgColor="primary.300"
+              border="10px solid black"
+              color="black.900"
+
+            >
               <Heading
                 as="h2"
                 fontSize={{ base: "2xl", xxl: "4xl" }}
@@ -124,7 +111,13 @@ const Home = () => {
                 Submissions
               </Button>
             </Box>
-            <Box p={{ sm: 2, md: 4, xl: 6 }}>
+            <Box
+              p={{ sm: 2, md: 4, xl: 6 }}
+              mb="5"
+              bgColor="primary.300"
+              border="10px solid black"
+              color="black.900"
+            >
               <Heading
                 as="h2"
                 fontSize={{ base: "2xl", xxl: "4xl" }}

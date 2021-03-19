@@ -10,10 +10,7 @@ import UserAvatar from "./UserAvatar";
 import Logo from "../static/assets/img/chievmint-logo.png";
 
 const MenuItems = ({ children }) => (
-  <Box
-    _hover={{ backgroundColor: "secondary.500", color: "black" }}
-    transition="color 0.1s ease-in"
-  >
+  <Box a={{ color: "red" }}>
     <Text
       mt={{ base: 4, lg: 0 }}
       display="block"
@@ -53,7 +50,7 @@ const Header = props => {
       maxH="90px"
       zIndex={200}
       boxShadow="lg"
-      w="100%"
+      w="100vw"
       p={{ base: "0", lg: "0 25px" }}
       {...props}
     >
@@ -142,7 +139,7 @@ const Header = props => {
       >
         {user ? (
           <Link to={`/account/${user.username}`}>
-          <UserAvatar user={user} open={show} />
+            <UserAvatar user={user} open={show} />
           </Link>
         ) : (
           <Web3SignIn marginRight={{ base: "10px", lg: "0" }} />

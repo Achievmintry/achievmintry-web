@@ -41,10 +41,19 @@ const Community = ({ dao }) => {
           overflow="hidden"
           direction={{ base: "column", lg: "row" }}
           wrap="nowrap"
-          mb={{ base: 3, lg: 0 }}
+          mb={{ base: 3, lg: `50px` }}
+                  bgColor="primary.500"
+                  border="10px solid black"
+                  maxW="1190px"
+                  justifyContent="center"
+                  margin="0 auto"
         >
-          <Box p="6" w={{ base: "100%", lg: "300px" }} flexShrink="0">
-            <AspectRatio maxW="300px" ratio={1} borderBottom="10px solid black">
+          <Box
+            p="6"
+            w={{ base: "100%", lg: "300px" }}
+            flexShrink="0"
+          >
+            <AspectRatio maxW="300px" ratio={1}>
               <Image src={daoData.Logo[0].url} />
             </AspectRatio>
           </Box>
