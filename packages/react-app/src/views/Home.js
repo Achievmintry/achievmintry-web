@@ -2,6 +2,7 @@ import React from "react";
 
 import { Box, Button, Heading, Text, SimpleGrid, Link } from "@chakra-ui/react";
 import { Chievs, Communities } from "../components";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 const Home = () => {
   return (
@@ -44,6 +45,38 @@ const Home = () => {
             View The Awards 
           </Link>
           
+        </Box>
+        <Box>
+        <Text>
+          <span role="img" aria-label="holiday">
+            🏆
+          </span>{" "}
+          How the winners were picked
+          <span role="img" aria-label="dao-awards">
+            🏆
+          </span>
+        </Text>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/QmVS5Medt9y62UAKUeBAiYDGZ9Do5JtTyQQcBrUC4YLaJ4`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Buidler Award <ExternalLinkIcon mx="2px" />
+          </Link>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/Qmcwjf3q8gyjPKm2iF6J4XKagU3Bb19FWFUuXyHrN94H47`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Slaying Moloch Award <ExternalLinkIcon mx="2px" />
+          </Link>
+          <Link
+            href={`https://snapshot.page/#/achievmintry/proposal/QmTLhcCu5Q1PvLyx1vaBKqD6m7PuS7rRkS9V8WSpvAqXd7`}
+            isExternal={true}
+            style={{"color":"blue", "textDecoration": "underline", "marginLeft": "5px"}}
+          >
+            Community Ops Award <ExternalLinkIcon mx="2px" />
+          </Link>
         </Box>
       </Box>
       <Box
