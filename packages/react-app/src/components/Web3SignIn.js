@@ -36,7 +36,10 @@ const Web3SignIn = (props) => {
             w3c: new Web3Modal({
               network: getChainData(+process.env.REACT_APP_NETWORK_ID).network,
               providerOptions,
-              cacheProvider: true
+              cacheProvider: true,
+              theme: {
+                zIndex: 1450
+              }
             })
           };
 
